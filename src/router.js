@@ -1,13 +1,20 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomePage from "./pages/Homepage.vue";
+import Homepage from "./pages/Homepage.vue";
+import AdvancedSearch from "./pages/AdvancedSearch.vue";
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
       path: "/",
-      name: "home",
-      component: HomePage,
+      name: "Home",
+      component: Homepage,
     },
+    {
+      path: "/Advanced",
+      name: "Advanced",
+      component: AdvancedSearch,
+    },
+
   ],
 });
 export { router };

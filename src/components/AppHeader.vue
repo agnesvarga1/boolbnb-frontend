@@ -36,14 +36,15 @@ export default {
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto p-3 gap-5">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Shop</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Vetrina</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn btn-primary" href="#">Area personale</a>
-                    </li>
+                <router-link :to="{ name: 'Home' }" class="nav-link">
+                 Home
+                </router-link>
+                </li>
+                <li class="nav-item">
+                 <router-link :to="{ name: 'Advanced' }" class="nav-link">
+                    Search
+                  </router-link>
+                </li>
                 </ul>
             </div>
         </div>
