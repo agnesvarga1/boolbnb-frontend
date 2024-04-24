@@ -4,7 +4,9 @@ export default {
 };
 </script>
 
-<template></template>
+<template>
+  <button class="btn btn-primary">Ciao</button>
+</template>
 
 <style lang="scss">
 @use "./styles/general.scss";
