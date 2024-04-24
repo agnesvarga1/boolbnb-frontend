@@ -20,12 +20,8 @@ export default {
         <div>
           <a href="#" class="text-light me-4 text-decoration-none">Privacy</a>
           <a href="#" class="text-light me-4 text-decoration-none">Policy</a>
-          <a href="#" class="text-light me-4 text-decoration-none"
-            >Website Map</a
-          >
-          <a href="#" class="text-light me-4 text-decoration-none"
-            >Agency's Details</a
-          >
+          <a href="#" class="text-light me-4 text-decoration-none">Mappa del sito</a>
+          <a href="#" class="text-light me-4 text-decoration-none">Agency's Details</a>
         </div>
 
         <!-- Language and currency selectors -->
@@ -40,12 +36,12 @@ export default {
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              English (EN)
+              Italiano (IT)
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdownLanguageLink">
               <li>
                 <a class="dropdown-item text-decoration-none" href="#">
-                  Italiano (IT)</a
+                  English (EN)</a
                 >
               </li>
               <li>

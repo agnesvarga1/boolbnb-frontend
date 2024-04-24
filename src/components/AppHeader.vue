@@ -16,12 +16,8 @@ export default {
   >
     <div class="container">
       <router-link class="navbar-brand m-0" :to="{ name: 'Home' }">
-        BoolBnB Logo
+        <img src="/photo_5839426266103660487_x.jpg" alt="Logo" style="max-height: 70px;">
       </router-link>
-      <!-- <a class="navbar-brand m-0 " href="#">
-
-                <img src="./photo_5839426266103660487_x.jpg" alt="Logo" style="max-height: 70px;">
-            </a> -->
 
       <button
         class="navbar-toggler"
@@ -37,15 +33,19 @@ export default {
 
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto p-3 gap-5">
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <router-link :to="{ name: 'Home' }" class="nav-link">
               Home
             </router-link>
-          </li>
+          </li> -->
           <li class="nav-item">
             <router-link :to="{ name: 'Advanced' }" class="nav-link">
               Search
             </router-link>
+          </li>
+
+          <li>
+            <a class="btn btn-green" href="#" role="button">Get Details!</a>
           </li>
         </ul>
       </div>

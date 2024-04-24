@@ -40,7 +40,7 @@ export default {
   >
     <div class="col-12">
       <div class="row mt-5 bg-success mx-0 col-12 shadow bg-opacity-50 py-3 text-light">
-        <h2 class="fw-bold">Foresty Appartments</h2>
+        <h2 class="fw-bold">Appartamenti Boscosi</h2>
       </div>
       <div class="py-2 mt-3">
         <a class="btn btn-success" href="#" role="button">Get Details!</a>
@@ -49,17 +49,14 @@ export default {
   </div>
 
   <!-- Search Section -->
-  <section class="container my-5 d-flex">
-    <div class="col-3">
-      <h2 class="mb-4">Where to go?</h2>
-    </div>
+  <section class="container my-3 d-flex">
 
-    <div class="input-group">
-      <div class="input-group mb-3">
+      <div class="input-group mx-5">
+        <h2 class="me-4 fw-bolder">Inizia a cercare</h2>
         <input
           type="text"
           class="form-control border border-end-0"
-          placeholder="Where?"
+          placeholder="Cerca località..."
           aria-describedby="button-addon2"
         />
         <button
@@ -70,15 +67,15 @@ export default {
           <i class="fa-solid fa-magnifying-glass"></i>
         </button>
       </div>
-    </div>
+
   </section>
 
   <!-- SECTION Homepage body -->
   <section class="container my-5">
 
-    <h1 class="my-2 fw-bold ">Featured Appartments</h1>
+    <h1 class="my-2 fw-bold">Appartamenti sponsorizzati</h1>
 
-    <hr class="">
+    <hr>
 
     <div class="row row-gap-4">
       <div class="col-md-4">
@@ -155,7 +152,7 @@ export default {
       </div>
     </div> 
 
-    <!-- <div class="row row-gap-4">
+     <!-- <div class="row row-gap-4">
       <div v-for="apartment in apartments" :key="apartment.id" class="col-md-4">
         <router-link :to="{ name: 'Appartament' }" class="nav-link">
           <div class="card h-100">
