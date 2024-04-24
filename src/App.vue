@@ -1,11 +1,38 @@
+import
 <script>
+  
+import AppHeader from './components/AppHeader.vue'
+import AppFooter from './components/AppFooter.vue'
+import Homepage from './components/Homepage/Hompage.vue'
+
+
+
 export default {
-  name: "App",
-};
+  components: {
+    AppHeader,
+    AppFooter,
+    Homepage,
+
+  },
+  data(){
+      return{
+
+      }
+    },
+    methods: {
+
+    },
+    mounted() {
+
+    }
+  }
+
 </script>
 
 <template>
-  <button class="btn btn-primary">Ciao</button>
+  <AppHeader/>
+  <Homepage/>
+  <AppFooter/>
 </template>
 
 <style lang="scss">
