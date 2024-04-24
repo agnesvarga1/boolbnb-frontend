@@ -1,38 +1,27 @@
 import
 <script>
-  
-import AppHeader from './components/AppHeader.vue'
-import AppFooter from './components/AppFooter.vue'
-import Homepage from './components/Homepage/Hompage.vue'
-
-
+import AppHeader from "./components/AppHeader.vue";
+import AppFooter from "./components/AppFooter.vue";
+import Homepage from "./pages/Homepage.vue";
 
 export default {
   components: {
     AppHeader,
     AppFooter,
     Homepage,
-
   },
-  data(){
-      return{
-
-      }
-    },
-    methods: {
-
-    },
-    mounted() {
-
-    }
-  }
-
+  data() {
+    return {};
+  },
+  methods: {},
+  mounted() {},
+};
 </script>
 
 <template>
-  <AppHeader/>
-  <Homepage/>
-  <AppFooter/>
+  <AppHeader />
+ <router-view></router-view>
+  <AppFooter />
 </template>
 
 <style lang="scss">
