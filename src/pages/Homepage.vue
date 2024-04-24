@@ -56,11 +56,14 @@ export default {
 
             <!-- Card (Fare v-for o foreach (laravel o vue)) -->
             <div class="row">
+                <router-link :to="{ name: 'Appartament' }" class="nav-link">
+                    Appartament
+                  
 
                 <!-- @foreach ($apartments as $apartment) -->
 
                 <div class="col-md-4 mb-4">
-                    <div class="card h-100" onclick="window.location='{{ route('apartments.show', $apartment->slug) }}';">
+                    <div class="card h-100" onclick="window.location='';">
 
                         <!-- <img src="{{ $apartment->cover_image }}" class="card-img-top" alt="{{ $apartment->slug }}"> -->
 
@@ -79,14 +82,12 @@ export default {
                             </h6>
 
                             <!-- Redirect alla show -->
-                            <a href="{{ route('apartments.show', $apartment->slug) }}" class="btn btn-primary">
-                                Vedi di più
-                            </a>
+                            
 
                         </div>
                     </div>
                 </div>
-
+               </router-link>
                 <!-- @endforeach -->
             </div>
 
