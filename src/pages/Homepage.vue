@@ -1,12 +1,14 @@
 <script>
 import axios from 'axios';
+import {store} from '../store.js'
 
 export default {
   name: "Homepage",
   components: {},
   data() {
     return {
-      apartments:[]
+      apartments:[],
+      store,
     };
   },
   methods: {},
@@ -29,21 +31,19 @@ export default {
   <div
     class="bg-image py-5 text-center shadow-1-strong mb-5 d-flex align-items-end justify-content-center"
     style="
-      width: 100vw;
+      width: 100%;
       height: 70vh;
       background-size: cover;
       background-position: center;
-      background-image: url('./immobili-di-prestigio-milano-1024x681.jpg');
+      background-image: url('/immobili-di-prestigio-milano-1024x681.jpg');
     "
   >
     <div class="col-12">
-      <div
-        class="row mt-5 mx-0 col-12 bg-primary shadow bg-opacity-50 py-3 text-light"
-      >
+      <div class="row mt-5 bg-success mx-0 col-12 shadow bg-opacity-50 py-3 text-light">
         <h2 class="fw-bold">Foresty Appartments</h2>
       </div>
       <div class="py-2 mt-3">
-        <a class="btn btn-green" href="#" role="button">Get Details!</a>
+        <a class="btn btn-success" href="#" role="button">Get Details!</a>
       </div>
     </div>
   </div>
@@ -76,35 +76,105 @@ export default {
   <!-- SECTION Homepage body -->
   <section class="container my-5">
 
-    <h2 class="mb-4">Featured Appartments</h2>
+    <h1 class="my-2 fw-bold ">Featured Appartments</h1>
 
-    <div class="row">
-        <!-- Card (Fare v-for o foreach (laravel o vue)) -->
-        <div class="row">
+    <hr class="">
+
+    <div class="row row-gap-4">
+      <div class="col-md-4">
         <router-link :to="{ name: 'Appartament' }" class="nav-link">
-          <div v-for="apartment in apartments" :key="apartment.id" class="col-md-4 mb-4">
-            <div class="card h-100" @click="redirectToApartment(apartment.slug)">
-              <img :src="apartment.cover_image" class="card-img-top" :alt="apartment.title">
-              <div class="card-body d-flex flex-column">
-                <h5 class="card-title">{{ apartment.title }}</h5>
-                <p class="card-text mb-2">{{ apartment.full_address }}</p>
-                <h6 class="card-title">{{ apartment.price }}€/notte</h6>
-                <button @click="redirectToApartment(apartment.slug)" class="btn btn-primary">
-                  Vedi di più
-                </button>
-              </div>
+          <div class="card h-100">
+            <img src="/trullo_meraviglie_08_esterno_giorno_fronte-trulli.webp" class="card-img-top" alt="apartment.title">
+            <div class="card-body d-flex flex-column bg-light">
+              <h4 class="card-title fw-bolder"> Trullo in centro </h4>
+              <h6 class="mb-2 col-5 price-tag fw-bolder"> 250 €/notte</h6>               
+              <p class="card-text text-body-secondary"> Alberobello, BA </p>
+            </div>
           </div>
+        </router-link>
       </div>
-      </router-link>
-    </div>
+      <div class="col-md-4">
+        <router-link :to="{ name: 'Appartament' }" class="nav-link">
+          <div class="card h-100">
+            <img src="/trullo_meraviglie_08_esterno_giorno_fronte-trulli.webp" class="card-img-top" alt="apartment.title">
+            <div class="card-body d-flex flex-column bg-light">
+              <h4 class="card-title fw-bolder"> Trullo in centro </h4>
+              <h6 class="mb-2 col-5 price-tag fw-bolder"> 250 €/notte</h6>               
+              <p class="card-text text-body-secondary"> Alberobello, BA </p>
+            </div>
+          </div>
+        </router-link>
+      </div>
+      <div class="col-md-4">
+        <router-link :to="{ name: 'Appartament' }" class="nav-link">
+          <div class="card h-100">
+            <img src="/trullo_meraviglie_08_esterno_giorno_fronte-trulli.webp" class="card-img-top" alt="apartment.title">
+            <div class="card-body d-flex flex-column bg-light">
+              <h4 class="card-title fw-bolder"> Trullo in centro </h4>
+              <h6 class="mb-2 col-5 price-tag fw-bolder"> 250 €/notte</h6>               
+              <p class="card-text text-body-secondary"> Alberobello, BA </p>
+            </div>
+          </div>
+        </router-link>
+      </div>
+      <div class="col-md-4">
+        <router-link :to="{ name: 'Appartament' }" class="nav-link">
+          <div class="card h-100">
+            <img src="/trullo_meraviglie_08_esterno_giorno_fronte-trulli.webp" class="card-img-top" alt="apartment.title">
+            <div class="card-body d-flex flex-column bg-light">
+              <h4 class="card-title fw-bolder"> Trullo in centro </h4>
+              <h6 class="mb-2 col-5 price-tag fw-bolder"> 250 €/notte</h6>               
+              <p class="card-text text-body-secondary"> Alberobello, BA </p>
+            </div>
+          </div>
+        </router-link>
+      </div>
+      <div class="col-md-4">
+        <router-link :to="{ name: 'Appartament' }" class="nav-link">
+          <div class="card h-100">
+            <img src="/trullo_meraviglie_08_esterno_giorno_fronte-trulli.webp" class="card-img-top" alt="apartment.title">
+            <div class="card-body d-flex flex-column bg-light">
+              <h4 class="card-title fw-bolder"> Trullo in centro </h4>
+              <h6 class="mb-2 col-5 price-tag fw-bolder"> 250 €/notte</h6>               
+              <p class="card-text text-body-secondary"> Alberobello, BA </p>
+            </div>
+          </div>
+        </router-link>
+      </div>
+      <div class="col-md-4">
+        <router-link :to="{ name: 'Appartament' }" class="nav-link">
+          <div class="card h-100">
+            <img src="/trullo_meraviglie_08_esterno_giorno_fronte-trulli.webp" class="card-img-top" alt="apartment.title">
+            <div class="card-body d-flex flex-column bg-light">
+              <h4 class="card-title fw-bolder"> Trullo in centro </h4>
+              <h6 class="mb-2 col-5 price-tag fw-bolder"> 250 €/notte</h6>               
+              <p class="card-text text-body-secondary"> Alberobello, BA </p>
+            </div>
+          </div>
+        </router-link>
+      </div>
+    </div> 
 
+    <!-- <div class="row row-gap-4">
+      <div v-for="apartment in apartments" :key="apartment.id" class="col-md-4">
+        <router-link :to="{ name: 'Appartament' }" class="nav-link">
+          <div class="card h-100">
+            <img :src="apartment.cover_image" class="card-img-top" :alt="apartment.title">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">{{ apartment.title }}</h5>
+              <p class="card-text mb-2">{{ apartment.full_address }}</p>
+              <h6 class="card-title">{{ apartment.price }}€/notte</h6>               </div>
+            </div>
+        </router-link>
+      </div>
+    </div>     -->
 
-        
-    </div>
   </section>
 
 </template>
 
 <style lang="scss">
-
+.price-tag{
+  color: #1ac6b6;
+}
 </style>
