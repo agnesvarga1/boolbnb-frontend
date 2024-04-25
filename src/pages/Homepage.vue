@@ -12,6 +12,7 @@ export default {
       currentPage: "",
       lastPage: "",
       searchInput: "",
+      radiusInput: "20",
       arrayAddresses: [],
     };
   },
@@ -102,8 +103,8 @@ export default {
   </div>
 
   <!-- Search Section -->
-  <section class="container my-3 d-flex">
-    <div class="input-group mx-5">
+  <section class="container my-3">
+    <div class="input-group d-flex">
       <h2 class="me-4 fw-bolder">Inizia a cercare</h2>
       <input
         type="text"
@@ -123,6 +124,22 @@ export default {
       <datalist id="addressList">
         <option v-for="element in arrayAddresses" :value="element"></option>
       </datalist>
+    </div>
+    <div>
+      <label for="rangeZone" class="form-label"
+        >Range zona: <strong>{{ radiusInput }} km</strong></label
+      >
+      <input
+        type="range"
+        class="form-range"
+        id="rangeZone"
+        name="rangeZone"
+        min="0"
+        max="200"
+        value="20"
+        step="1"
+        v-model="radiusInput"
+      />
     </div>
   </section>
 
