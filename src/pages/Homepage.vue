@@ -7,24 +7,72 @@ export default {
   components: {},
   data() {
     return {
-      apartments: [],
       store,
+      arrayApartments: [],
+      currentPage: "",
+      lastPage: "",
+      searchInput: "",
+      arrayAddresses: [],
     };
   },
+  computed: {
+    autocompleteSearch() {
+      let apiRequest = `https://api.tomtom.com/search/2/search/${
+        this.searchInput
+      }.json?key=${import.meta.env.VITE_TOMTOM_API_KEY}&language=it-IT`;
+
+      if (this.searchInput === "") {
+        this.arrayAddresses = [];
+        return;
+      }
+
+      fetch(apiRequest)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+
+          return response.json();
+        })
+        .then((data) => {
+          let apiResults = data.results;
+
+          this.arrayAddresses = [];
+
+          apiResults.forEach((element) => {
+            this.arrayAddresses.push(element.address.freeformAddress);
+          });
+
+          console.log(this.arrayAddresses);
+        })
+        .catch((error) => {
+          console.error("There was a problem with the fetch operation:", error);
+        });
+    },
+  },
   methods: {
-    autocompleteSearch() {},
+    getApartments(postApiPage) {
+      axios
+        .get(
+          `${store.apiBaseUrl}/api/apartments`,
+
+          {
+            params: {
+              page: postApiPage,
+            },
+          }
+        )
+        .then((result) => {
+          this.arrayApartments = result.data.apartments.data;
+          this.currentPage = result.data.apartments.current_page;
+          this.lastPage = result.data.apartments.last_page;
+
+          console.log(this.currentPage, this.lastPage);
+        });
+    },
   },
   mounted() {
-    axios
-      .get(`${store.apiBaseUrl}/api/apartments`)
-      .then((response) => {
-        console.log(response.data.apartments.data);
-
-        this.apartments = response.data.apartments.data;
-      })
-      .catch((error) => {
-        console.error("There was an error fetching the apartments:", error);
-      });
+    this.getApartments(1);
   },
 };
 </script>
@@ -62,6 +110,8 @@ export default {
         class="form-control border border-end-0"
         placeholder="Cerca località..."
         aria-describedby="button-addon2"
+        v-model="searchInput"
+        list="addressList"
       />
       <button
         class="btn border border-start-0"
@@ -70,6 +120,9 @@ export default {
       >
         <i class="fa-solid fa-magnifying-glass"></i>
       </button>
+      <datalist id="addressList">
+        <option v-for="element in arrayAddresses" :value="element"></option>
+      </datalist>
     </div>
   </section>
 
@@ -79,9 +132,13 @@ export default {
 
     <hr />
 
-    <div>
+    <div v-if="arrayApartments.length > 0">
       <div class="row row-gap-4">
-        <div v-for="element in apartments" :key="element.id" class="col-md-4">
+        <div
+          v-for="element in arrayApartments"
+          :key="element.id"
+          class="col-md-4"
+        >
           <router-link
             :to="{ name: 'apartment', params: { slug: element.slug } }"
             class="nav-link"
@@ -119,6 +176,52 @@ export default {
         </div>
       </div>
     </div>
+    <div
+      v-else
+      class="d-flex justify-content-center align-items-center"
+      style="min-height: 100vh; background-color: #f8f9fa"
+    >
+      <span
+        class="spinner-border text-primary me-2"
+        role="status"
+        aria-hidden="true"
+      ></span>
+      <span>Caricamento in corso...</span>
+    </div>
+
+    <nav aria-label="Page navigation example" class="mt-5">
+      <ul class="pagination mx-auto">
+        <li class="page-item">
+          <button
+            class="page-link"
+            :class="{ disabled: currentPage === 1 }"
+            @click="getApartments(currentPage - 1)"
+          >
+            Previous
+          </button>
+        </li>
+
+        <li class="page-item" v-for="(element, index) in lastPage" :key="index">
+          <button
+            class="page-link"
+            :class="{ disabled: currentPage === element }"
+            @click="getApartments(element)"
+          >
+            {{ element }}
+          </button>
+        </li>
+
+        <li class="page-item">
+          <button
+            class="page-link"
+            :class="{ disabled: currentPage === lastPage }"
+            @click="getApartments(currentPage + 1)"
+          >
+            Next
+          </button>
+        </li>
+      </ul>
+    </nav>
 
     <!-- <div class="row row-gap-4">
       <div v-for="apartment in apartments" :key="apartment.id" class="col-md-4">
