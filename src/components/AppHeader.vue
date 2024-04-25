@@ -15,8 +15,12 @@ export default {
     class="navbar navbar-expand-lg navbar-light bg-light fixed-top bg-opacity-75 p-0"
   >
     <div class="container">
-      <router-link class="navbar-brand m-0" :to="{ name: 'Home' }">
-        <img src="/photo_5839426266103660487_x.jpg" alt="Logo" style="max-height: 70px;">
+      <router-link class="navbar-brand m-0" :to="{ name: 'home' }">
+        <img
+          src="/photo_5839426266103660487_x.jpg"
+          alt="Logo"
+          style="max-height: 70px"
+        />
       </router-link>
 
       <button
@@ -39,7 +43,7 @@ export default {
             </router-link>
           </li> -->
           <li class="nav-item">
-            <router-link :to="{ name: 'Advanced' }" class="nav-link">
+            <router-link :to="{ name: 'advanced' }" class="nav-link">
               Search
             </router-link>
           </li>
