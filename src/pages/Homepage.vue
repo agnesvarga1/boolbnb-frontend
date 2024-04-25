@@ -1,10 +1,13 @@
 <script>
+import TomTomMap from "../components/TomTomMap.vue";
 import axios from "axios";
 import { store } from "../store.js";
 
 export default {
   name: "Homepage",
-  components: {},
+  components: {
+    TomTomMap,
+  },
   data() {
     return {
       store,
@@ -205,6 +208,8 @@ export default {
       ></span>
       <span>Caricamento in corso...</span>
     </div>
+
+    <TomTomMap />
 
     <nav aria-label="Page navigation example" class="mt-5">
       <ul class="pagination mx-auto">
