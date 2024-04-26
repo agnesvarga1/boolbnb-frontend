@@ -15,8 +15,11 @@ export default {
       currentPage: "",
       lastPage: "",
       searchInput: "",
-      radiusInput: "20",
+      radiusInput: 20,
       arrayAddresses: [],
+      automcompleteApiResponseArray: [],
+      infoApartmentsArray: [],
+      isFiltered: false,
     };
   },
   methods: {
@@ -31,8 +34,7 @@ export default {
           this.arrayApartments = result.data.apartments.data;
           this.currentPage = result.data.apartments.current_page;
           this.lastPage = result.data.apartments.last_page;
-
-          console.log(this.currentPage, this.lastPage);
+          this.infoApartmentsArray = result.data.apartments;
         });
     },
     autocompleteSearch() {
@@ -53,15 +55,41 @@ export default {
           return response.json();
         })
         .then((data) => {
-          let apiResults = data.results;
+          this.automcompleteApiResponseArray = data.results;
 
-          this.arrayAddresses = apiResults.map(
+          this.arrayAddresses = this.automcompleteApiResponseArray.map(
             (element) => element.address.freeformAddress
           );
           console.log(this.arrayAddresses);
         })
         .catch((error) => {
           console.error("There was a problem with the fetch operation:", error);
+        });
+    },
+    radiusSearch(postApiPage) {
+      if (this.searchInput.length === "" || this.searchInput.length < 4) {
+        console.log("input invalido");
+        return;
+      }
+
+      const params = {
+        page: postApiPage,
+        latitude: this.automcompleteApiResponseArray[0].position.lat,
+        longitude: this.automcompleteApiResponseArray[0].position.lon,
+        radius: this.radiusInput,
+      };
+
+      axios
+        .get(`${store.apiBaseUrl}/api/apartments/search`, { params })
+        .then((response) => {
+          console.log(response);
+          this.arrayApartments = response.data.apartments.data;
+          this.currentPage = response.data.apartments.current_page;
+          this.lastPage = response.data.apartments.last_page;
+          this.infoApartmentsArray = response.data.apartments;
+        })
+        .catch((error) => {
+          console.error("Errore durante la richiesta API:", error);
         });
     },
   },
@@ -111,11 +139,19 @@ export default {
         aria-describedby="button-addon2"
         v-model="searchInput"
         list="addressList"
+        @keydown.enter="
+          radiusSearch(1);
+          isFiltered = true;
+        "
       />
       <button
         class="btn border border-start-0"
         type="button"
         id="button-addon2"
+        @click="
+          radiusSearch(1);
+          isFiltered = true;
+        "
       >
         <i class="fa-solid fa-magnifying-glass"></i>
       </button>
@@ -141,9 +177,57 @@ export default {
     </div>
   </section>
 
+  <nav
+    aria-label="Page navigation example"
+    class="mt-5 d-flex justify-content-center"
+  >
+    <ul class="pagination">
+      <li class="page-item">
+        <button
+          class="page-link"
+          :class="{ disabled: currentPage === 1 }"
+          @click="
+            !isFiltered
+              ? getApartments(currentPage - 1)
+              : radiusSearch(currentPage - 1)
+          "
+        >
+          Previous
+        </button>
+      </li>
+
+      <li class="page-item" v-for="(element, index) in lastPage" :key="index">
+        <button
+          class="page-link"
+          :class="{ disabled: currentPage === element }"
+          @click="!isFiltered ? getApartments(element) : radiusSearch(element)"
+        >
+          {{ element }}
+        </button>
+      </li>
+
+      <li class="page-item">
+        <button
+          class="page-link"
+          :class="{ disabled: currentPage === lastPage }"
+          @click="
+            !isFiltered
+              ? getApartments(currentPage + 1)
+              : radiusSearch(currentPage + 1)
+          "
+        >
+          Next
+        </button>
+      </li>
+    </ul>
+  </nav>
+
   <!-- SECTION Homepage body -->
   <section class="container my-5">
-    <h1 class="my-2 fw-bold">Appartamenti sponsorizzati</h1>
+    <h1 class="my-2 fw-bold">
+      Appartamenti sponsorizzati ({{ infoApartmentsArray.total }}) - Pagina
+      {{ currentPage }}
+    </h1>
 
     <hr />
 
@@ -205,40 +289,6 @@ export default {
     </div>
 
     <TomTomMap :propApartments="arrayApartments" />
-
-    <nav aria-label="Page navigation example" class="mt-5">
-      <ul class="pagination mx-auto">
-        <li class="page-item">
-          <button
-            class="page-link"
-            :class="{ disabled: currentPage === 1 }"
-            @click="getApartments(currentPage - 1)"
-          >
-            Previous
-          </button>
-        </li>
-
-        <li class="page-item" v-for="(element, index) in lastPage" :key="index">
-          <button
-            class="page-link"
-            :class="{ disabled: currentPage === element }"
-            @click="getApartments(element)"
-          >
-            {{ element }}
-          </button>
-        </li>
-
-        <li class="page-item">
-          <button
-            class="page-link"
-            :class="{ disabled: currentPage === lastPage }"
-            @click="getApartments(currentPage + 1)"
-          >
-            Next
-          </button>
-        </li>
-      </ul>
-    </nav>
 
     <!-- <div class="row row-gap-4">
       <div v-for="apartment in apartments" :key="apartment.id" class="col-md-4">
