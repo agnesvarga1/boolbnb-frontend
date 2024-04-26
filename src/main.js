@@ -9,4 +9,5 @@ import "./styles/general.scss";
 
 import "@fortawesome/fontawesome-free/css/all.css";
 import "@tomtom-international/web-sdk-maps/dist/maps.css";
+
 createApp(App).use(router).mount("#app");

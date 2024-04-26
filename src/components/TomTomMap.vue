@@ -22,9 +22,7 @@ export default {
       store.map.addControl(new tt.FullscreenControl());
       store.map.addControl(new tt.NavigationControl());
     },
-  },
-  computed: {
-    showApartments() {
+    createMarkers() {
       const map = tt.map({
         key: import.meta.env.VITE_TOMTOM_API_KEY,
         container: "tomtom-map",
@@ -168,6 +166,16 @@ export default {
   },
   mounted() {
     this.inzializeMap();
+    this.createMarkers();
+  },
+  watch: {
+    propApartments: {
+      handler(newApartments, oldApartments) {
+        console.log("l'array è cambiato");
+        this.createMarkers();
+      },
+      deep: true, // Assicura il deep watching sull'array
+    },
   },
 };
 </script>
