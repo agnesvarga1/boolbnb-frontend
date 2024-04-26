@@ -209,7 +209,7 @@ export default {
       <span>Caricamento in corso...</span>
     </div>
 
-    <TomTomMap />
+    <TomTomMap :propApartments="arrayApartments" />
 
     <nav aria-label="Page navigation example" class="mt-5">
       <ul class="pagination mx-auto">
