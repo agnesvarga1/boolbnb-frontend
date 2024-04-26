@@ -30,6 +30,9 @@ export default {
         zoom: 4,
       });
 
+      map.addControl(new tt.FullscreenControl());
+      map.addControl(new tt.NavigationControl());
+
       var markersOnTheMap = {};
       var eventListenersAdded = false;
 
