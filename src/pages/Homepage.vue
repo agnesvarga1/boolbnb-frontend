@@ -19,7 +19,22 @@ export default {
       arrayAddresses: [],
     };
   },
-  computed: {
+  methods: {
+    getApartments(postApiPage) {
+      axios
+        .get(`${store.apiBaseUrl}/api/apartments`, {
+          params: {
+            page: postApiPage,
+          },
+        })
+        .then((result) => {
+          this.arrayApartments = result.data.apartments.data;
+          this.currentPage = result.data.apartments.current_page;
+          this.lastPage = result.data.apartments.last_page;
+
+          console.log(this.currentPage, this.lastPage);
+        });
+    },
     autocompleteSearch() {
       let apiRequest = `https://api.tomtom.com/search/2/search/${
         this.searchInput
@@ -35,18 +50,14 @@ export default {
           if (!response.ok) {
             throw new Error("Network response was not ok");
           }
-
           return response.json();
         })
         .then((data) => {
           let apiResults = data.results;
 
-          this.arrayAddresses = [];
-
-          apiResults.forEach((element) => {
-            this.arrayAddresses.push(element.address.freeformAddress);
-          });
-
+          this.arrayAddresses = apiResults.map(
+            (element) => element.address.freeformAddress
+          );
           console.log(this.arrayAddresses);
         })
         .catch((error) => {
@@ -54,25 +65,9 @@ export default {
         });
     },
   },
-  methods: {
-    getApartments(postApiPage) {
-      axios
-        .get(
-          `${store.apiBaseUrl}/api/apartments`,
-
-          {
-            params: {
-              page: postApiPage,
-            },
-          }
-        )
-        .then((result) => {
-          this.arrayApartments = result.data.apartments.data;
-          this.currentPage = result.data.apartments.current_page;
-          this.lastPage = result.data.apartments.last_page;
-
-          console.log(this.currentPage, this.lastPage);
-        });
+  watch: {
+    searchInput(newVal) {
+      this.autocompleteSearch();
     },
   },
   mounted() {
