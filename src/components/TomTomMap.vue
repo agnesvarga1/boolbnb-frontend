@@ -32,8 +32,6 @@ export default {
         zoom: 4,
       });
 
-      map.addControl(new tt.FullscreenControl());
-      map.addControl(new tt.NavigationControl());
       var markersOnTheMap = {};
       var eventListenersAdded = false;
 
@@ -76,8 +74,8 @@ export default {
                   offset: 75 / 2,
                   anchor: "bottom",
                 }).setHTML(`
-                  <b>${feature.properties.name}</b><br/>
-                  ${feature.properties.full_address}
+                  <b><h5>${feature.properties.name}</h5></b>
+                  <span>${feature.properties.full_address}</span>
                   `)
               );
               markersOnTheMap[id] = newMarker;

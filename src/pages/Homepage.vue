@@ -265,4 +265,8 @@ export default {
 .price-tag {
   color: #1ac6b6;
 }
+
+.mapboxgl-popup-content {
+  color: #1ac6b6;
+}
 </style>
