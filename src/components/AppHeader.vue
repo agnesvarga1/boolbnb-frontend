@@ -43,7 +43,7 @@ export default {
             </router-link>
           </li> -->
           <li class="nav-item">
-            <router-link :to="{ name: 'advanced' }" class="nav-link">
+            <router-link :to="{ name: 'search' }" class="nav-link">
               Search
             </router-link>
           </li>

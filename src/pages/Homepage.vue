@@ -1,10 +1,13 @@
 <script>
+import TomTomMap from "../components/TomTomMap.vue";
 import axios from "axios";
 import { store } from "../store.js";
 
 export default {
   name: "Homepage",
-  components: {},
+  components: {
+    TomTomMap,
+  },
   data() {
     return {
       store,
@@ -206,6 +209,8 @@ export default {
       <span>Caricamento in corso...</span>
     </div>
 
+    <TomTomMap :propApartments="arrayApartments" />
+
     <nav aria-label="Page navigation example" class="mt-5">
       <ul class="pagination mx-auto">
         <li class="page-item">
@@ -258,6 +263,10 @@ export default {
 
 <style lang="scss">
 .price-tag {
+  color: #1ac6b6;
+}
+
+.mapboxgl-popup-content {
   color: #1ac6b6;
 }
 </style>
