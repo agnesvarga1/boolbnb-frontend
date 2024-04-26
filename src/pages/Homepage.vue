@@ -91,6 +91,8 @@ export default {
         .catch((error) => {
           console.error("Errore durante la richiesta API:", error);
         });
+
+      this.isFiltered = true;
     },
   },
   watch: {
@@ -139,19 +141,14 @@ export default {
         aria-describedby="button-addon2"
         v-model="searchInput"
         list="addressList"
-        @keydown.enter="
-          radiusSearch(1);
-          isFiltered = true;
-        "
+        @keydown.enter="radiusSearch(1)"
       />
       <button
         class="btn border border-start-0"
+        :class="searchInput !== '' ? 'btn-primary' : ''"
         type="button"
         id="button-addon2"
-        @click="
-          radiusSearch(1);
-          isFiltered = true;
-        "
+        @click="radiusSearch(1)"
       >
         <i class="fa-solid fa-magnifying-glass"></i>
       </button>
@@ -219,14 +216,28 @@ export default {
           Next
         </button>
       </li>
+      <li>
+        <button
+          class="btn btn-primary ms-5"
+          :class="{ disabled: !isFiltered }"
+          @click="
+            getApartments(1);
+            isFiltered = false;
+            searchInput = '';
+            radiusInput = 20;
+          "
+        >
+          Reset
+        </button>
+      </li>
     </ul>
   </nav>
 
   <!-- SECTION Homepage body -->
   <section class="container my-5">
     <h1 class="my-2 fw-bold">
-      Appartamenti sponsorizzati ({{ infoApartmentsArray.total }}) - Pagina
-      {{ currentPage }}
+      Appartamenti sponsorizzati ({{ infoApartmentsArray.total }})
+      {{ infoApartmentsArray.total === 0 ? "" : `- Pagina ${currentPage}` }}
     </h1>
 
     <hr />
@@ -274,6 +285,13 @@ export default {
           </router-link>
         </div>
       </div>
+    </div>
+    <div
+      v-else-if="infoApartmentsArray.total === 0"
+      class="d-flex justify-content-center align-items-center"
+      style="min-height: 20vh; background-color: #f8f9fa"
+    >
+      <h1>La ricerca non ha prodotto risultati</h1>
     </div>
     <div
       v-else
