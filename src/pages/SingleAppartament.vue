@@ -18,6 +18,11 @@ export default {
         .get(`${store.apiBaseUrl}/api/apartments/${this.$route.params.slug}`)
         .then((res) => {
           this.apartment = res.data.apartment;
+          this.apartment.services.forEach((element) => {
+            let pp = element.icon.split("/");
+            console.log(pp[1].split("."));
+            element.icon = pp[1].split(".")[1] + "." + pp[1].split(".")[2];
+          });
           return this.apartment;
         })
         .then(this.inzializeMap)
@@ -42,7 +47,7 @@ export default {
         container: "map",
         key: import.meta.env.VITE_TOMTOM_API_KEY,
         center: HouseCoordinates,
-        zoom: 15,
+        zoom: 13,
       });
       let marker = new tt.Marker().setLngLat(HouseCoordinates).addTo(map);
     },
@@ -103,11 +108,17 @@ export default {
           v-if="apartment.length !== 0 && apartment.services.length !== 0"
           class="mt-2"
         >
-          <span v-for="item in apartment.services" :key="item.id">
+          <span
+            v-for="item in apartment.services"
+            :key="item.id"
+            class="d-flex text-capitalize"
+          >
             <img
-              :src="`${store.apiBaseUrl}/storage/${item.icon}`"
+              :src="`${store.apiBaseUrl}/storage/icons_services/${item.icon}`"
               :alt="item.name"
+              class="me-1 icon"
             />
+            {{ item.name }}
           </span>
         </div>
         <button class="btn btn-green w-100 mt-3 text-capitalize">
@@ -125,8 +136,15 @@ export default {
 img {
   display: block;
 }
+
 .apartment-container {
   padding-top: 100px;
   min-height: 90vh;
+  .apartment-details {
+    .icon {
+      width: 20px;
+      height: 20px;
+    }
+  }
 }
 </style>
