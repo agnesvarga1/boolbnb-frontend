@@ -44,12 +44,12 @@ export default {
           </li> -->
           <li class="nav-item">
             <router-link :to="{ name: 'search' }" class="nav-link">
-              Search
+              Ricerca Avanzata
             </router-link>
           </li>
 
           <li>
-            <a class="btn btn-green" href="#" role="button">Get Details!</a>
+            <a class="btn btn-green" href="#" role="button">Area Personale</a>
           </li>
         </ul>
       </div>
