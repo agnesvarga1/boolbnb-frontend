@@ -61,7 +61,7 @@ export default {
 <template>
   <div class="container apartment-container d-flex align-items-center">
     <div class="row">
-      <div v-if="apartment.length !== 0" class="col-4 p-0">
+      <div v-if="apartment.length !== 0" class="col-lg-4 col-sm-12 p-0">
         <figure class="w-100 h-100 mb-0">
           <img
             v-if="
@@ -79,7 +79,7 @@ export default {
           />
         </figure>
       </div>
-      <div class="col-4 apartment-details pb-3">
+      <div class="col-lg-4 col-sm-12 apartment-details pb-3">
         <h2>{{ apartment?.title }}</h2>
         <p>{{ apartment?.full_address }}</p>
         <p>{{ apartment?.description }}</p>
@@ -125,7 +125,7 @@ export default {
           Scrivci per prenotare
         </button>
       </div>
-      <div class="col-4 p-0">
+      <div class="col-lg-4 col-sm-12 p-0">
         <div id="map" class="map w-100 h-100"></div>
       </div>
     </div>
@@ -144,6 +144,15 @@ img {
     .icon {
       width: 20px;
       height: 20px;
+    }
+  }
+}
+@media only screen and (max-width: 600px) {
+  .apartment-container {
+    padding-inline: 1rem;
+
+    #map {
+      height: calc(100vh / 3) !important;
     }
   }
 }
