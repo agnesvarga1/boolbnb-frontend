@@ -243,7 +243,7 @@ export default {
     <hr />
 
     <div v-if="arrayApartments.length > 0">
-      <div class="row row-gap-4">
+      <div class="row row-gap-4 mb-5">
         <div
           v-for="element in arrayApartments"
           :key="element.id"
@@ -253,8 +253,8 @@ export default {
             :to="{ name: 'apartment', params: { slug: element.slug } }"
             class="nav-link"
           >
-            <div class="card h-100">
-              <figure class="mb-0">
+            <div class="card">
+              <figure class="mb-0 card-img-top">
                 <img
                   v-if="
                     element.cover_image.startsWith(
@@ -272,7 +272,7 @@ export default {
                   :alt="element.slug"
                 />
               </figure>
-              <div class="card-body d-flex flex-column bg-light">
+              <div class="card-body d-flex flex-column justify-content-between bg-light">
                 <h4 class="card-title fw-bolder">{{ element.title }}</h4>
                 <h6 class="mb-2 col-5 price-tag fw-bolder">
                   {{ element.price }} €/notte
@@ -282,6 +282,7 @@ export default {
                 </p>
               </div>
             </div>
+
           </router-link>
         </div>
       </div>
@@ -325,6 +326,16 @@ export default {
 </template>
 
 <style lang="scss">
+.card{
+  min-height: 350px
+}
+.card-img-top img {
+  height: 200px; 
+  width: 100%; 
+  object-fit: cover; 
+  object-position: center;
+}
+
 .price-tag {
   color: #1ac6b6;
 }
@@ -332,4 +343,6 @@ export default {
 .mapboxgl-popup-content {
   color: #1ac6b6;
 }
+
+
 </style>
