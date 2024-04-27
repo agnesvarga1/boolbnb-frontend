@@ -120,12 +120,13 @@ export default {
   >
     <div class="col-12">
       <div
-        class="row mt-5 bg-success mx-0 col-12 shadow bg-opacity-50 py-3 text-light"
-      >
-        <h2 class="fw-bold">Appartamenti Boscosi</h2>
+        class="row mt-5 mx-0 col-12 shadow py-3 "
+        style="background-color: rgb(26, 198, 182, 0.6);"
+        >
+        <h2 class="fw-bold text-light">Appartamenti Boscosi</h2>
       </div>
       <div class="py-2 mt-3">
-        <a class="btn btn-success" href="#" role="button">Get Details!</a>
+        <a class="btn btn-green-inverted" href="#" role="button">Affitta Ora!</a>
       </div>
     </div>
   </div>
@@ -174,64 +175,6 @@ export default {
     </div>
   </section>
 
-  <nav
-    aria-label="Page navigation example"
-    class="mt-5 d-flex justify-content-center"
-  >
-    <ul class="pagination">
-      <li class="page-item">
-        <button
-          class="page-link"
-          :class="{ disabled: currentPage === 1 }"
-          @click="
-            !isFiltered
-              ? getApartments(currentPage - 1)
-              : radiusSearch(currentPage - 1)
-          "
-        >
-          Previous
-        </button>
-      </li>
-
-      <li class="page-item" v-for="(element, index) in lastPage" :key="index">
-        <button
-          class="page-link"
-          :class="{ disabled: currentPage === element }"
-          @click="!isFiltered ? getApartments(element) : radiusSearch(element)"
-        >
-          {{ element }}
-        </button>
-      </li>
-
-      <li class="page-item">
-        <button
-          class="page-link"
-          :class="{ disabled: currentPage === lastPage }"
-          @click="
-            !isFiltered
-              ? getApartments(currentPage + 1)
-              : radiusSearch(currentPage + 1)
-          "
-        >
-          Next
-        </button>
-      </li>
-      <li>
-        <button
-          class="btn btn-primary ms-5"
-          :class="{ disabled: !isFiltered }"
-          @click="
-            getApartments(1);
-            isFiltered = false;
-            searchInput = '';
-            radiusInput = 20;
-          "
-        >
-          Reset
-        </button>
-      </li>
-    </ul>
-  </nav>
 
   <!-- SECTION Homepage body -->
   <section class="container my-5">
@@ -277,8 +220,8 @@ export default {
                 <h6 class="mb-2 col-5 price-tag fw-bolder">
                   {{ element.price }} €/notte
                 </h6>
-                <p class="card-text text-body-secondary">
-                  {{ element.full_address }}
+                <p class="card-text after-name text-truncate text-body-secondary">
+                 {{ element.full_address }}
                 </p>
               </div>
             </div>
@@ -286,7 +229,71 @@ export default {
           </router-link>
         </div>
       </div>
+
+      <!-- Navigation menù -->
+      <nav
+        aria-label="Page navigation example"
+        class="mt-5 d-flex justify-content-center"
+      >
+        <ul class="pagination ">
+          <li class="page-item">
+            <button
+              class="page-link"
+              :class="{ disabled: currentPage === 1 }"
+              @click="
+                !isFiltered
+                  ? getApartments(currentPage - 1)
+                  : radiusSearch(currentPage - 1)
+              "
+            >
+              Precedente
+            </button>
+          </li>
+
+          <li class="page-item" v-for="(element, index) in lastPage" :key="index">
+            <button
+              class="page-link"
+              :class="{ disabled: currentPage === element }"
+              @click="!isFiltered ? getApartments(element) : radiusSearch(element)"
+            >
+              {{ element }}
+            </button>
+          </li>
+
+          <li class="page-item">
+            <button
+              class="page-link"
+              :class="{ disabled: currentPage === lastPage }"
+              @click="
+                !isFiltered
+                  ? getApartments(currentPage + 1)
+                  : radiusSearch(currentPage + 1)
+              "
+            >
+              Successivo
+            </button>
+          </li>
+          <li>
+            <button
+              class="btn btn-primary ms-5"
+              :class="{ disabled: !isFiltered }"
+              @click="
+                getApartments(1);
+                isFiltered = false;
+                searchInput = '';
+                radiusInput = 20;
+              "
+            >
+              Reset
+            </button>
+          </li>
+        </ul>
+      </nav>
     </div>
+
+    
+
+
     <div
       v-else-if="infoApartmentsArray.total === 0"
       class="d-flex justify-content-center align-items-center"
@@ -327,10 +334,10 @@ export default {
 
 <style lang="scss">
 .card{
-  min-height: 350px
+  min-height: 400px
 }
 .card-img-top img {
-  height: 200px; 
+  height: 250px; 
   width: 100%; 
   object-fit: cover; 
   object-position: center;
