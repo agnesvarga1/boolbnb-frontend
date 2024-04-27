@@ -68,7 +68,7 @@ export default {
         map.querySourceFeatures("point-source").forEach(function (feature) {
           if (feature.properties && !feature.properties.cluster) {
             var id = feature.properties.id;
-            console.log(id);
+
             if (!markersOnTheMap[id]) {
               var newMarker = new tt.Marker().setLngLat(
                 feature.geometry.coordinates
@@ -86,7 +86,6 @@ export default {
                 `)
               );
               markersOnTheMap[id] = newMarker;
-              console.log(Object.keys(markersOnTheMap));
             }
           }
         });
@@ -143,7 +142,6 @@ export default {
         }
         refreshMarkers();
         if (!eventListenersAdded) {
-          console.log("markers");
           map.on("move", refreshMarkers);
           map.on("moveend", refreshMarkers);
           eventListenersAdded = true;
@@ -180,7 +178,6 @@ export default {
   watch: {
     propApartments: {
       handler(newApartments, oldApartments) {
-        console.log("l'array è cambiato");
         this.createMarkers();
       },
       deep: true, // Assicura il deep watching sull'array
