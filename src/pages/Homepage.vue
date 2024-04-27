@@ -120,13 +120,15 @@ export default {
   >
     <div class="col-12">
       <div
-        class="row mt-5 mx-0 col-12 shadow py-3 "
-        style="background-color: rgb(26, 198, 182, 0.6);"
-        >
+        class="row mt-5 mx-0 col-12 shadow py-3"
+        style="background-color: rgb(26, 198, 182, 0.6)"
+      >
         <h2 class="fw-bold text-light">Appartamenti Boscosi</h2>
       </div>
       <div class="py-2 mt-3">
-        <a class="btn btn-green-inverted" href="#" role="button">Affitta Ora!</a>
+        <a class="btn btn-green-inverted" href="#" role="button"
+          >Affitta Ora!</a
+        >
       </div>
     </div>
   </div>
@@ -175,7 +177,6 @@ export default {
     </div>
   </section>
 
-
   <!-- SECTION Homepage body -->
   <section class="container my-5">
     <h1 class="my-2 fw-bold">
@@ -199,11 +200,7 @@ export default {
             <div class="card">
               <figure class="mb-0 card-img-top">
                 <img
-                  v-if="
-                    element.cover_image.startsWith(
-                      'https://images.unsplash.com'
-                    )
-                  "
+                  v-if="element.cover_image.startsWith('https')"
                   :src="element.cover_image"
                   class="card-img-top"
                   :alt="element.slug"
@@ -215,17 +212,20 @@ export default {
                   :alt="element.slug"
                 />
               </figure>
-              <div class="card-body d-flex flex-column justify-content-between bg-light">
+              <div
+                class="card-body d-flex flex-column justify-content-between bg-light"
+              >
                 <h4 class="card-title fw-bolder">{{ element.title }}</h4>
                 <h6 class="mb-2 col-5 price-tag fw-bolder">
                   {{ element.price }} €/notte
                 </h6>
-                <p class="card-text after-name text-truncate text-body-secondary">
-                 {{ element.full_address }}
+                <p
+                  class="card-text after-name text-truncate text-body-secondary"
+                >
+                  {{ element.full_address }}
                 </p>
               </div>
             </div>
-
           </router-link>
         </div>
       </div>
@@ -235,7 +235,7 @@ export default {
         aria-label="Page navigation example"
         class="mt-5 d-flex justify-content-center"
       >
-        <ul class="pagination ">
+        <ul class="pagination">
           <li class="page-item">
             <button
               class="page-link"
@@ -250,11 +250,17 @@ export default {
             </button>
           </li>
 
-          <li class="page-item" v-for="(element, index) in lastPage" :key="index">
+          <li
+            class="page-item"
+            v-for="(element, index) in lastPage"
+            :key="index"
+          >
             <button
               class="page-link"
               :class="{ disabled: currentPage === element }"
-              @click="!isFiltered ? getApartments(element) : radiusSearch(element)"
+              @click="
+                !isFiltered ? getApartments(element) : radiusSearch(element)
+              "
             >
               {{ element }}
             </button>
@@ -290,9 +296,6 @@ export default {
         </ul>
       </nav>
     </div>
-
-    
-
 
     <div
       v-else-if="infoApartmentsArray.total === 0"
@@ -333,13 +336,13 @@ export default {
 </template>
 
 <style lang="scss">
-.card{
-  min-height: 400px
+.card {
+  min-height: 400px;
 }
 .card-img-top img {
-  height: 250px; 
-  width: 100%; 
-  object-fit: cover; 
+  height: 250px;
+  width: 100%;
+  object-fit: cover;
   object-position: center;
 }
 
@@ -350,6 +353,4 @@ export default {
 .mapboxgl-popup-content {
   color: #1ac6b6;
 }
-
-
 </style>
