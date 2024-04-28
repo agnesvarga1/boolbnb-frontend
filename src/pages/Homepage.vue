@@ -234,14 +234,14 @@ export default {
             <div class="card">
               <figure class="mb-0 card-img-top">
                 <img
-                  v-if="element.cover_image.startsWith('https')"
+                  v-if="element.cover_image.startsWith('https://pixabay.com')"
                   :src="element.cover_image"
                   class="card-img-top"
                   :alt="element.slug"
                 />
                 <img
                   v-else
-                  :src="`${store.apiBaseUrl}/storage/apartment_images/${element.cover_image}`"
+                  :src="`${store.apiBaseUrl}/storage/${element.cover_image}`"
                   class="card-img-top"
                   :alt="element.slug"
                 />
