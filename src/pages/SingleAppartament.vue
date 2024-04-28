@@ -18,11 +18,11 @@ export default {
         .get(`${store.apiBaseUrl}/api/apartments/${this.$route.params.slug}`)
         .then((res) => {
           this.apartment = res.data.apartment;
-          this.apartment.services.forEach((element) => {
-            let pp = element.icon.split("/");
-            console.log(pp[1].split("."));
-            element.icon = pp[1].split(".")[1] + "." + pp[1].split(".")[2];
-          });
+          // this.apartment.services.forEach((element) => {
+          //   let pp = element.icon.split("/");
+          //   console.log(pp[1].split("."));
+          //   element.icon = pp[1].split(".")[1] + "." + pp[1].split(".")[2];
+          // });
           return this.apartment;
         })
         .then(this.inzializeMap)
@@ -71,7 +71,7 @@ export default {
           />
           <img
             v-else
-            :src="`${store.apiBaseUrl}/storage/apartment_images/${apartment.cover_image}`"
+            :src="`${store.apiBaseUrl}/storage/${apartment.cover_image}`"
             :alt="apartment.slug"
             class="w-100"
           />
@@ -114,7 +114,7 @@ export default {
             class="d-flex text-capitalize"
           >
             <img
-              :src="`${store.apiBaseUrl}/storage/icons_services/${item.icon}`"
+              :src="`${store.apiBaseUrl}/storage/${item.icon}`"
               :alt="item.name"
               class="me-1 icon"
             />
