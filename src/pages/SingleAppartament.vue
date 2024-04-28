@@ -60,28 +60,28 @@ export default {
 
 <template>
   <div class="container apartment-container d-flex align-items-center">
-    <div class="row">
+    <div class="row w-100">
       <div v-if="apartment.length !== 0" class="col-lg-4 col-sm-12 p-0">
-        <figure class="w-100 h-100 mb-0">
+        <figure class="w-100 mb-0">
           <img
-            v-if="
-              apartment.cover_image.startsWith('https://images.unsplash.com')
-            "
+            v-if="apartment.cover_image.startsWith('https://pixabay.com')"
             :src="apartment.cover_image"
-            class="w-100 h-100"
+            class="w-100"
             :alt="apartment.slug"
           />
           <img
             v-else
             :src="`${store.apiBaseUrl}/storage/apartment_images/${apartment.cover_image}`"
             :alt="apartment.slug"
-            class="w-100 h-100"
+            class="w-100"
           />
         </figure>
       </div>
       <div class="col-lg-4 col-sm-12 apartment-details pb-3">
         <h2>{{ apartment?.title }}</h2>
-        <p>{{ apartment?.full_address }}</p>
+        <p class="address">
+          <i class="fa-solid fa-location-dot"></i> {{ apartment?.full_address }}
+        </p>
         <p>{{ apartment?.description }}</p>
         <strong class="text-capitalize"
           >Category:{{ apartment?.category }}</strong
@@ -139,11 +139,20 @@ img {
 
 .apartment-container {
   padding-top: 100px;
-  min-height: 90vh;
+  min-height: 70vh;
+  figure {
+    max-height: inherit;
+    img {
+      max-height: inherit;
+    }
+  }
   .apartment-details {
     .icon {
       width: 20px;
       height: 20px;
+    }
+    .address {
+      font-size: 14px;
     }
   }
 }
