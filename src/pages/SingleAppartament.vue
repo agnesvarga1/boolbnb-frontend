@@ -139,11 +139,11 @@ img {
 
 .apartment-container {
   padding-top: 100px;
-  min-height: 70vh;
+  min-height: 85vh;
   figure {
-    max-height: inherit;
+    height: 100%;
     img {
-      max-height: inherit;
+      height: 100%;
     }
   }
   .apartment-details {
