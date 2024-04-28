@@ -17,6 +17,9 @@ export default {
       arrayServices: [],
       searchInput: "",
       radiusInput: 20,
+      bedsInput: "",
+      roomsInput: "",
+      servicesInput: [],
       arrayAddresses: [],
       automcompleteApiResponseArray: [],
       infoApartmentsArray: [],
@@ -85,6 +88,9 @@ export default {
         latitude: this.automcompleteApiResponseArray[0].position.lat,
         longitude: this.automcompleteApiResponseArray[0].position.lon,
         radius: this.radiusInput,
+        num_beds: this.bedsInput,
+        num_rooms: this.roomsInput,
+        services: this.servicesInput,
       };
 
       axios
@@ -177,7 +183,7 @@ export default {
       />
       <button
         class="btn border border-start-0"
-        :class="searchInput !== '' ? 'btn-primary' : ''"
+        :class="searchInput !== '' ? 'btn-green' : ''"
         type="button"
         id="button-addon2"
         @click="radiusSearch(1)"
@@ -188,13 +194,17 @@ export default {
         <option v-for="element in arrayAddresses" :value="element"></option>
       </datalist>
       <button
-        class="btn btn-primary ms-5"
+        class="btn btn-green ms-5"
         :class="{ disabled: !isFiltered }"
         @click="
           getApartments(1);
           isFiltered = false;
           searchInput = '';
           radiusInput = 20;
+          bedsInput = '';
+          roomsInput = '';
+          servicesInput = [];
+          this.initialLoad = true;
         "
       >
         Reset
@@ -231,6 +241,7 @@ export default {
               aria-describedby="num_beds"
               name="num_beds"
               min="0"
+              v-model="bedsInput"
             />
           </div>
         </div>
@@ -245,6 +256,7 @@ export default {
               aria-describedby="num_rooms"
               name="num_rooms"
               min="0"
+              v-model="roomsInput"
             />
           </div>
         </div>
@@ -270,6 +282,7 @@ export default {
                 name="services[]"
                 :id="`service_${element.id}`"
                 :value="element.id"
+                v-model="servicesInput"
               />
               <label
                 class="form-check-label text-capitalize ms-2"
@@ -323,6 +336,22 @@ export default {
                 class="card-body d-flex flex-column justify-content-between bg-light"
               >
                 <h4 class="card-title fw-bolder">{{ element.title }}</h4>
+                <div class="mb-1">
+                  <span
+                    v-for="element in element.services"
+                    class="badge btn-green rounded-pill me-1"
+                  >
+                    {{ element.name }}
+                  </span>
+                </div>
+                <div class="mb-1">
+                  <span class="badge text-bg-success rounded-pill me-1">
+                    Letti {{ element.num_beds }}
+                  </span>
+                  <span class="badge text-bg-success rounded-pill">
+                    Stanze {{ element.num_rooms }}
+                  </span>
+                </div>
                 <h6 class="mb-2 col-5 price-tag fw-bolder">
                   {{ element.price }} €/notte
                 </h6>
