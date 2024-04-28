@@ -14,6 +14,7 @@ export default {
       arrayApartments: [],
       currentPage: "",
       lastPage: "",
+      arrayServices: [],
       searchInput: "",
       radiusInput: 20,
       arrayAddresses: [],
@@ -116,6 +117,11 @@ export default {
         }
       });
     },
+    getServices() {
+      axios.get(`${store.apiBaseUrl}/api/apartments`).then((result) => {
+        this.arrayServices = result.data.services;
+      });
+    },
   },
   watch: {
     searchInput(newVal) {
@@ -124,6 +130,7 @@ export default {
   },
   mounted() {
     this.getApartments(1);
+    this.getServices();
   },
 };
 </script>
@@ -208,6 +215,72 @@ export default {
         step="1"
         v-model="radiusInput"
       />
+    </div>
+    <div class="row">
+      <div class="col-7 row">
+        <div class="col-6">
+          <label for="num_beds" class="form-label">Letti</label>
+          <div class="input-group mb-3">
+            <span class="input-group-text"
+              ><i class="fa-solid fa-bed"></i
+            ></span>
+            <input
+              type="number"
+              class="form-control"
+              id="num_beds"
+              aria-describedby="num_beds"
+              name="num_beds"
+              min="0"
+            />
+          </div>
+        </div>
+
+        <div class="col-6">
+          <label for="num_rooms" class="form-label">Stanze</label>
+          <div class="input-group mb-3">
+            <input
+              type="number"
+              class="form-control"
+              id="num_rooms"
+              aria-describedby="num_rooms"
+              name="num_rooms"
+              min="0"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="col-5">
+        <div class="mb-3">
+          <label class="form-label">Servizi</label>
+          <div class="form-check d-flex flex-wrap">
+            <div
+              v-for="element in arrayServices"
+              :key="element.id"
+              class="col-6"
+            >
+              <img
+                :src="`${store.apiBaseUrl}/storage/${element.icon}`"
+                :alt="element.name"
+                style="width: 15px"
+              />
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="services[]"
+                :id="`service_${element.id}`"
+                :value="element.id"
+              />
+              <label
+                class="form-check-label text-capitalize ms-2"
+                :for="`service_ ${element.id}`"
+              >
+                {{ element.name }}
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
