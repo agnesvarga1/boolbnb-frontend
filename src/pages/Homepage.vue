@@ -20,6 +20,7 @@ export default {
       automcompleteApiResponseArray: [],
       infoApartmentsArray: [],
       isFiltered: false,
+      initialLoad: true,
     };
   },
   methods: {
@@ -35,6 +36,12 @@ export default {
           this.currentPage = result.data.apartments.current_page;
           this.lastPage = result.data.apartments.last_page;
           this.infoApartmentsArray = result.data.apartments;
+
+          if (!this.initialLoad) {
+            // Controlla se non è il primo caricamento
+            this.moveToGrid();
+          }
+          this.initialLoad = false;
         });
     },
     autocompleteSearch() {
@@ -87,12 +94,27 @@ export default {
           this.currentPage = response.data.apartments.current_page;
           this.lastPage = response.data.apartments.last_page;
           this.infoApartmentsArray = response.data.apartments;
+
+          this.moveToGrid();
         })
         .catch((error) => {
           console.error("Errore durante la richiesta API:", error);
         });
 
       this.isFiltered = true;
+    },
+    moveToGrid() {
+      this.$nextTick(() => {
+        const element = document.getElementById("gridApartments");
+        if (element) {
+          const offset = 100; // L'altezza della tua navbar o altro elemento fisso
+          const y = element.offsetTop - offset;
+          window.scrollTo({
+            top: y,
+            behavior: "smooth",
+          });
+        }
+      });
     },
   },
   watch: {
@@ -120,12 +142,15 @@ export default {
   >
     <div class="col-12">
       <div
-        class="row mt-5 bg-success mx-0 col-12 shadow bg-opacity-50 py-3 text-light"
+        class="row mt-5 mx-0 col-12 shadow py-3"
+        style="background-color: rgb(26, 198, 182, 0.6)"
       >
-        <h2 class="fw-bold">Appartamenti Boscosi</h2>
+        <h2 class="fw-bold text-light">Appartamenti Boscosi</h2>
       </div>
       <div class="py-2 mt-3">
-        <a class="btn btn-success" href="#" role="button">Get Details!</a>
+        <a class="btn btn-green-inverted" href="#" role="button"
+          >Affitta Ora!</a
+        >
       </div>
     </div>
   </div>
@@ -155,6 +180,18 @@ export default {
       <datalist id="addressList">
         <option v-for="element in arrayAddresses" :value="element"></option>
       </datalist>
+      <button
+        class="btn btn-primary ms-5"
+        :class="{ disabled: !isFiltered }"
+        @click="
+          getApartments(1);
+          isFiltered = false;
+          searchInput = '';
+          radiusInput = 20;
+        "
+      >
+        Reset
+      </button>
     </div>
     <div>
       <label for="rangeZone" class="form-label"
@@ -174,67 +211,8 @@ export default {
     </div>
   </section>
 
-  <nav
-    aria-label="Page navigation example"
-    class="mt-5 d-flex justify-content-center"
-  >
-    <ul class="pagination">
-      <li class="page-item">
-        <button
-          class="page-link"
-          :class="{ disabled: currentPage === 1 }"
-          @click="
-            !isFiltered
-              ? getApartments(currentPage - 1)
-              : radiusSearch(currentPage - 1)
-          "
-        >
-          Previous
-        </button>
-      </li>
-
-      <li class="page-item" v-for="(element, index) in lastPage" :key="index">
-        <button
-          class="page-link"
-          :class="{ disabled: currentPage === element }"
-          @click="!isFiltered ? getApartments(element) : radiusSearch(element)"
-        >
-          {{ element }}
-        </button>
-      </li>
-
-      <li class="page-item">
-        <button
-          class="page-link"
-          :class="{ disabled: currentPage === lastPage }"
-          @click="
-            !isFiltered
-              ? getApartments(currentPage + 1)
-              : radiusSearch(currentPage + 1)
-          "
-        >
-          Next
-        </button>
-      </li>
-      <li>
-        <button
-          class="btn btn-primary ms-5"
-          :class="{ disabled: !isFiltered }"
-          @click="
-            getApartments(1);
-            isFiltered = false;
-            searchInput = '';
-            radiusInput = 20;
-          "
-        >
-          Reset
-        </button>
-      </li>
-    </ul>
-  </nav>
-
   <!-- SECTION Homepage body -->
-  <section class="container my-5">
+  <section id="gridApartments" class="container my-5">
     <h1 class="my-2 fw-bold">
       Appartamenti sponsorizzati ({{ infoApartmentsArray.total }})
       {{ infoApartmentsArray.total === 0 ? "" : `- Pagina ${currentPage}` }}
@@ -243,7 +221,7 @@ export default {
     <hr />
 
     <div v-if="arrayApartments.length > 0">
-      <div class="row row-gap-4">
+      <div class="row row-gap-4 mb-5">
         <div
           v-for="element in arrayApartments"
           :key="element.id"
@@ -253,31 +231,31 @@ export default {
             :to="{ name: 'apartment', params: { slug: element.slug } }"
             class="nav-link"
           >
-            <div class="card h-100">
-              <figure class="mb-0">
+            <div class="card">
+              <figure class="mb-0 card-img-top">
                 <img
-                  v-if="
-                    element.cover_image.startsWith(
-                      'https://images.unsplash.com'
-                    )
-                  "
+                  v-if="element.cover_image.startsWith('https://pixabay.com')"
                   :src="element.cover_image"
                   class="card-img-top"
                   :alt="element.slug"
                 />
                 <img
                   v-else
-                  :src="`${store.apiBaseUrl}/storage/apartment_images/${element.cover_image}`"
+                  :src="`${store.apiBaseUrl}/storage/${element.cover_image}`"
                   class="card-img-top"
                   :alt="element.slug"
                 />
               </figure>
-              <div class="card-body d-flex flex-column bg-light">
+              <div
+                class="card-body d-flex flex-column justify-content-between bg-light"
+              >
                 <h4 class="card-title fw-bolder">{{ element.title }}</h4>
                 <h6 class="mb-2 col-5 price-tag fw-bolder">
                   {{ element.price }} €/notte
                 </h6>
-                <p class="card-text text-body-secondary">
+                <p
+                  class="card-text after-name text-truncate text-body-secondary"
+                >
                   {{ element.full_address }}
                 </p>
               </div>
@@ -285,7 +263,112 @@ export default {
           </router-link>
         </div>
       </div>
+
+      <!-- Navigation menù -->
+      <nav
+        aria-label="Page navigation example"
+        class="mt-5 d-flex justify-content-center"
+      >
+        <ul class="pagination">
+          <li class="page-item">
+            <button
+              class="page-link"
+              :class="{ disabled: currentPage === 1 }"
+              @click="
+                !isFiltered
+                  ? getApartments(currentPage - 1)
+                  : radiusSearch(currentPage - 1)
+              "
+            >
+              Precedente
+            </button>
+          </li>
+
+          <li class="page-item">
+            <button
+              class="page-link"
+              :class="{ disabled: currentPage < 4 }"
+              @click="!isFiltered ? getApartments(1) : radiusSearch(1)"
+            >
+              &lt;&lt;
+            </button>
+          </li>
+
+          <li class="page-item">
+            <button
+              class="page-link"
+              :class="{ disabled: currentPage <= 10 }"
+              @click="
+                !isFiltered
+                  ? getApartments(currentPage - 10)
+                  : radiusSearch(currentPage - 10)
+              "
+            >
+              -10
+            </button>
+          </li>
+
+          <li
+            class="page-item"
+            v-for="element in [...Array(lastPage + 1).keys()].slice(
+              currentPage - 2 < 1 ? 1 : Math.min(currentPage - 2, lastPage - 4), // inizio
+              Math.max(6, Math.min(lastPage + 1, currentPage + 3)) // fine
+            )"
+          >
+            <button
+              class="page-link"
+              :class="{ disabled: currentPage === element }"
+              @click="
+                !isFiltered ? getApartments(element) : radiusSearch(element)
+              "
+            >
+              {{ element }}
+            </button>
+          </li>
+
+          <li class="page-item">
+            <button
+              class="page-link"
+              :class="{ disabled: currentPage >= lastPage - 9 }"
+              @click="
+                !isFiltered
+                  ? getApartments(currentPage + 10)
+                  : radiusSearch(currentPage + 10)
+              "
+            >
+              +10
+            </button>
+          </li>
+
+          <li class="page-item">
+            <button
+              class="page-link"
+              :class="{ disabled: currentPage > lastPage - 3 }"
+              @click="
+                !isFiltered ? getApartments(lastPage) : radiusSearch(lastPage)
+              "
+            >
+              &gt;&gt;
+            </button>
+          </li>
+
+          <li class="page-item">
+            <button
+              class="page-link"
+              :class="{ disabled: currentPage === lastPage }"
+              @click="
+                !isFiltered
+                  ? getApartments(currentPage + 1)
+                  : radiusSearch(currentPage + 1)
+              "
+            >
+              Successivo
+            </button>
+          </li>
+        </ul>
+      </nav>
     </div>
+
     <div
       v-else-if="infoApartmentsArray.total === 0"
       class="d-flex justify-content-center align-items-center"
@@ -325,6 +408,16 @@ export default {
 </template>
 
 <style lang="scss">
+.card {
+  min-height: 400px;
+}
+.card-img-top img {
+  height: 250px;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
 .price-tag {
   color: #1ac6b6;
 }
