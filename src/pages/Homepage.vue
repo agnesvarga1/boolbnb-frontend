@@ -14,13 +14,12 @@ export default {
       arrayApartments: [],
       currentPage: "",
       lastPage: "",
+      arrayServices: [],
       searchInput: "",
       radiusInput: 20,
       arrayAddresses: [],
       automcompleteApiResponseArray: [],
       infoApartmentsArray: [],
-      isFiltered: false,
-      initialLoad: true,
     };
   },
   methods: {
@@ -36,18 +35,14 @@ export default {
           this.currentPage = result.data.apartments.current_page;
           this.lastPage = result.data.apartments.last_page;
           this.infoApartmentsArray = result.data.apartments;
-
-          if (!this.initialLoad) {
-            // Controlla se non è il primo caricamento
-            this.moveToGrid();
-          }
-          this.initialLoad = false;
         });
     },
     autocompleteSearch() {
       let apiRequest = `https://api.tomtom.com/search/2/search/${
         this.searchInput
-      }.json?key=${import.meta.env.VITE_TOMTOM_API_KEY}&language=it-IT`;
+      }.json?key=${
+        import.meta.env.VITE_TOMTOM_API_KEY
+      }&language=it-IT&countrySet=IT`;
 
       if (this.searchInput === "") {
         this.arrayAddresses = [];
@@ -73,35 +68,12 @@ export default {
           console.error("There was a problem with the fetch operation:", error);
         });
     },
-    radiusSearch(postApiPage) {
-      if (this.searchInput.length === "" || this.searchInput.length < 4) {
-        console.log("input invalido");
-        return;
-      }
+    sendToAdvancedSearch() {
+      store.homeLat = this.automcompleteApiResponseArray[0].position.lat;
+      store.homeLong = this.automcompleteApiResponseArray[0].position.lon;
+      store.homeInput = this.searchInput;
 
-      const params = {
-        page: postApiPage,
-        latitude: this.automcompleteApiResponseArray[0].position.lat,
-        longitude: this.automcompleteApiResponseArray[0].position.lon,
-        radius: this.radiusInput,
-      };
-
-      axios
-        .get(`${store.apiBaseUrl}/api/apartments/search`, { params })
-        .then((response) => {
-          console.log(response);
-          this.arrayApartments = response.data.apartments.data;
-          this.currentPage = response.data.apartments.current_page;
-          this.lastPage = response.data.apartments.last_page;
-          this.infoApartmentsArray = response.data.apartments;
-
-          this.moveToGrid();
-        })
-        .catch((error) => {
-          console.error("Errore durante la richiesta API:", error);
-        });
-
-      this.isFiltered = true;
+      this.$router.push({ name: "search" });
     },
     moveToGrid() {
       this.$nextTick(() => {
@@ -116,6 +88,11 @@ export default {
         }
       });
     },
+    getServices() {
+      axios.get(`${store.apiBaseUrl}/api/apartments`).then((result) => {
+        this.arrayServices = result.data.services;
+      });
+    },
   },
   watch: {
     searchInput(newVal) {
@@ -124,6 +101,7 @@ export default {
   },
   mounted() {
     this.getApartments(1);
+    this.getServices();
   },
 };
 </script>
@@ -166,48 +144,26 @@ export default {
         aria-describedby="button-addon2"
         v-model="searchInput"
         list="addressList"
-        @keydown.enter="radiusSearch(1)"
+        @keydown.enter="sendToAdvancedSearch()"
+        @keydown.esc="searchInput = ''"
       />
       <button
         class="btn border border-start-0"
-        :class="searchInput !== '' ? 'btn-primary' : ''"
+        :class="searchInput !== '' ? 'btn-green' : ''"
         type="button"
         id="button-addon2"
-        @click="radiusSearch(1)"
+        @click="sendToAdvancedSearch()"
       >
         <i class="fa-solid fa-magnifying-glass"></i>
       </button>
       <datalist id="addressList">
         <option v-for="element in arrayAddresses" :value="element"></option>
       </datalist>
-      <button
-        class="btn btn-primary ms-5"
-        :class="{ disabled: !isFiltered }"
-        @click="
-          getApartments(1);
-          isFiltered = false;
-          searchInput = '';
-          radiusInput = 20;
-        "
-      >
-        Reset
-      </button>
     </div>
     <div>
       <label for="rangeZone" class="form-label"
         >Range zona: <strong>{{ radiusInput }} km</strong></label
       >
-      <input
-        type="range"
-        class="form-range"
-        id="rangeZone"
-        name="rangeZone"
-        min="0"
-        max="200"
-        value="20"
-        step="1"
-        v-model="radiusInput"
-      />
     </div>
   </section>
 
@@ -250,6 +206,22 @@ export default {
                 class="card-body d-flex flex-column justify-content-between bg-light"
               >
                 <h4 class="card-title fw-bolder">{{ element.title }}</h4>
+                <div class="mb-1">
+                  <span
+                    v-for="element in element.services"
+                    class="badge btn-green rounded-pill me-1"
+                  >
+                    {{ element.name }}
+                  </span>
+                </div>
+                <div class="mb-1">
+                  <span class="badge text-bg-success rounded-pill me-1">
+                    Letti {{ element.num_beds }}
+                  </span>
+                  <span class="badge text-bg-success rounded-pill">
+                    Stanze {{ element.num_rooms }}
+                  </span>
+                </div>
                 <h6 class="mb-2 col-5 price-tag fw-bolder">
                   {{ element.price }} €/notte
                 </h6>
@@ -275,9 +247,8 @@ export default {
               class="page-link"
               :class="{ disabled: currentPage === 1 }"
               @click="
-                !isFiltered
-                  ? getApartments(currentPage - 1)
-                  : radiusSearch(currentPage - 1)
+                getApartments(currentPage - 1);
+                moveToGrid();
               "
             >
               Precedente
@@ -288,7 +259,10 @@ export default {
             <button
               class="page-link"
               :class="{ disabled: currentPage < 4 }"
-              @click="!isFiltered ? getApartments(1) : radiusSearch(1)"
+              @click="
+                getApartments(1);
+                moveToGrid();
+              "
             >
               &lt;&lt;
             </button>
@@ -299,9 +273,8 @@ export default {
               class="page-link"
               :class="{ disabled: currentPage <= 10 }"
               @click="
-                !isFiltered
-                  ? getApartments(currentPage - 10)
-                  : radiusSearch(currentPage - 10)
+                getApartments(currentPage - 10);
+                moveToGrid();
               "
             >
               -10
@@ -319,7 +292,8 @@ export default {
               class="page-link"
               :class="{ disabled: currentPage === element }"
               @click="
-                !isFiltered ? getApartments(element) : radiusSearch(element)
+                getApartments(element);
+                moveToGrid();
               "
             >
               {{ element }}
@@ -331,9 +305,8 @@ export default {
               class="page-link"
               :class="{ disabled: currentPage >= lastPage - 9 }"
               @click="
-                !isFiltered
-                  ? getApartments(currentPage + 10)
-                  : radiusSearch(currentPage + 10)
+                getApartments(currentPage + 10);
+                moveToGrid();
               "
             >
               +10
@@ -345,7 +318,8 @@ export default {
               class="page-link"
               :class="{ disabled: currentPage > lastPage - 3 }"
               @click="
-                !isFiltered ? getApartments(lastPage) : radiusSearch(lastPage)
+                getApartments(lastPage);
+                moveToGrid();
               "
             >
               &gt;&gt;
@@ -357,9 +331,8 @@ export default {
               class="page-link"
               :class="{ disabled: currentPage === lastPage }"
               @click="
-                !isFiltered
-                  ? getApartments(currentPage + 1)
-                  : radiusSearch(currentPage + 1)
+                getApartments(currentPage + 1);
+                moveToGrid();
               "
             >
               Successivo

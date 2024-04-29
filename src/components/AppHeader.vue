@@ -1,9 +1,13 @@
 <script>
+import { store } from "../store.js";
+
 export default {
   name: "AppHeader",
   components: {},
   data() {
-    return {};
+    return {
+      store,
+    };
   },
   methods: {},
   mounted() {},
@@ -49,7 +53,12 @@ export default {
           </li>
 
           <li>
-            <a class="btn btn-green" href="#" role="button">Area Personale</a>
+            <a
+              class="btn btn-green"
+              :href="`${store.apiBaseUrl}/login`"
+              role="button"
+              >Area Personale</a
+            >
           </li>
         </ul>
       </div>
