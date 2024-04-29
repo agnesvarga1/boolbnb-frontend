@@ -196,13 +196,19 @@ export default {
     },
     bedsInput(newVal) {
       this.radiusSearch(1);
+      if (this.bedsInput === "") this.isFiltered = false;
     },
     roomsInput(newVal) {
       this.radiusSearch(1);
+      if (this.roomsInput === "") this.isFiltered = false;
     },
     servicesInput: {
       handler(newApartments, oldApartments) {
         this.radiusSearch(1);
+
+        if (this.servicesInput.length === 0) {
+          this.isFiltered = false;
+        }
       },
       deep: true,
     },
@@ -245,13 +251,13 @@ export default {
         :class="{ disabled: !isFiltered }"
         @click="
           getApartments(1);
-          isFiltered = false;
           searchInput = '';
           radiusInput = 20;
           bedsInput = '';
           roomsInput = '';
           servicesInput = [];
           currentCategory = '';
+          isFiltered = false;
         "
       >
         Reset
