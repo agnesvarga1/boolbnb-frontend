@@ -51,7 +51,9 @@ export default {
     autocompleteSearch() {
       let apiRequest = `https://api.tomtom.com/search/2/search/${
         this.searchInput
-      }.json?key=${import.meta.env.VITE_TOMTOM_API_KEY}&language=it-IT`;
+      }.json?key=${
+        import.meta.env.VITE_TOMTOM_API_KEY
+      }&language=it-IT&countrySet=IT`;
 
       if (this.searchInput === "") {
         this.arrayAddresses = [];
