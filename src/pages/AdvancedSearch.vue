@@ -381,7 +381,7 @@ export default {
               />
               <label
                 class="form-check-label text-capitalize ms-2"
-                :for="`service_ ${element.id}`"
+                :for="`service_${element.id}`"
               >
                 {{ element.name }}
               </label>
