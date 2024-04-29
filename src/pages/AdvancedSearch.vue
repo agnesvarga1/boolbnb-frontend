@@ -26,7 +26,6 @@ export default {
       infoApartmentsArray: [],
       isFiltered: false,
       isCategory: false,
-      initialLoad: true,
       arrayCategories: [
         {
           name: "villa",
@@ -227,20 +226,14 @@ export default {
         aria-describedby="button-addon2"
         v-model="searchInput"
         list="addressList"
-        @keydown.enter="
-          radiusSearch(1);
-          this.moveToGrid();
-        "
+        @keydown.enter="radiusSearch(1)"
       />
       <button
         class="btn border border-start-0"
         :class="searchInput !== '' ? 'btn-green' : ''"
         type="button"
         id="button-addon2"
-        @click="
-          radiusSearch(1);
-          this.moveToGrid();
-        "
+        @click="radiusSearch(1)"
       >
         <i class="fa-solid fa-magnifying-glass"></i>
       </button>
@@ -259,7 +252,6 @@ export default {
           roomsInput = '';
           servicesInput = [];
           currentCategory = '';
-          initialLoad = true;
         "
       >
         Reset
@@ -365,7 +357,7 @@ export default {
     </div>
   </section>
 
-  <!-- SECTION Homepage body -->
+  <!-- SECTION Advanced Search body -->
   <section id="gridApartments" class="container my-5">
     <h1 class="my-2 fw-bold">
       Appartamenti sponsorizzati ({{ infoApartmentsArray.total }})
@@ -458,9 +450,10 @@ export default {
               class="page-link"
               :class="{ disabled: currentPage === 1 }"
               @click="
+                moveToGrid();
                 !isFiltered
                   ? getApartments(currentPage - 1, currentCategory)
-                  : radiusSearch(currentPage - 1)
+                  : radiusSearch(currentPage - 1);
               "
             >
               Precedente
@@ -472,9 +465,10 @@ export default {
               class="page-link"
               :class="{ disabled: currentPage == 1 }"
               @click="
+                moveToGrid();
                 !isFiltered
                   ? getApartments(1, currentCategory)
-                  : radiusSearch(1)
+                  : radiusSearch(1);
               "
             >
               &lt;&lt;
@@ -486,9 +480,10 @@ export default {
               class="page-link"
               :class="{ disabled: currentPage <= 10 }"
               @click="
+                moveToGrid();
                 !isFiltered
                   ? getApartments(currentPage - 10, currentCategory)
-                  : radiusSearch(currentPage - 10)
+                  : radiusSearch(currentPage - 10);
               "
             >
               -10
@@ -506,9 +501,10 @@ export default {
               class="page-link"
               :class="{ disabled: currentPage === element }"
               @click="
+                moveToGrid();
                 !isFiltered
                   ? getApartments(element, currentCategory)
-                  : radiusSearch(element)
+                  : radiusSearch(element);
               "
             >
               {{ element }}
@@ -520,9 +516,10 @@ export default {
               class="page-link"
               :class="{ disabled: currentPage >= lastPage - 9 }"
               @click="
+                moveToGrid();
                 !isFiltered
                   ? getApartments(currentPage + 10, currentCategory)
-                  : radiusSearch(currentPage + 10)
+                  : radiusSearch(currentPage + 10);
               "
             >
               +10
@@ -534,9 +531,10 @@ export default {
               class="page-link"
               :class="{ disabled: currentPage == lastPage }"
               @click="
+                moveToGrid();
                 !isFiltered
                   ? getApartments(lastPage, currentCategory)
-                  : radiusSearch(lastPage)
+                  : radiusSearch(lastPage);
               "
             >
               &gt;&gt;
@@ -548,9 +546,10 @@ export default {
               class="page-link"
               :class="{ disabled: currentPage === lastPage }"
               @click="
+                moveToGrid();
                 !isFiltered
                   ? getApartments(currentPage + 1, currentCategory)
-                  : radiusSearch(currentPage + 1)
+                  : radiusSearch(currentPage + 1);
               "
             >
               Successivo
