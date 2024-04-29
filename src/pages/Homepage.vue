@@ -108,7 +108,7 @@ export default {
 
 <template>
   <!-- Hero Image -->
-  <div
+  <!-- <div
     class="bg-image py-5 text-center shadow-1-strong mb-5 d-flex align-items-end justify-content-center"
     style="
       width: 100%;
@@ -131,7 +131,123 @@ export default {
         >
       </div>
     </div>
+  </div> -->
+
+<!-- Slider (Carousel) -->
+<div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+  <div class="carousel-inner">
+
+    <!-- Slide 1 -->
+    <div class="carousel-item active" style="height: 70vh; background-image: url('/sfondi/immobili-di-prestigio-milano-1024x681.jpg'); background-size: cover; background-position: center;" data-bs-interval="5000">
+      <div class="carousel-caption d-flex flex-column h-100 align-items-center justify-content-end">
+        <div class="text-center col-12" style="background-color: rgb(26, 198, 182, 0.6); width: 100vw;">
+          <h2 class="fw-bold text-light py-3 text-shadow">Scopri BoolBnb</h2>
+        </div>
+        <a class="btn btn-green-inverted mt-3" href="#" role="button">
+          <router-link :to="{ name: 'search' }" class="nav-link">
+              Affitta subito!
+          </router-link>
+        </a>
+      </div>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="carousel-item" style="height: 70vh; background-image: url('/sfondi/blake-wheeler-zBHU08hdzhY-unsplash.jpg'); background-size: cover; background-position: center;" data-bs-interval="5000">
+      <div class="carousel-caption d-flex flex-column h-100 align-items-center justify-content-end">
+        <div class="text-center col-12" style="background-color: rgb(26, 198, 182, 0.6); width: 100vw;">
+          <h2 class="fw-bold text-light py-3 text-shadow">Scopri BoolBnb</h2>
+        </div>
+        <a class="btn btn-green-inverted mt-3" href="#" role="button">
+          <router-link :to="{ name: 'search' }" class="nav-link">
+              Affitta subito!
+          </router-link>
+        </a>
+      </div>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="carousel-item" style="height: 70vh; background-image: url('/sfondi/breno-assis-r3WAWU5Fi5Q-unsplash.jpg'); background-size: cover; background-position: center;" data-bs-interval="5000">
+      <div class="carousel-caption d-flex flex-column h-100 align-items-center justify-content-end">
+        <div class="text-center col-12" style="background-color: rgb(26, 198, 182, 0.6); width: 100vw;">
+          <h2 class="fw-bold text-light py-3 text-shadow">Scopri BoolBnb</h2>
+        </div>
+        <a class="btn btn-green-inverted mt-3" href="#" role="button">
+          <router-link :to="{ name: 'search' }" class="nav-link">
+              Affitta subito!
+          </router-link>
+        </a>
+      </div>
+    </div>
+
+    <!-- Slide 4 -->
+    <div class="carousel-item" style="height: 70vh; background-image: url('/sfondi/maximillian-conacher-sPpe2D7VbpM-unsplash.jpg'); background-size: cover; background-position: center;" data-bs-interval="5000">
+      <div class="carousel-caption d-flex flex-column h-100 align-items-center justify-content-end">
+        <div class="text-center col-12" style="background-color: rgb(26, 198, 182, 0.6); width: 100vw;">
+          <h2 class="fw-bold text-light py-3 text-shadow">Scopri BoolBnb</h2>
+        </div>
+        <a class="btn btn-green-inverted mt-3" href="#" role="button">
+          <router-link :to="{ name: 'search' }" class="nav-link">
+              Affitta subito!
+          </router-link>
+        </a>
+      </div>
+    </div>
+
+    <!-- Slide 5 -->
+    <div class="carousel-item" style="height: 70vh; background-image: url('/sfondi/toa-heftiba-nrSzRUWqmoI-unsplash.jpg'); background-size: cover; background-position: center;" data-bs-interval="5000">
+      <div class="carousel-caption d-flex flex-column h-100 align-items-center justify-content-end">
+        <div class="text-center col-12" style="background-color: rgb(26, 198, 182, 0.6); width: 100vw;">
+          <h2 class="fw-bold text-light py-3 text-shadow">Scopri BoolBnb</h2>
+        </div>
+        <a class="btn btn-green-inverted mt-3" href="#" role="button">
+          <router-link :to="{ name: 'search' }" class="nav-link">
+              Affitta subito!
+          </router-link>
+        </a>
+      </div>
+    </div>
+
+    <!-- Slide 6 -->
+    <div class="carousel-item" style="height: 70vh; background-image: url('/sfondi/tom-rumble-7lvzopTxjOU-unsplash.jpg'); background-size: cover; background-position: center;" data-bs-interval="5000">
+      <div class="carousel-caption d-flex flex-column h-100 align-items-center justify-content-end">
+        <div class="text-center col-12" style="background-color: rgb(26, 198, 182, 0.6); width: 100vw;">
+          <h2 class="fw-bold text-light py-3  text-shadow">Scopri BoolBnb</h2>
+        </div>
+        <a class="btn btn-green-inverted mt-3" href="#" role="button">
+          <router-link :to="{ name: 'search' }" class="nav-link">
+              Affitta subito!
+          </router-link>
+        </a>
+      </div>
+    </div>
+
+    <!-- Slide 7 -->
+    <div class="carousel-item" style="height: 70vh; background-image: url('/sfondi/trayan-xIOYJSVEZ8c-unsplash.jpg'); background-size: cover; background-position: center;" data-bs-interval="5000">
+      <div class="carousel-caption d-flex flex-column h-100 align-items-center justify-content-end">
+        <div class="text-center col-12" style="background-color: rgb(26, 198, 182, 0.6); width: 100vw;">
+          <h2 class="fw-bold text-light py-3  text-shadow">Scopri BoolBnb</h2>
+        </div>
+        <a class="btn btn-green-inverted mt-3" href="#" role="button">
+          <router-link :to="{ name: 'search' }" class="nav-link">
+              Affitta subito!
+          </router-link>
+        </a>
+      </div>
+    </div>
+
   </div>
+  
+  <!-- Controlli -->
+  <!-- <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button> -->
+</div>
+
 
   <!-- Search Section -->
   <section class="container my-3">
