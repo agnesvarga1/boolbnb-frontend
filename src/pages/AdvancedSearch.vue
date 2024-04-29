@@ -113,8 +113,6 @@ export default {
         store.homeLong !== 0 &&
         store.homeInput !== ""
       ) {
-        console.log("coordinate prese dalla homepage");
-
         homeLatitude = store.homeLat;
         homeLongitude = store.homeLong;
 
@@ -123,13 +121,9 @@ export default {
         store.homeInput = "";
       } else {
         if (this.searchInput !== "") {
-          console.log("coordinate prese da advanced");
-
           homeLatitude = this.automcompleteApiResponseArray[0].position.lat;
           homeLongitude = this.automcompleteApiResponseArray[0].position.lon;
         } else {
-          console.log("coordinate non prese");
-
           homeLatitude = undefined;
           homeLongitude = undefined;
         }

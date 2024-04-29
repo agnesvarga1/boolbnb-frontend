@@ -70,7 +70,7 @@ export default {
   <div class="apartment-container">
     <div
       v-if="singleApartment && singleApartment.cover_image"
-      class="row overflow-hidden rounded-4"
+      class="row overflow-hidden rounded-4 shadow-lg"
       id="apartment-card"
     >
       <!-- Apartment Image -->
