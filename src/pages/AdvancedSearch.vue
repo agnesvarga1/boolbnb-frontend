@@ -363,13 +363,8 @@ export default {
             <div
               v-for="element in arrayServices"
               :key="element.id"
-              class="col-6"
+              class="col-6 d-flex"
             >
-              <img
-                :src="`${store.apiBaseUrl}/storage/${element.icon}`"
-                :alt="element.name"
-                style="width: 15px"
-              />
               <input
                 class="form-check-input"
                 type="checkbox"
@@ -377,6 +372,12 @@ export default {
                 :id="`service_${element.id}`"
                 :value="element.id"
                 v-model="servicesInput"
+              />
+              <img
+                :src="`${store.apiBaseUrl}/storage/${element.icon}`"
+                :alt="element.name"
+                style="width: 15px"
+                class="ms-2"
               />
               <label
                 class="form-check-label text-capitalize ms-2"
