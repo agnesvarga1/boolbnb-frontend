@@ -233,7 +233,7 @@ img {
 @media only screen and (min-width: 1400px) {
   .apartment-container {
     .single-card {
-      min-height: 55vh;
+      min-height: 60vh;
     }
   }
 }
