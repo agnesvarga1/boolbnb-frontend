@@ -289,7 +289,7 @@ export default {
         min="0"
         max="200"
         value="20"
-        step="1"
+        step="10"
         v-model="radiusInput"
         :disabled="searchInput === ''"
       />
