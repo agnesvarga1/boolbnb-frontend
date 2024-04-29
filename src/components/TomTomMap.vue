@@ -1,3 +1,4 @@
+User
 <script>
 import tt from "@tomtom-international/web-sdk-maps";
 import { store } from "../store.js";
@@ -26,6 +27,12 @@ export default {
       map.on("load", () => {
         store.map = map;
         this.createMarkers();
+        if (this.propApartments.length == 1) {
+          this.updateMapCenter(
+            this.propApartments[0].longitude,
+            this.propApartments[0].latitude
+          );
+        }
       });
     },
     createMarkers() {
@@ -34,23 +41,21 @@ export default {
       var markersOnTheMap = {};
       var eventListenersAdded = false;
 
-      var geoJson = {
+      const geoJson = {
         type: "FeatureCollection",
-        features: this.propApartments.map(function (apartment) {
-          return {
-            type: "Feature",
+        features: this.propApartments.map((apartment) => ({
+          type: "Feature",
+          id: apartment.id,
+          geometry: {
+            type: "Point",
+            coordinates: [apartment.longitude, apartment.latitude],
+          },
+          properties: {
             id: apartment.id,
-            geometry: {
-              type: "Point",
-              coordinates: [apartment.longitude, apartment.latitude],
-            },
-            properties: {
-              id: apartment.id,
-              name: apartment.title,
-              full_address: apartment.full_address,
-            },
-          };
-        }),
+            name: apartment.title,
+            full_address: apartment.full_address,
+          },
+        })),
       };
 
       if (map.getSource("point-source")) {
@@ -171,6 +176,10 @@ export default {
         map.getCanvas().style.cursor = "";
       });
     },
+    updateMapCenter(lng, lat) {
+      toRaw(store.map).setCenter([lng, lat]);
+      toRaw(store.map).setZoom(13);
+    },
   },
   mounted() {
     this.inzializeMap();
@@ -179,6 +188,13 @@ export default {
     propApartments: {
       handler(newApartments, oldApartments) {
         this.createMarkers();
+
+        if (this.propApartments.length == 1) {
+          this.updateMapCenter(
+            this.propApartments[0].longitude,
+            this.propApartments[0].latitude
+          );
+        }
       },
       deep: true, // Assicura il deep watching sull'array
     },
