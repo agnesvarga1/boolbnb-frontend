@@ -106,16 +106,39 @@ export default {
         });
     },
     radiusSearch(postApiPage) {
+      let homeLatitude, homeLongitude;
+
+      if (
+        store.homeLat !== 0 &&
+        store.homeLong !== 0 &&
+        store.homeInput !== ""
+      ) {
+        console.log("coordinate prese dalla homepage");
+
+        homeLatitude = store.homeLat;
+        homeLongitude = store.homeLong;
+
+        store.homeLat = 0;
+        store.homeLong = 0;
+        store.homeInput = "";
+      } else {
+        if (this.searchInput !== "") {
+          console.log("coordinate prese da advanced");
+
+          homeLatitude = this.automcompleteApiResponseArray[0].position.lat;
+          homeLongitude = this.automcompleteApiResponseArray[0].position.lon;
+        } else {
+          console.log("coordinate non prese");
+
+          homeLatitude = undefined;
+          homeLongitude = undefined;
+        }
+      }
+
       const params = {
         page: postApiPage,
-        latitude:
-          this.searchInput !== ""
-            ? this.automcompleteApiResponseArray[0].position.lat
-            : undefined,
-        longitude:
-          this.searchInput !== ""
-            ? this.automcompleteApiResponseArray[0].position.lon
-            : undefined,
+        latitude: homeLatitude,
+        longitude: homeLongitude,
         radius: this.radiusInput,
         num_beds: this.bedsInput,
         num_rooms: this.roomsInput,
@@ -214,7 +237,12 @@ export default {
     },
   },
   mounted() {
-    this.getApartments(1);
+    if (store.homeInput === "") {
+      this.getApartments(1);
+    } else {
+      this.searchInput = store.homeInput;
+      this.radiusSearch(1);
+    }
     this.getServices();
   },
 };

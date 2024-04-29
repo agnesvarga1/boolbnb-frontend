@@ -17,14 +17,9 @@ export default {
       arrayServices: [],
       searchInput: "",
       radiusInput: 20,
-      bedsInput: "",
-      roomsInput: "",
-      servicesInput: [],
       arrayAddresses: [],
       automcompleteApiResponseArray: [],
       infoApartmentsArray: [],
-      isFiltered: false,
-      initialLoad: true,
     };
   },
   methods: {
@@ -40,12 +35,6 @@ export default {
           this.currentPage = result.data.apartments.current_page;
           this.lastPage = result.data.apartments.last_page;
           this.infoApartmentsArray = result.data.apartments;
-
-          if (!this.initialLoad) {
-            // Controlla se non è il primo caricamento
-            this.moveToGrid();
-          }
-          this.initialLoad = false;
         });
     },
     autocompleteSearch() {
@@ -79,38 +68,12 @@ export default {
           console.error("There was a problem with the fetch operation:", error);
         });
     },
-    radiusSearch(postApiPage) {
-      if (this.searchInput.length === "" || this.searchInput.length < 4) {
-        console.log("input invalido");
-        return;
-      }
+    sendToAdvancedSearch() {
+      store.homeLat = this.automcompleteApiResponseArray[0].position.lat;
+      store.homeLong = this.automcompleteApiResponseArray[0].position.lon;
+      store.homeInput = this.searchInput;
 
-      const params = {
-        page: postApiPage,
-        latitude: this.automcompleteApiResponseArray[0].position.lat,
-        longitude: this.automcompleteApiResponseArray[0].position.lon,
-        radius: this.radiusInput,
-        num_beds: this.bedsInput,
-        num_rooms: this.roomsInput,
-        services: this.servicesInput,
-      };
-
-      axios
-        .get(`${store.apiBaseUrl}/api/apartments/search`, { params })
-        .then((response) => {
-          console.log(response);
-          this.arrayApartments = response.data.apartments.data;
-          this.currentPage = response.data.apartments.current_page;
-          this.lastPage = response.data.apartments.last_page;
-          this.infoApartmentsArray = response.data.apartments;
-
-          this.moveToGrid();
-        })
-        .catch((error) => {
-          console.error("Errore durante la richiesta API:", error);
-        });
-
-      this.isFiltered = true;
+      this.$router.push({ name: "search" });
     },
     moveToGrid() {
       this.$nextTick(() => {
@@ -181,121 +144,26 @@ export default {
         aria-describedby="button-addon2"
         v-model="searchInput"
         list="addressList"
-        @keydown.enter="radiusSearch(1)"
+        @keydown.enter="sendToAdvancedSearch()"
+        @keydown.esc="searchInput = ''"
       />
       <button
         class="btn border border-start-0"
         :class="searchInput !== '' ? 'btn-green' : ''"
         type="button"
         id="button-addon2"
-        @click="radiusSearch(1)"
+        @click="sendToAdvancedSearch()"
       >
         <i class="fa-solid fa-magnifying-glass"></i>
       </button>
       <datalist id="addressList">
         <option v-for="element in arrayAddresses" :value="element"></option>
       </datalist>
-      <button
-        class="btn btn-green ms-5"
-        :class="{ disabled: !isFiltered }"
-        @click="
-          getApartments(1);
-          isFiltered = false;
-          searchInput = '';
-          radiusInput = 20;
-          bedsInput = '';
-          roomsInput = '';
-          servicesInput = [];
-          this.initialLoad = true;
-        "
-      >
-        Reset
-      </button>
     </div>
     <div>
       <label for="rangeZone" class="form-label"
         >Range zona: <strong>{{ radiusInput }} km</strong></label
       >
-      <input
-        type="range"
-        class="form-range"
-        id="rangeZone"
-        name="rangeZone"
-        min="0"
-        max="200"
-        value="20"
-        step="1"
-        v-model="radiusInput"
-      />
-    </div>
-    <div class="row">
-      <div class="col-7 row">
-        <div class="col-6">
-          <label for="num_beds" class="form-label">Letti</label>
-          <div class="input-group mb-3">
-            <span class="input-group-text"
-              ><i class="fa-solid fa-bed"></i
-            ></span>
-            <input
-              type="number"
-              class="form-control"
-              id="num_beds"
-              aria-describedby="num_beds"
-              name="num_beds"
-              min="0"
-              v-model="bedsInput"
-            />
-          </div>
-        </div>
-
-        <div class="col-6">
-          <label for="num_rooms" class="form-label">Stanze</label>
-          <div class="input-group mb-3">
-            <input
-              type="number"
-              class="form-control"
-              id="num_rooms"
-              aria-describedby="num_rooms"
-              name="num_rooms"
-              min="0"
-              v-model="roomsInput"
-            />
-          </div>
-        </div>
-      </div>
-
-      <div class="col-5">
-        <div class="mb-3">
-          <label class="form-label">Servizi</label>
-          <div class="form-check d-flex flex-wrap">
-            <div
-              v-for="element in arrayServices"
-              :key="element.id"
-              class="col-6"
-            >
-              <img
-                :src="`${store.apiBaseUrl}/storage/${element.icon}`"
-                :alt="element.name"
-                style="width: 15px"
-              />
-              <input
-                class="form-check-input"
-                type="checkbox"
-                name="services[]"
-                :id="`service_${element.id}`"
-                :value="element.id"
-                v-model="servicesInput"
-              />
-              <label
-                class="form-check-label text-capitalize ms-2"
-                :for="`service_ ${element.id}`"
-              >
-                {{ element.name }}
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -379,9 +247,8 @@ export default {
               class="page-link"
               :class="{ disabled: currentPage === 1 }"
               @click="
-                !isFiltered
-                  ? getApartments(currentPage - 1)
-                  : radiusSearch(currentPage - 1)
+                getApartments(currentPage - 1);
+                moveToGrid();
               "
             >
               Precedente
@@ -392,7 +259,10 @@ export default {
             <button
               class="page-link"
               :class="{ disabled: currentPage < 4 }"
-              @click="!isFiltered ? getApartments(1) : radiusSearch(1)"
+              @click="
+                getApartments(1);
+                moveToGrid();
+              "
             >
               &lt;&lt;
             </button>
@@ -403,9 +273,8 @@ export default {
               class="page-link"
               :class="{ disabled: currentPage <= 10 }"
               @click="
-                !isFiltered
-                  ? getApartments(currentPage - 10)
-                  : radiusSearch(currentPage - 10)
+                getApartments(currentPage - 10);
+                moveToGrid();
               "
             >
               -10
@@ -423,7 +292,8 @@ export default {
               class="page-link"
               :class="{ disabled: currentPage === element }"
               @click="
-                !isFiltered ? getApartments(element) : radiusSearch(element)
+                getApartments(element);
+                moveToGrid();
               "
             >
               {{ element }}
@@ -435,9 +305,8 @@ export default {
               class="page-link"
               :class="{ disabled: currentPage >= lastPage - 9 }"
               @click="
-                !isFiltered
-                  ? getApartments(currentPage + 10)
-                  : radiusSearch(currentPage + 10)
+                getApartments(currentPage + 10);
+                moveToGrid();
               "
             >
               +10
@@ -449,7 +318,8 @@ export default {
               class="page-link"
               :class="{ disabled: currentPage > lastPage - 3 }"
               @click="
-                !isFiltered ? getApartments(lastPage) : radiusSearch(lastPage)
+                getApartments(lastPage);
+                moveToGrid();
               "
             >
               &gt;&gt;
@@ -461,9 +331,8 @@ export default {
               class="page-link"
               :class="{ disabled: currentPage === lastPage }"
               @click="
-                !isFiltered
-                  ? getApartments(currentPage + 1)
-                  : radiusSearch(currentPage + 1)
+                getApartments(currentPage + 1);
+                moveToGrid();
               "
             >
               Successivo
