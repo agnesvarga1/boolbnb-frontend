@@ -394,7 +394,7 @@ export default {
   <!-- SECTION Advanced Search body -->
   <section id="gridApartments" class="container my-5">
     <h1 class="my-2 fw-bold">
-      Appartamenti sponsorizzati ({{ infoApartmentsArray.total }})
+      Risultati ({{ infoApartmentsArray.total }})
       {{ infoApartmentsArray.total === 0 ? "" : `- Pagina ${currentPage}` }}
     </h1>
 
