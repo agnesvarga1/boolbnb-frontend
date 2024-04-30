@@ -4,6 +4,10 @@ import { store } from "../store";
 import axios from "axios";
 export default {
   name: "ContactForm",
+  props: {
+    apartment_id: Number,
+    slug: String
+  },
 
   components: {},
   data() {
@@ -12,13 +16,9 @@ export default {
       name: "",
       email: "",
       message: "",
-      apartment_id: this.aprtment_id,
       success: false,
       errors: {},
     };
-    props: {
-      (apartment_id = String), (slug = String);
-    }
   },
 
   methods: {
@@ -35,6 +35,7 @@ export default {
       axios
         .post(`${this.store.apiBaseUrl}/api/apartments/${this.slug}`, data)
         .then((res) => {
+          console.log(res);
           this.success = res.data.success;
           if (!this.success) {
             this.errors = res.data.errors; //err handling
@@ -127,17 +128,17 @@ export default {
                 {{ err }}
               </p>
             </div>
+            <div class="modal-footer">
+              <button
+              type="button"
+              class="btn btn-green-inverted"
+              data-bs-dismiss="modal"
+              >
+              Chiudi
+            </button>
+            <button type="submit" class="btn btn-green">Invia</button>
+            </div>
           </form>
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-green-inverted"
-            data-bs-dismiss="modal"
-          >
-            Chiudi
-          </button>
-          <button type="submit" class="btn btn-green">Invia</button>
         </div>
       </div>
     </div>
