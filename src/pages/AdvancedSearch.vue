@@ -65,6 +65,7 @@ export default {
           params: {
             page: postApiPage,
             category: postCategoryName,
+            from_where: "advancedSearch",
           },
         })
         .then((result) => {
@@ -138,6 +139,7 @@ export default {
         num_rooms: this.roomsInput,
         services: this.servicesInput,
         category: this.currentCategory,
+        from_where: "advancedSearch",
       };
 
       axios

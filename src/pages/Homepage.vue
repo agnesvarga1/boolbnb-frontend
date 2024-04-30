@@ -28,6 +28,7 @@ export default {
         .get(`${store.apiBaseUrl}/api/apartments`, {
           params: {
             page: postApiPage,
+            from_where: "homePage",
           },
         })
         .then((result) => {
