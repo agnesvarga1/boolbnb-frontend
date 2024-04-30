@@ -52,96 +52,96 @@ export default {
 </script>
 
 <template>
-     <div class="alert alert-success" v-if="success === true" role="alert">
-       Il messaggio e stato inviato correttamente.
-      </div>
   <div
-    class="modal fade"
-    id="exampleModal"
-    tabindex="-1"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
   >
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">
-            Invia un messaggio per chiedere ulteriori informazioni
-          </h1>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
-        <div class="modal-body">
-          <form @submit.prevent="sendMessage()">
-            <div class="mb-3">
-              <label for="name" class="col-form-label">Nome:</label>
-              <input
-                v-model="name"
-                name="name"
-                type="text"
-                class="form-control"
-                id="name"
-                placeholder="Inserisci il tuo nome"
-                :class="{ 'is-invalid': errors.name }"
-                required
-              />
-              <p v-for="(err, i) in errors?.name" :key="`message-errors-${i}`">
-                {{ err }}
-              </p>
-            </div>
-            <div class="mb-3">
-              <label for="email" class="col-form-label">Email:</label>
-              <input
-                v-model="email"
-                name="email"
-                type="email"
-                class="form-control"
-                id="email"
-                placeholder="Inserisci il tua email"
-                :class="{ 'is-invalid': errors.email }"
-                required
-              />
-              <p v-for="(err, i) in errors?.email" :key="`message-errors-${i}`">
-                {{ err }}
-              </p>
-            </div>
-            <div class="mb-3">
-              <label for="message" class="col-form-label">Messaggio:</label>
-
-              <textarea
-                v-model="message"
-                name="message"
-                class="form-control"
-                id="message"
-                cols="30"
-                rows="10"
-                placeholder="Scrivi il tuo messaggio..."
-                :class="{ 'is-invalid': errors.message }"
-                required
-              ></textarea>
-              <p v-for="(err, i) in errors?.email" :key="`message-errors-${i}`">
-                {{ err }}
-              </p>
-            </div>
-            <div class="modal-footer">
-              <button
-              type="button"
-              class="btn btn-green-inverted"
-              data-bs-dismiss="modal"
-              >
-              Chiudi
-            </button>
-            <button type="submit" class="btn btn-green">Invia</button>
-            </div>
-          </form>
-        </div>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          Invia un messaggio per chiedere ulteriori informazioni
+        </h1>
+        <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="modal"
+        aria-label="Close"
+        ></button>
       </div>
+      <div class="modal-body">
+        <form @submit.prevent="sendMessage()">
+          <div class="mb-3">
+            <label for="name" class="col-form-label">Nome:</label>
+            <input
+            v-model="name"
+            name="name"
+            type="text"
+            class="form-control"
+            id="name"
+            placeholder="Inserisci il tuo nome"
+            :class="{ 'is-invalid': errors.name }"
+            required
+            />
+            <p v-for="(err, i) in errors?.name" :key="`message-errors-${i}`">
+              {{ err }}
+            </p>
+          </div>
+          <div class="mb-3">
+            <label for="email" class="col-form-label">Email:</label>
+            <input
+            v-model="email"
+            name="email"
+            type="email"
+            class="form-control"
+            id="email"
+            placeholder="Inserisci il tua email"
+            :class="{ 'is-invalid': errors.email }"
+            required
+            />
+            <p v-for="(err, i) in errors?.email" :key="`message-errors-${i}`">
+              {{ err }}
+            </p>
+          </div>
+          <div class="mb-3">
+            <label for="message" class="col-form-label">Messaggio:</label>
+
+            <textarea
+            v-model="message"
+            name="message"
+            class="form-control"
+            id="message"
+            cols="30"
+            rows="10"
+            placeholder="Scrivi il tuo messaggio..."
+            :class="{ 'is-invalid': errors.message }"
+            required
+            ></textarea>
+            <p v-for="(err, i) in errors?.email" :key="`message-errors-${i}`">
+              {{ err }}
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button
+            type="button"
+            class="btn btn-green-inverted"
+            data-bs-dismiss="modal"
+            >
+            Chiudi
+          </button>
+          <button type="submit" class="btn btn-green">Invia</button>
+        </div>
+      </form>
+      <div class="alert alert-success" v-if="success === true" role="alert">
+        Il messaggio e stato inviato correttamente.
+       </div>
     </div>
   </div>
+</div>
+</div>
 </template>
 
 <style lang="scss">
