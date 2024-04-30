@@ -33,9 +33,8 @@ export default {
       this.errors = {};
 
       axios
-        .post(`${this.store.apiBaseUrl}/api/apartments/${this.slug}`, data)
+        .post(`${this.store.apiBaseUrl}/api/messages`, data)
         .then((res) => {
-          console.log(res);
           this.success = res.data.success;
           if (!this.success) {
             this.errors = res.data.errors; //err handling
