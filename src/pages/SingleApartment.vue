@@ -1,4 +1,5 @@
 <script>
+import ContactForm from "../components/ContactForm.vue";
 import TomTomMap from "../components/TomTomMap.vue";
 import axios from "axios";
 import { store } from "../store";
@@ -6,6 +7,7 @@ export default {
   name: "SingleApartment",
   components: {
     TomTomMap,
+    ContactForm,
   },
   data() {
     return {
@@ -152,7 +154,15 @@ export default {
             </li>
           </ul>
         </div>
-        <button class="btn btn-green w-100 mt-3">
+        <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">Open modal for @getbootstrap</button>
+
+-->
+        <button
+          type="button"
+          class="btn btn-green w-100 mt-3"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
+        >
           Contatta il proprietario
         </button>
       </div>
@@ -163,6 +173,10 @@ export default {
     </div>
     <div v-else class="no-data">No apartment details available.</div>
   </div>
+  <ContactForm
+    :apartment_id="singleApartment.id"
+    :slug="singleApartment.slug"
+  />
 </template>
 
 <style lang="scss" scoped>
