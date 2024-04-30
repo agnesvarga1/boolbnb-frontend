@@ -1,44 +1,60 @@
 import
 <script>
-import {store} from "store";
+import { store } from "../store";
 import axios from "axios";
 export default {
   name: "ContactForm",
-  props: {
-    apartmentId = String;
-  },
+
   components: {},
   data() {
     return {
-      store
+      store,
       name: "",
       email: "",
       message: "",
-      apartment_id:this.apartmentId,
+      apartment_id: this.aprtment_id,
       success: false,
       errors: {},
     };
+    props: {
+      (apartment_id = String), (slug = String);
+    }
   },
+
   methods: {
-     sendMessage(){
-        const data ={
-            name:this.name,
-            email:this.email,
-            message:this.message,
-            apartment_id:this.apartment_id;
-        }
+    sendMessage() {
+      const data = {
+        name: this.name,
+        email: this.email,
+        message: this.message,
+        apartment_id: this.apartment_id,
+      };
 
-        this.errors = {};
+      this.errors = {};
 
-        axios.post(`${this.store.apiBaseUrl}/api/apartments`)
-     }
-
+      axios
+        .post(`${this.store.apiBaseUrl}/api/apartments/${this.slug}`, data)
+        .then((res) => {
+          this.success = res.data.success;
+          if (!this.success) {
+            this.errors = res.data.errors; //err handling
+          } else {
+            //reset "" data previous
+            this.name = "";
+            this.email = "";
+            this.message = "";
+          }
+        });
+    },
   },
   mounted() {},
 };
 </script>
 
 <template>
+     <div class="alert alert-success" v-if="success === true" role="alert">
+       Il messaggio e stato inviato correttamente.
+      </div>
   <div
     class="modal fade"
     id="exampleModal"
@@ -70,8 +86,12 @@ export default {
                 class="form-control"
                 id="name"
                 placeholder="Inserisci il tuo nome"
+                :class="{ 'is-invalid': errors.name }"
                 required
               />
+              <p v-for="(err, i) in errors?.name" :key="`message-errors-${i}`">
+                {{ err }}
+              </p>
             </div>
             <div class="mb-3">
               <label for="email" class="col-form-label">Email:</label>
@@ -82,8 +102,12 @@ export default {
                 class="form-control"
                 id="email"
                 placeholder="Inserisci il tua email"
+                :class="{ 'is-invalid': errors.email }"
                 required
               />
+              <p v-for="(err, i) in errors?.email" :key="`message-errors-${i}`">
+                {{ err }}
+              </p>
             </div>
             <div class="mb-3">
               <label for="message" class="col-form-label">Messaggio:</label>
@@ -96,8 +120,12 @@ export default {
                 cols="30"
                 rows="10"
                 placeholder="Scrivi il tuo messaggio..."
+                :class="{ 'is-invalid': errors.message }"
                 required
               ></textarea>
+              <p v-for="(err, i) in errors?.email" :key="`message-errors-${i}`">
+                {{ err }}
+              </p>
             </div>
           </form>
         </div>

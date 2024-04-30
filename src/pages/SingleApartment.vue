@@ -173,7 +173,10 @@ export default {
     </div>
     <div v-else class="no-data">No apartment details available.</div>
   </div>
-  <ContactForm :apartmentId="singleApartment.id" />
+  <ContactForm
+    :apartment_id="singleApartment.id"
+    :slug="singleApartment.slug"
+  />
 </template>
 
 <style lang="scss" scoped>
