@@ -105,4 +105,8 @@ export default {
   </footer>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+footer {
+  min-height: 170px;
+}
+</style>

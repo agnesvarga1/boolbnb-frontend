@@ -80,6 +80,7 @@ export default {
 <template>
   <div class="apartment-container">
     <div class="container">
+      <!-- Message success alert -->
       <div class="row">
         <div
           class="alert alert-success mb-3 col-12"
@@ -200,7 +201,8 @@ export default {
 
 <style lang="scss" scoped>
 .apartment-container {
-  padding: 100px 0 4rem;
+  padding: 100px 0 2rem;
+  min-height: calc(100vh - 170px);
 
   background-color: #fafafa;
   figure {
