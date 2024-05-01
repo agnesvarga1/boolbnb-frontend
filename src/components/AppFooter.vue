@@ -20,8 +20,12 @@ export default {
         <div>
           <a href="#" class="text-light me-4 text-decoration-none">Privacy</a>
           <a href="#" class="text-light me-4 text-decoration-none">Policy</a>
-          <a href="#" class="text-light me-4 text-decoration-none">Mappa del sito</a>
-          <a href="#" class="text-light me-4 text-decoration-none">Agency's Details</a>
+          <a href="#" class="text-light me-4 text-decoration-none"
+            >Mappa del sito</a
+          >
+          <a href="#" class="text-light me-4 text-decoration-none"
+            >Agency's Details</a
+          >
         </div>
 
         <!-- Language and currency selectors -->
@@ -101,4 +105,8 @@ export default {
   </footer>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+footer {
+  min-height: 170px;
+}
+</style>
