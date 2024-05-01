@@ -1,6 +1,7 @@
 <script>
 import ContactForm from "../components/ContactForm.vue";
 import TomTomMap from "../components/TomTomMap.vue";
+
 import axios from "axios";
 import { store } from "../store";
 export default {
@@ -12,6 +13,8 @@ export default {
   data() {
     return {
       store,
+      messageSent: false,
+      isMoadalOpen: false,
       singleApartment: [],
       arrayCategories: [
         {
@@ -51,8 +54,6 @@ export default {
         .get(`${store.apiBaseUrl}/api/apartments/${this.$route.params.slug}`)
         .then((res) => {
           this.singleApartment = res.data.apartment;
-
-          console.log(this.singleApartment);
         });
     },
     getCategoryIcon(categoryName) {
@@ -60,6 +61,14 @@ export default {
         (cat) => cat.name === categoryName
       );
       return category ? category.icon : "";
+    },
+    toggleModal() {
+      this.isMoadalOpen = !this.isMoadalOpen;
+    },
+
+    handleMessageSent() {
+      this.messageSent = true;
+      this.isMoadalOpen = false;
     },
   },
   mounted() {
@@ -70,148 +79,156 @@ export default {
 
 <template>
   <div class="apartment-container">
-    <div
-      v-if="singleApartment && singleApartment.cover_image"
-      class="row overflow-hidden rounded-4 shadow-lg"
-      id="apartment-card"
-    >
-      <!-- Apartment Image -->
-      <div class="col-lg-4 col-md-12 p-0">
-        <figure>
-          <img
-            :src="
-              singleApartment.cover_image.startsWith('https://')
-                ? singleApartment.cover_image
-                : `${store.apiBaseUrl}/storage/${singleApartment.cover_image}`
-            "
-            :alt="singleApartment.title"
-            class="w-100 h-100"
-          />
-        </figure>
-      </div>
-      <!-- Apartment Details -->
-      <div
-        class="col-lg-4 col-md-12 apartment-details d-flex flex-column justify-content-between"
-      >
-        <h2>{{ singleApartment.title }}</h2>
-        <p class="address">
-          <i class="fa-solid fa-location-dot"></i>
-          {{ singleApartment.full_address }}
-        </p>
-        <p>{{ singleApartment.description }}</p>
-        <div class="d-flex align-items-center gap-3 my-2">
-          <button
-            class="btn btn-green text-capitalize"
-            style="width: fit-content"
-          >
-            <i :class="getCategoryIcon(singleApartment.category)"></i>
-            {{ singleApartment.category }}
-          </button>
-          <h5 class="fw-bold mb-0">{{ singleApartment.price }} &euro;/notte</h5>
-        </div>
-        <h6 class="mt-4">Dettagli:</h6>
-        <div class="features d-flex gap-2">
-          <div class="fs-3 d-flex align-items-center">
-            <i class="fa-solid fa-house me-2"></i>
-            <span class="me-3">
-              {{ singleApartment.num_rooms }}
-            </span>
-          </div>
-          <div class="fs-3 d-flex align-items-center">
-            <i class="fa-solid fa-bath me-2"></i>
-            <span class="me-3">
-              {{ singleApartment.num_bathrooms }}
-            </span>
-          </div>
-          <div class="fs-3 d-flex align-items-center">
-            <i class="fa-solid fa-square me-2"></i>
-            <span class="me-3">
-              {{ Math.trunc(singleApartment.square_meters) }}m<sup>2</sup>
-            </span>
-          </div>
-          <div class="fs-3 d-flex align-items-center">
-            <i class="fa-solid fa-bed me-2"></i>
-            <span class="me-3">{{ singleApartment.num_beds }}</span>
-          </div>
-        </div>
-        <h6 class="mt-4 mb-0">Servizi:</h6>
+    <div class="container">
+      <div class="row">
         <div
-          v-if="singleApartment.services && singleApartment.services.length"
-          class="services"
+          class="alert alert-success mb-3 col-12"
+          v-if="messageSent === true"
+          role="alert"
         >
-          <ul class="list-unstyled">
-            <li
-              v-for="item in singleApartment.services"
-              :key="item.id"
-              class="mt-1 d-flex align-items-center"
-            >
-              <img
-                :src="`${store.apiBaseUrl}/storage/${item.icon}`"
-                :alt="item.name"
-                class="icon me-2"
-              />
-              <span class="text-capitalize">{{ item.name }}</span>
-            </li>
-          </ul>
+          Il messaggio e stato inviato correttamente.
         </div>
-        <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">Open modal for @getbootstrap</button>
-
--->
-        <button
-          type="button"
-          class="btn btn-green w-100 mt-3"
-          data-bs-toggle="modal"
-          data-bs-target="#exampleModal"
+      </div>
+      <div
+        v-if="singleApartment && singleApartment.cover_image"
+        class="row overflow-hidden rounded-4 shadow-lg mx-auto"
+        id="apartment-card"
+      >
+        <!-- Apartment Image -->
+        <div class="col-lg-6 col-md-12 p-0">
+          <figure class="h-50">
+            <img
+              :src="
+                singleApartment.cover_image.startsWith('https://')
+                  ? singleApartment.cover_image
+                  : `${store.apiBaseUrl}/storage/${singleApartment.cover_image}`
+              "
+              :alt="singleApartment.title"
+              class="w-100"
+            />
+            <!-- Map -->
+            <div class="p-0">
+              <TomTomMap :propApartments="[singleApartment]" />
+            </div>
+          </figure>
+        </div>
+        <div
+          class="col-lg-6 col-md-12 apartment-details d-flex flex-column gap-1"
         >
-          Contatta il proprietario
-        </button>
+          <h2>{{ singleApartment.title }}</h2>
+          <p class="address">
+            <i class="fa-solid fa-location-dot"></i>
+            {{ singleApartment.full_address }}
+          </p>
+          <p>{{ singleApartment.description }}</p>
+          <div class="d-flex align-items-center gap-4 my-2 fs-5">
+            <div class="text-capitalize" style="width: fit-content">
+              <i :class="getCategoryIcon(singleApartment.category)"></i>
+              {{ singleApartment.category }}
+            </div>
+            <h5 class="fw-bold mb-0">
+              {{ singleApartment.price }} &euro;/notte
+            </h5>
+          </div>
+          <h6 class="mt-4">Dettagli:</h6>
+          <div class="features d-flex gap-2">
+            <div class="fs-5 d-flex align-items-center">
+              <i class="fa-solid fa-house me-2"></i>
+              <span class="me-3">
+                {{ singleApartment.num_rooms }}
+              </span>
+            </div>
+            <div class="fs-5 d-flex align-items-center">
+              <i class="fa-solid fa-bath me-2"></i>
+              <span class="me-3">
+                {{ singleApartment.num_bathrooms }}
+              </span>
+            </div>
+            <div class="fs-5 d-flex align-items-center">
+              <i class="fa-solid fa-square me-2"></i>
+              <span class="me-3">
+                {{ Math.trunc(singleApartment.square_meters) }}m<sup>2</sup>
+              </span>
+            </div>
+            <div class="fs-5 d-flex align-items-center">
+              <i class="fa-solid fa-bed me-2"></i>
+              <span class="me-3">{{ singleApartment.num_beds }}</span>
+            </div>
+          </div>
+          <h6 class="mt-2 mb-0">Servizi:</h6>
+          <div
+            v-if="singleApartment.services && singleApartment.services.length"
+            class="services"
+          >
+            <ul class="list-unstyled">
+              <li
+                v-for="item in singleApartment.services"
+                :key="item.id"
+                class="mt-1 d-flex align-items-center"
+              >
+                <img
+                  :src="`${store.apiBaseUrl}/storage/${item.icon}`"
+                  :alt="item.name"
+                  class="icon me-2"
+                />
+                <span class="text-capitalize">{{ item.name }}</span>
+              </li>
+            </ul>
+          </div>
+
+          <button
+            type="button"
+            class="btn btn-green w-100 mt-3"
+            @click="toggleModal()"
+          >
+            Contatta il proprietario
+          </button>
+        </div>
       </div>
-      <!-- Map -->
-      <div class="col-lg-4 col-md-12 p-0">
-        <TomTomMap :propApartments="[singleApartment]" />
-      </div>
+      <div v-else class="no-data">No apartment details available.</div>
     </div>
-    <div v-else class="no-data">No apartment details available.</div>
   </div>
+  <!-- Apartment Details -->
+
   <ContactForm
+    :class="isMoadalOpen === true ? 'd-block' : ''"
     :apartment_id="singleApartment.id"
-    :slug="singleApartment.slug"
+    @messageSent="handleMessageSent"
+    @closeModal="toggleModal"
   />
 </template>
 
 <style lang="scss" scoped>
 .apartment-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: calc(100vh - 158px);
-  background-color: #eee;
+  padding: 100px 0 4rem;
+
+  background-color: #fafafa;
   figure {
     margin: 0;
     height: 100%;
 
-    img {
-      height: 100%;
-      object-fit: cover;
-    }
+    // img {
+    //   // height: 100%;
+    //   // object-fit: center;
+    // }
   }
 
   .apartment-details {
     padding: 25px;
     background-color: #d1e7dd;
-    overflow: auto; // Assicurati che questa regola sia applicata
-    max-height: 100%; // Definisci un'altezza massima per il test
+    // overflow: auto; // Assicurati che questa regola sia applicata
+    //height: 100%; // Definisci un'altezza massima per il test
 
     .address,
     .features,
     .services {
-      font-size: 18px;
+      font-size: 16px;
       margin-bottom: 10px;
     }
 
     .icon {
-      width: 21px;
-      height: 21px;
+      width: 20px;
+      height: 20px;
     }
 
     h5 {
@@ -220,13 +237,13 @@ export default {
     }
 
     h6 {
-      font-size: 22px;
+      font-size: 18px;
     }
   }
 
   #tomtom-map {
     width: 100%;
-    height: 100%;
+    height: 30vh;
   }
 
   .no-data {
@@ -235,15 +252,13 @@ export default {
   }
 }
 
-#apartment-card {
-  width: 75%;
-  height: 60%; // Definisci un'altezza massima per il test
-}
+// #apartment-card {
+//   height: 85%; // Definisci un'altezza massima per il test
+// }
 
 @media (max-width: 991px) {
   .apartment-container {
     flex-direction: column;
-    height: calc(100vh - 184px);
 
     #map {
       height: 50vh;
@@ -253,9 +268,6 @@ export default {
   #apartment-card {
     border-radius: 0;
     width: 100%;
-    height: calc(100vh - 184px);
-    max-height: calc(100vh - 184px);
-    overflow: auto;
   }
 }
 </style>

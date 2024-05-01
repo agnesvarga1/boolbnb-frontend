@@ -52,6 +52,7 @@ export default {
             <a
               class="btn btn-green"
               :href="`${store.apiBaseUrl}/login`"
+              target="_blank"
               role="button"
               >Area Personale</a
             >
