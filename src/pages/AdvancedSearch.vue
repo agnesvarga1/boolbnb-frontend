@@ -250,7 +250,7 @@ export default {
 
 <template>
   <!-- Search Section -->
-  <section class="container my-3" style="padding-top: 80px">
+  <section class="container my-4" style="padding-top: 80px">
     <div class="input-group d-flex">
       <h2 class="me-4 fw-bolder">Inizia a cercare</h2>
       <input
