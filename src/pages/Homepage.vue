@@ -350,12 +350,12 @@ export default {
   </div>
 
   <!-- Search Section -->
-  <section class="container my-3">
+  <section class="container mt-5">
     <div class="input-group d-flex">
       <h2 class="me-4 fw-bolder">Inizia a cercare</h2>
       <input
         type="text"
-        class="form-control border border-end-0"
+        class="form-control border border-end-0 mx-0 rounded-start-pill"
         placeholder="Cerca località..."
         aria-describedby="button-addon2"
         v-model="searchInput"
@@ -364,7 +364,7 @@ export default {
         @keydown.esc="searchInput = ''"
       />
       <button
-        class="btn border border-start-0"
+        class="btn border border-start-0 rounded-end-pill"
         :class="searchInput !== '' ? 'btn-green' : ''"
         type="button"
         id="button-addon2"
