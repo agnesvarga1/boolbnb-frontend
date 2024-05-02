@@ -11,6 +11,11 @@ export default {
 </script>
 
 <template>
+
+<a href="#" class="d-flex justify-content-center mb-4 text-decoration-none">
+  <i class="fa-solid fa-circle-arrow-up fs-2" style="color:#1AC6B6"></i>
+</a>
+
 <footer class="text-center text-lg-start text-light bg-dark">
 
   <section class="p-3 d-flex flex-wrap justify-content-center justify-content-lg-between align-items-center border-bottom flex-column">
@@ -57,9 +62,9 @@ export default {
 
       </div>
 
-      <div class="d-flex flex-row align-items-center justify-content-around">
+      <div class="d-flex flex-row align-items-center justify-content-center">
         <!-- Links -->
-        <div class="d-flex flex-row flex-lg-row gap-2 mt-3">
+        <div class="d-flex flex-wrap gap-2 mt-3 justify-content-around">
           <a href="#" class="text-light mx-1 text-decoration-underline">Privacy</a>
           <a href="#" class="text-light mx-1 text-decoration-underline">Policy</a>
           <a href="#" class="text-light mx-1 text-decoration-underline">Mappa del sito</a>
