@@ -20,6 +20,36 @@ export default {
       arrayAddresses: [],
       automcompleteApiResponseArray: [],
       infoApartmentsArray: [],
+      arrayCategories: [
+        {
+          name: "villa",
+          icon: "fa-solid fa-house-chimney",
+        },
+        {
+          name: "appartamento",
+          icon: "fa-solid fa-tree-city",
+        },
+        {
+          name: "agriturismo",
+          icon: "fa-solid fa-building-wheat",
+        },
+        {
+          name: "baita",
+          icon: "fa-solid fa-campground",
+        },
+        {
+          name: "castello",
+          icon: "fa-brands fa-fort-awesome",
+        },
+        {
+          name: "loft",
+          icon: "fa-solid fa-hotel",
+        },
+        {
+          name: "roulotte",
+          icon: "fa-solid fa-caravan",
+        },
+      ],
     };
   },
   methods: {
@@ -94,6 +124,10 @@ export default {
         this.arrayServices = result.data.services;
       });
     },
+    getCategoryIcon(categoryName) {
+      const category = this.arrayCategories.find(cat => cat.name === categoryName);
+      return category ? category.icon : 'fa-solid fa-circle-question'; // Icona di default se non trova corrispondenze
+    },
   },
   watch: {
     searchInput(newVal) {
@@ -108,32 +142,6 @@ export default {
 </script>
 
 <template>
-  <!-- Hero Image -->
-  <!-- <div
-    class="bg-image py-5 text-center shadow-1-strong mb-5 d-flex align-items-end justify-content-center"
-    style="
-      width: 100%;
-      height: 70vh;
-      background-size: cover;
-      background-position: center;
-      background-image: url('/immobili-di-prestigio-milano-1024x681.jpg');
-    "
-  >
-    <div class="col-12">
-      <div
-        class="row mt-5 mx-0 col-12 shadow py-3"
-        style="background-color: rgb(26, 198, 182, 0.6)"
-      >
-        <h2 class="fw-bold text-light">Appartamenti Boscosi</h2>
-      </div>
-      <div class="py-2 mt-3">
-        <a class="btn btn-green-inverted" href="#" role="button"
-          >Affitta Ora!</a
-        >
-      </div>
-    </div>
-  </div> -->
-
   <!-- Slider (Carousel) -->
   <div
     id="heroCarousel"
@@ -339,15 +347,6 @@ export default {
       </div>
     </div>
 
-    <!-- Controlli -->
-    <!-- <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button> -->
   </div>
 
   <!-- Search Section -->
@@ -398,12 +397,13 @@ export default {
         <div
           v-for="element in arrayApartments"
           :key="element.id"
-          class="col-md-4"
+          class="col-md-6 col-lg-4"
         >
           <router-link
             :to="{ name: 'apartment', params: { slug: element.slug } }"
             class="nav-link"
           >
+            <!-- INIZIO CARDS -->
             <div class="card">
               <figure class="mb-0 card-img-top">
                 <img
@@ -419,29 +419,57 @@ export default {
                   :alt="element.slug"
                 />
               </figure>
+
               <div
                 class="card-body d-flex flex-column justify-content-between bg-light"
               >
-                <h4 class="card-title fw-bolder">{{ element.title }}</h4>
+                <!-- Titolo -->
+                <h4 class="card-title fw-bolder text-nowrap overflow-hidden">{{ element.title }}</h4>
+                
+                <!--Icone servizi -->
                 <div class="mb-1">
                   <span
                     v-for="element in element.services"
-                    class="badge btn-green rounded-pill me-1"
+                    class="badge btn-green rounded-pill me-2 mb-1 p-1"
                   >
-                    {{ element.name }}
+                    <img
+                    :src="`${store.apiBaseUrl}/storage/${element.icon}`"
+                    :alt="element.name"
+                    style="width: 15px; fill: white"
+                    
+                    />
                   </span>
                 </div>
-                <div class="mb-1">
-                  <span class="badge text-bg-success rounded-pill me-1">
-                    Letti {{ element.num_beds }}
-                  </span>
-                  <span class="badge text-bg-success rounded-pill">
-                    Stanze {{ element.num_rooms }}
-                  </span>
+
+                <!-- Categoria, letti e stanze -->
+                <div class="mb-2 d-flex align-items-center flex-wrap row-gap-1">
+                  <div class="me-3">
+                    Categoria: 
+                    <span class="badge text-bg-danger rounded-pill text-capitalize ">
+                      <i :class="getCategoryIcon(element.category)" style="color:black; font-size: 15px;"></i>
+                    </span>
+                  </div>
+
+                  <div class="me-3 ">
+                    Letti:
+                    <span class="badge text-bg-success rounded-pill me-1 text-black" style="font-size: 15px;">
+                      {{ element.num_beds }}
+                    </span>
+                  </div>
+                  <div>
+                    Stanze:
+                    <span class="badge text-bg-success rounded-pill text-black" style="font-size: 15px;">
+                       {{ element.num_rooms }}
+                    </span>
+                  </div>
                 </div>
+
+                <!-- Prezzo -->
                 <h6 class="mb-2 col-5 price-tag fw-bolder">
                   {{ element.price }} €/notte
                 </h6>
+
+                <!-- Indirizzo -->
                 <p
                   class="card-text after-name text-truncate text-body-secondary"
                 >
@@ -456,14 +484,14 @@ export default {
       <!-- Navigation menu -->
       <nav
         aria-label="Page navigation example"
-        class="mt-5 d-flex justify-content-center container"
+        class="mb-2 d-flex justify-content-center container"
       >
-        <ul class="pagination pagination-sm flex-wrap"> <!-- Aggiunta di pagination-sm per dispositivi piccoli e flex-wrap per permettere alla paginazione di adattarsi su più linee se necessario -->
+        <ul class="pagination pagination-sm flex-wrap text-dark">
 
           <!-- Button Previous -->
           <li class="page-item d-none d-sm-block">
             <button
-              class="page-link "
+              class="page-link text-secondary-emphasis"
               :class="{ disabled: currentPage === 1 }"
               @click="
                 getApartments(currentPage - 1);
@@ -477,7 +505,7 @@ export default {
           <!-- Fast backward button -->
           <li class="page-item">
             <button
-              class="page-link"
+              class="page-link text-secondary-emphasis"
               :class="{ disabled: currentPage < 4 }"
               @click="
                 getApartments(1);
@@ -497,7 +525,7 @@ export default {
             )"
           >
             <button
-              class="page-link"
+              class="page-link text-secondary-emphasis"
               :class="{ disabled: currentPage === element }"
               @click="
                 getApartments(element);
@@ -511,7 +539,7 @@ export default {
           <!-- Fast forward button -->
           <li class="page-item">
             <button
-              class="page-link"
+              class="page-link text-secondary-emphasis"
               :class="{ disabled: currentPage > lastPage - 3 }"
               @click="
                 getApartments(lastPage);
@@ -525,7 +553,7 @@ export default {
           <!-- Button Next -->
           <li class="page-item d-none d-sm-block">
             <button
-              class="page-link"
+              class="page-link text-secondary-emphasis"
               :class="{ disabled: currentPage === lastPage }"
               @click="
                 getApartments(currentPage + 1);
@@ -562,26 +590,14 @@ export default {
 
     <TomTomMap :propApartments="arrayApartments" />
 
-    <!-- <div class="row row-gap-4">
-      <div v-for="apartment in apartments" :key="apartment.id" class="col-md-4">
-        <router-link :to="{ name: 'apartment' }" class="nav-link">
-          <div class="card h-100">
-            <img :src="apartment.cover_image" class="card-img-top" :alt="apartment.title">
-            <div class="card-body d-flex flex-column">
-              <h5 class="card-title">{{ apartment.title }}</h5>
-              <p class="card-text mb-2">{{ apartment.full_address }}</p>
-              <h6 class="card-title">{{ apartment.price }}€/notte</h6>               </div>
-            </div>
-        </router-link>
-      </div>
-    </div>     -->
   </section>
 </template>
 
 <style lang="scss">
 .card {
-  min-height: 400px;
+  height: 400px;
 }
+
 .card-img-top img {
   height: 250px;
   width: 100%;

@@ -205,6 +205,10 @@ export default {
         this.radiusSearch(1);
       }
     },
+    getCategoryIcon(categoryName) {
+      const category = this.arrayCategories.find(cat => cat.name === categoryName);
+      return category ? category.icon : 'fa-solid fa-circle-question'; // Icona di default se non trova corrispondenze
+    },
   },
   watch: {
     searchInput(newVal) {
@@ -402,63 +406,78 @@ export default {
         <div
           v-for="element in arrayApartments"
           :key="element.id"
-          class="col-md-4"
+          class="col-md-6 col-lg-4"
         >
           <router-link
             :to="{ name: 'apartment', params: { slug: element.slug } }"
             class="nav-link"
           >
-            <div class="card">
-              <figure class="mb-0 card-img-top">
-                <img
-                  v-if="element.cover_image.startsWith('https://pixabay.com')"
-                  :src="element.cover_image"
-                  class="card-img-top"
-                  :alt="element.slug"
-                />
-                <img
-                  v-else
-                  :src="`${store.apiBaseUrl}/storage/${element.cover_image}`"
-                  class="card-img-top"
-                  :alt="element.slug"
-                />
+          <!-- INIZIO CARDS -->
+          <div class="card">
+            <figure class="mb-0 card-img-top">
+              <img
+                v-if="element.cover_image.startsWith('https://pixabay.com')"
+                :src="element.cover_image"
+                class="card-img-top"
+                :alt="element.slug"
+              />
+              <img
+                v-else
+                :src="`${store.apiBaseUrl}/storage/${element.cover_image}`"                  class="card-img-top"
+                :alt="element.slug"
+              />
               </figure>
+
               <div
                 class="card-body d-flex flex-column justify-content-between bg-light"
               >
-                <h4 class="card-title fw-bolder">{{ element.title }}</h4>
-                <ul class="list-unstyled">
-                  <li>
-                    Categoria:
-                    <span class="badge text-bg-danger rounded-pill">
-                      {{ element.category }}
+                <!-- Titolo -->
+                <h4 class="card-title fw-bolder text-nowrap overflow-hidden">{{ element.title }}</h4>
+                
+                <!--Icone servizi -->
+                <div class="mb-1">
+                  <span
+                    v-for="element in element.services"
+                    class="badge btn-green rounded-pill me-2 mb-1 p-1"
+                  >
+                    <img
+                    :src="`${store.apiBaseUrl}/storage/${element.icon}`"
+                    :alt="element.name"
+                    style="width: 15px; fill: white"
+                    
+                    />
+                  </span>
+                </div>
+
+                <!-- Categoria, letti e stanze -->
+                <div class="mb-2 d-flex align-items-center flex-wrap row-gap-1">
+                  <div class="me-3">
+                    Categoria: 
+                    <span class="badge text-bg-danger rounded-pill text-capitalize ">
+                      <i :class="getCategoryIcon(element.category)" style="color:black; font-size: 15px;"></i>
                     </span>
-                  </li>
-                  <li>
-                    Servizi:
-                    <span
-                      v-for="element in element.services"
-                      class="badge btn-green rounded-pill me-1"
-                    >
-                      {{ element.name }}
-                    </span>
-                  </li>
-                  <li>
+                  </div>
+
+                  <div class="me-3 ">
                     Letti:
-                    <span class="badge text-bg-success rounded-pill me-1">
+                    <span class="badge text-bg-success rounded-pill me-1 text-black" style="font-size: 15px;">
                       {{ element.num_beds }}
                     </span>
-                  </li>
-                  <li>
+                  </div>
+                  <div>
                     Stanze:
-                    <span class="badge text-bg-success rounded-pill">
-                      {{ element.num_rooms }}
+                    <span class="badge text-bg-success rounded-pill text-black" style="font-size: 15px;">
+                       {{ element.num_rooms }}
                     </span>
-                  </li>
-                </ul>
+                  </div>
+                </div>
+
+                <!-- Prezzo -->
                 <h6 class="mb-2 col-5 price-tag fw-bolder">
                   {{ element.price }} €/notte
                 </h6>
+
+                <!-- Indirizzo -->
                 <p
                   class="card-text after-name text-truncate text-body-secondary"
                 >
@@ -470,17 +489,17 @@ export default {
         </div>
       </div>
 
-            <!-- Navigation menu -->
-            <nav
+      <!-- Navigation menu -->
+      <nav
         aria-label="Page navigation example"
-        class="mt-5 d-flex justify-content-center container"
+        class="mb-2 d-flex justify-content-center container"
       >
         <ul class="pagination pagination-sm flex-wrap"> <!-- Aggiunta di pagination-sm per dispositivi piccoli e flex-wrap per permettere alla paginazione di adattarsi su più linee se necessario -->
 
           <!-- Button Previous -->
           <li class="page-item d-none d-sm-block">
             <button
-              class="page-link"
+              class="page-link text-secondary-emphasis"
               :class="{ disabled: currentPage === 1 }"
               @click="
                 getApartments(currentPage - 1);
@@ -494,7 +513,7 @@ export default {
           <!-- Fast backward button -->
           <li class="page-item">
             <button
-              class="page-link"
+              class="page-link text-secondary-emphasis"
               :class="{ disabled: currentPage < 4 }"
               @click="
                 getApartments(1);
@@ -514,7 +533,7 @@ export default {
             )"
           >
             <button
-              class="page-link"
+              class="page-link text-secondary-emphasis"
               :class="{ disabled: currentPage === element }"
               @click="
                 getApartments(element);
@@ -528,7 +547,7 @@ export default {
           <!-- Fast forward button -->
           <li class="page-item">
             <button
-              class="page-link"
+              class="page-link text-secondary-emphasis"
               :class="{ disabled: currentPage > lastPage - 3 }"
               @click="
                 getApartments(lastPage);
@@ -542,7 +561,7 @@ export default {
           <!-- Button Next -->
           <li class="page-item d-none d-sm-block">
             <button
-              class="page-link"
+              class="page-link text-secondary-emphasis"
               :class="{ disabled: currentPage === lastPage }"
               @click="
                 getApartments(currentPage + 1);
