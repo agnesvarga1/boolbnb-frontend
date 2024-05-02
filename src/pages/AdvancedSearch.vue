@@ -470,117 +470,83 @@ export default {
         </div>
       </div>
 
-      <!-- Navigation menù -->
-      <nav
+            <!-- Navigation menu -->
+            <nav
         aria-label="Page navigation example"
-        class="mt-5 d-flex justify-content-center"
+        class="mt-5 d-flex justify-content-center container"
       >
-        <ul class="pagination">
+        <ul class="pagination pagination-sm flex-wrap"> <!-- Aggiunta di pagination-sm per dispositivi piccoli e flex-wrap per permettere alla paginazione di adattarsi su più linee se necessario -->
+
+          <!-- Button Previous -->
           <li class="page-item">
             <button
               class="page-link"
               :class="{ disabled: currentPage === 1 }"
               @click="
+                getApartments(currentPage - 1);
                 moveToGrid();
-                !isFiltered
-                  ? getApartments(currentPage - 1, currentCategory)
-                  : radiusSearch(currentPage - 1);
               "
             >
               Precedente
             </button>
           </li>
 
+          <!-- Fast backward button -->
           <li class="page-item">
             <button
               class="page-link"
-              :class="{ disabled: currentPage == 1 }"
+              :class="{ disabled: currentPage < 4 }"
               @click="
+                getApartments(1);
                 moveToGrid();
-                !isFiltered
-                  ? getApartments(1, currentCategory)
-                  : radiusSearch(1);
               "
             >
               &lt;&lt;
             </button>
           </li>
 
-          <li class="page-item">
-            <button
-              class="page-link"
-              :class="{ disabled: currentPage <= 10 }"
-              @click="
-                moveToGrid();
-                !isFiltered
-                  ? getApartments(currentPage - 10, currentCategory)
-                  : radiusSearch(currentPage - 10);
-              "
-            >
-              -10
-            </button>
-          </li>
-
+          <!-- Dynamic page numbers -->
           <li
             class="page-item"
             v-for="element in [...Array(lastPage + 1).keys()].slice(
-              currentPage - 2 < 1 ? 1 : Math.min(currentPage - 2, lastPage - 4), // inizio
-              Math.max(6, Math.min(lastPage + 1, currentPage + 3)) // fine
+              currentPage - 2 < 1 ? 1 : Math.min(currentPage - 2, lastPage - 4),
+              Math.max(6, Math.min(lastPage + 1, currentPage + 3))
             )"
           >
             <button
               class="page-link"
               :class="{ disabled: currentPage === element }"
               @click="
+                getApartments(element);
                 moveToGrid();
-                !isFiltered
-                  ? getApartments(element, currentCategory)
-                  : radiusSearch(element);
               "
             >
               {{ element }}
             </button>
           </li>
 
+          <!-- Fast forward button -->
           <li class="page-item">
             <button
               class="page-link"
-              :class="{ disabled: currentPage >= lastPage - 9 }"
+              :class="{ disabled: currentPage > lastPage - 3 }"
               @click="
+                getApartments(lastPage);
                 moveToGrid();
-                !isFiltered
-                  ? getApartments(currentPage + 10, currentCategory)
-                  : radiusSearch(currentPage + 10);
-              "
-            >
-              +10
-            </button>
-          </li>
-
-          <li class="page-item">
-            <button
-              class="page-link"
-              :class="{ disabled: currentPage == lastPage }"
-              @click="
-                moveToGrid();
-                !isFiltered
-                  ? getApartments(lastPage, currentCategory)
-                  : radiusSearch(lastPage);
               "
             >
               &gt;&gt;
             </button>
           </li>
 
+          <!-- Button Next -->
           <li class="page-item">
             <button
               class="page-link"
               :class="{ disabled: currentPage === lastPage }"
               @click="
+                getApartments(currentPage + 1);
                 moveToGrid();
-                !isFiltered
-                  ? getApartments(currentPage + 1, currentCategory)
-                  : radiusSearch(currentPage + 1);
               "
             >
               Successivo

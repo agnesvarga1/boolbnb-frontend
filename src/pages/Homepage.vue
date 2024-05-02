@@ -453,12 +453,14 @@ export default {
         </div>
       </div>
 
-      <!-- Navigation menù -->
+      <!-- Navigation menu -->
       <nav
         aria-label="Page navigation example"
-        class="mt-5 d-flex justify-content-center"
+        class="mt-5 d-flex justify-content-center container"
       >
-        <ul class="pagination">
+        <ul class="pagination pagination-sm flex-wrap"> <!-- Aggiunta di pagination-sm per dispositivi piccoli e flex-wrap per permettere alla paginazione di adattarsi su più linee se necessario -->
+
+          <!-- Button Previous -->
           <li class="page-item">
             <button
               class="page-link"
@@ -472,6 +474,7 @@ export default {
             </button>
           </li>
 
+          <!-- Fast backward button -->
           <li class="page-item">
             <button
               class="page-link"
@@ -485,24 +488,12 @@ export default {
             </button>
           </li>
 
-          <li class="page-item">
-            <button
-              class="page-link"
-              :class="{ disabled: currentPage <= 10 }"
-              @click="
-                getApartments(currentPage - 10);
-                moveToGrid();
-              "
-            >
-              -10
-            </button>
-          </li>
-
+          <!-- Dynamic page numbers -->
           <li
             class="page-item"
             v-for="element in [...Array(lastPage + 1).keys()].slice(
-              currentPage - 2 < 1 ? 1 : Math.min(currentPage - 2, lastPage - 4), // inizio
-              Math.max(6, Math.min(lastPage + 1, currentPage + 3)) // fine
+              currentPage - 2 < 1 ? 1 : Math.min(currentPage - 2, lastPage - 4),
+              Math.max(6, Math.min(lastPage + 1, currentPage + 3))
             )"
           >
             <button
@@ -517,19 +508,7 @@ export default {
             </button>
           </li>
 
-          <li class="page-item">
-            <button
-              class="page-link"
-              :class="{ disabled: currentPage >= lastPage - 9 }"
-              @click="
-                getApartments(currentPage + 10);
-                moveToGrid();
-              "
-            >
-              +10
-            </button>
-          </li>
-
+          <!-- Fast forward button -->
           <li class="page-item">
             <button
               class="page-link"
@@ -543,6 +522,7 @@ export default {
             </button>
           </li>
 
+          <!-- Button Next -->
           <li class="page-item">
             <button
               class="page-link"
@@ -557,6 +537,7 @@ export default {
           </li>
         </ul>
       </nav>
+
     </div>
 
     <div
