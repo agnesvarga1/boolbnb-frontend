@@ -255,7 +255,7 @@ export default {
       <h2 class="me-4 fw-bolder">Inizia a cercare</h2>
       <input
         type="text"
-        class="form-control border border-end-0"
+        class="form-control border border-end-0 mx-0 rounded-start-pill"
         placeholder="Cerca località..."
         aria-describedby="button-addon2"
         v-model="searchInput"
@@ -263,35 +263,20 @@ export default {
         @keydown.enter="radiusSearch(1)"
       />
       <button
-        class="btn border border-start-0"
+        class="btn border border-start-0 rounded-end-circle mx-0"
         :class="searchInput !== '' ? 'btn-green' : ''"
         type="button"
         id="button-addon2"
         @click="radiusSearch(1)"
       >
-        <i class="fa-solid fa-magnifying-glass"></i>
+        <i class="fa-solid fa-magnifying-glass mx-0"></i>
       </button>
       <datalist id="addressList">
         <option v-for="element in arrayAddresses" :value="element"></option>
       </datalist>
-      <button
-        class="btn btn-green ms-5"
-        :class="{ disabled: !isFiltered }"
-        @click="
-          getApartments(1);
-          searchInput = '';
-          radiusInput = 20;
-          bedsInput = '';
-          roomsInput = '';
-          servicesInput = [];
-          currentCategory = '';
-          isFiltered = false;
-        "
-      >
-        Reset
-      </button>
+
     </div>
-    <div class="row my-4 justify-content-evenly">
+    <div class="row my-4 justify-content-center justify-content-lg-evenly gap-3 row-gap-2">
       <button
         v-for="element in arrayCategories"
         @click="manageCategory(element.name)"
@@ -303,7 +288,9 @@ export default {
         {{ element.name }}
       </button>
     </div>
+
     <div>
+
       <label for="rangeZone" class="form-label"
         >Range zona: <strong>{{ radiusInput }} km</strong></label
       >
@@ -320,8 +307,11 @@ export default {
         :disabled="searchInput === ''"
       />
     </div>
+    <!-- Letti e Stanze -->
     <div class="row">
-      <div class="col-7 row">
+
+      <div class="col-lg-7 col-12 row">
+
         <div class="col-6">
           <label for="num_beds" class="form-label">Letti</label>
           <div class="input-group mb-3">
@@ -340,6 +330,7 @@ export default {
           </div>
         </div>
 
+
         <div class="col-6">
           <label for="num_rooms" class="form-label">Stanze</label>
           <div class="input-group mb-3">
@@ -356,39 +347,65 @@ export default {
         </div>
       </div>
 
-      <div class="col-5">
-        <div class="mb-3">
+      <!-- Servizi -->
+
+        <div class="mb-2 col-xl-5 col-md-12">
           <label class="form-label">Servizi</label>
-          <div class="form-check d-flex flex-wrap">
+          <div class="form-check d-flex flex-wrap row-gap-1 justify-content-between">
+
             <div
               v-for="element in arrayServices"
               :key="element.id"
-              class="col-6 d-flex"
-            >
-              <input
-                class="form-check-input"
-                type="checkbox"
-                name="services[]"
-                :id="`service_${element.id}`"
-                :value="element.id"
-                v-model="servicesInput"
-              />
-              <img
-                :src="`${store.apiBaseUrl}/storage/${element.icon}`"
-                :alt="element.name"
-                style="width: 15px"
-                class="ms-2"
-              />
-              <label
-                class="form-check-label text-capitalize ms-2"
-                :for="`service_${element.id}`"
-              >
-                {{ element.name }}
-              </label>
+              class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-6 d-flex align-items-center">
+
+              <div>
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  name="services[]"
+                  :id="`service_${element.id}`"
+                  :value="element.id"
+                  v-model="servicesInput"
+                />
+                <img
+                  :src="`${store.apiBaseUrl}/storage/${element.icon}`"
+                  :alt="element.name"
+                  style="width: 15px; height: 1rem;"
+                  class="ms-1"
+                />
+                <label
+                  class="form-check-label text-capitalize ms-2"
+                  :for="`service_${element.id}`"
+                >
+                  {{ element.name }}
+                </label>
+              </div>
             </div>
+
           </div>
+
         </div>
-      </div>
+
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <button
+        class="btn btn-green"
+        :class="{ 'd-none': !isFiltered }"
+        @click="
+          getApartments(1);
+          searchInput = '';
+          radiusInput = 20;
+          bedsInput = '';
+          roomsInput = '';
+          servicesInput = [];
+          currentCategory = '';
+          isFiltered = false;
+        "
+        style="scale: 0.8;"
+      >
+        Cancella filtri
+      </button>
     </div>
   </section>
 
