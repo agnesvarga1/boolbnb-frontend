@@ -12,7 +12,7 @@ export default {
   },
   methods: {
     handleScroll() {
-      this.isScrolled = window.scrollY > 30;
+      this.isScrolled = window.scrollY > 0;
     }
   },
   mounted() {
@@ -76,10 +76,9 @@ export default {
 
 <style lang="scss">
 .navbar{
-  background-color: rgb(255, 255, 255, 0.6);
+  background-color: rgb(255, 255, 255, 0.7);
 }
 .navbar.scrolled {
-  transition: background-color 0.3s;
   background-color: white; 
 }
 </style>

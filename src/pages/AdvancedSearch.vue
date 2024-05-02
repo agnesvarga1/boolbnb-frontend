@@ -634,6 +634,10 @@ export default {
 .card {
   min-height: 400px;
 }
+.navbar.scrolled {
+  transition: background-color 0s !important;
+  background-color: white; 
+}
 .card-img-top img {
   height: 250px;
   width: 100%;
