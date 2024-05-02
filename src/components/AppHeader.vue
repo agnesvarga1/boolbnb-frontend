@@ -7,17 +7,28 @@ export default {
   data() {
     return {
       store,
+      isScrolled: false,
     };
   },
-  methods: {},
-  mounted() {},
+  methods: {
+    handleScroll() {
+      this.isScrolled = window.scrollY > 0;
+    }
+  },
+  mounted() {
+    window.addEventListener('scroll', this.handleScroll);
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.handleScroll);
+  },
 };
 </script>
 
 <template>
   <nav
-    class="navbar navbar-expand-lg navbar-light bg-light fixed-top bg-opacity-75 p-0 shadow-lg"
-  >
+    class="navbar navbar-expand-lg navbar-light fixed-top p-0 shadow-lg"
+    :class="{ 'scrolled': isScrolled }"
+    >
     <div class="container">
       <router-link class="navbar-brand m-0" :to="{ name: 'home' }">
         <img src="/logo-boolbnb-nome.png" alt="Logo" style="max-height: 70px" />
@@ -63,4 +74,11 @@ export default {
   </nav>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+.navbar{
+  background-color: rgb(255, 255, 255, 0.7);
+}
+.navbar.scrolled {
+  background-color: white; 
+}
+</style>

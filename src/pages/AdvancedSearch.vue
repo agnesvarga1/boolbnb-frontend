@@ -205,6 +205,10 @@ export default {
         this.radiusSearch(1);
       }
     },
+    getCategoryIcon(categoryName) {
+      const category = this.arrayCategories.find(cat => cat.name === categoryName);
+      return category ? category.icon : 'fa-solid fa-circle-question'; // Icona di default se non trova corrispondenze
+    },
   },
   watch: {
     searchInput(newVal) {
@@ -246,12 +250,12 @@ export default {
 
 <template>
   <!-- Search Section -->
-  <section class="container my-3" style="padding-top: 80px">
+  <section class="container my-4" style="padding-top: 80px">
     <div class="input-group d-flex">
       <h2 class="me-4 fw-bolder">Inizia a cercare</h2>
       <input
         type="text"
-        class="form-control border border-end-0"
+        class="form-control border border-end-0 mx-0 rounded-start-pill"
         placeholder="Cerca località..."
         aria-describedby="button-addon2"
         v-model="searchInput"
@@ -259,35 +263,20 @@ export default {
         @keydown.enter="radiusSearch(1)"
       />
       <button
-        class="btn border border-start-0"
+        class="btn border border-start-0 rounded-end-circle mx-0"
         :class="searchInput !== '' ? 'btn-green' : ''"
         type="button"
         id="button-addon2"
         @click="radiusSearch(1)"
       >
-        <i class="fa-solid fa-magnifying-glass"></i>
+        <i class="fa-solid fa-magnifying-glass mx-0"></i>
       </button>
       <datalist id="addressList">
         <option v-for="element in arrayAddresses" :value="element"></option>
       </datalist>
-      <button
-        class="btn btn-green ms-5"
-        :class="{ disabled: !isFiltered }"
-        @click="
-          getApartments(1);
-          searchInput = '';
-          radiusInput = 20;
-          bedsInput = '';
-          roomsInput = '';
-          servicesInput = [];
-          currentCategory = '';
-          isFiltered = false;
-        "
-      >
-        Reset
-      </button>
+
     </div>
-    <div class="row my-4 justify-content-evenly">
+    <div class="row my-4 justify-content-center justify-content-lg-evenly gap-3 row-gap-2">
       <button
         v-for="element in arrayCategories"
         @click="manageCategory(element.name)"
@@ -299,7 +288,9 @@ export default {
         {{ element.name }}
       </button>
     </div>
+
     <div>
+
       <label for="rangeZone" class="form-label"
         >Range zona: <strong>{{ radiusInput }} km</strong></label
       >
@@ -316,8 +307,11 @@ export default {
         :disabled="searchInput === ''"
       />
     </div>
+    <!-- Letti e Stanze -->
     <div class="row">
-      <div class="col-7 row">
+
+      <div class="col-lg-7 col-12 row">
+
         <div class="col-6">
           <label for="num_beds" class="form-label">Letti</label>
           <div class="input-group mb-3">
@@ -336,6 +330,7 @@ export default {
           </div>
         </div>
 
+
         <div class="col-6">
           <label for="num_rooms" class="form-label">Stanze</label>
           <div class="input-group mb-3">
@@ -352,39 +347,65 @@ export default {
         </div>
       </div>
 
-      <div class="col-5">
-        <div class="mb-3">
+      <!-- Servizi -->
+
+        <div class="mb-2 col-xl-5 col-md-12">
           <label class="form-label">Servizi</label>
-          <div class="form-check d-flex flex-wrap">
+          <div class="form-check d-flex flex-wrap row-gap-1 justify-content-between">
+
             <div
               v-for="element in arrayServices"
               :key="element.id"
-              class="col-6 d-flex"
-            >
-              <input
-                class="form-check-input"
-                type="checkbox"
-                name="services[]"
-                :id="`service_${element.id}`"
-                :value="element.id"
-                v-model="servicesInput"
-              />
-              <img
-                :src="`${store.apiBaseUrl}/storage/${element.icon}`"
-                :alt="element.name"
-                style="width: 15px"
-                class="ms-2"
-              />
-              <label
-                class="form-check-label text-capitalize ms-2"
-                :for="`service_${element.id}`"
-              >
-                {{ element.name }}
-              </label>
+              class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-6 d-flex align-items-center">
+
+              <div>
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  name="services[]"
+                  :id="`service_${element.id}`"
+                  :value="element.id"
+                  v-model="servicesInput"
+                />
+                <img
+                  :src="`${store.apiBaseUrl}/storage/${element.icon}`"
+                  :alt="element.name"
+                  style="width: 15px; height: 1rem;"
+                  class="ms-1"
+                />
+                <label
+                  class="form-check-label text-capitalize ms-2"
+                  :for="`service_${element.id}`"
+                >
+                  {{ element.name }}
+                </label>
+              </div>
             </div>
+
           </div>
+
         </div>
-      </div>
+
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <button
+        class="btn btn-green"
+        :class="{ 'd-none': !isFiltered }"
+        @click="
+          getApartments(1);
+          searchInput = '';
+          radiusInput = 20;
+          bedsInput = '';
+          roomsInput = '';
+          servicesInput = [];
+          currentCategory = '';
+          isFiltered = false;
+        "
+        style="scale: 0.8;"
+      >
+        Cancella filtri
+      </button>
     </div>
   </section>
 
@@ -402,63 +423,78 @@ export default {
         <div
           v-for="element in arrayApartments"
           :key="element.id"
-          class="col-md-4"
+          class="col-md-6 col-lg-4"
         >
           <router-link
             :to="{ name: 'apartment', params: { slug: element.slug } }"
             class="nav-link"
           >
-            <div class="card">
-              <figure class="mb-0 card-img-top">
-                <img
-                  v-if="element.cover_image.startsWith('https://pixabay.com')"
-                  :src="element.cover_image"
-                  class="card-img-top"
-                  :alt="element.slug"
-                />
-                <img
-                  v-else
-                  :src="`${store.apiBaseUrl}/storage/${element.cover_image}`"
-                  class="card-img-top"
-                  :alt="element.slug"
-                />
+          <!-- INIZIO CARDS -->
+          <div class="card">
+            <figure class="mb-0 card-img-top">
+              <img
+                v-if="element.cover_image.startsWith('https://pixabay.com')"
+                :src="element.cover_image"
+                class="card-img-top"
+                :alt="element.slug"
+              />
+              <img
+                v-else
+                :src="`${store.apiBaseUrl}/storage/${element.cover_image}`"                  class="card-img-top"
+                :alt="element.slug"
+              />
               </figure>
+
               <div
                 class="card-body d-flex flex-column justify-content-between bg-light"
               >
-                <h4 class="card-title fw-bolder">{{ element.title }}</h4>
-                <ul class="list-unstyled">
-                  <li>
-                    Categoria:
-                    <span class="badge text-bg-danger rounded-pill">
-                      {{ element.category }}
+                <!-- Titolo -->
+                <h4 class="card-title fw-bolder text-nowrap overflow-hidden">{{ element.title }}</h4>
+                
+                <!--Icone servizi -->
+                <div class="mb-1">
+                  <span
+                    v-for="element in element.services"
+                    class="badge btn-green rounded-pill me-2 mb-1 p-1"
+                  >
+                    <img
+                    :src="`${store.apiBaseUrl}/storage/${element.icon}`"
+                    :alt="element.name"
+                    style="width: 15px; fill: white"
+                    
+                    />
+                  </span>
+                </div>
+
+                <!-- Categoria, letti e stanze -->
+                <div class="mb-2 d-flex align-items-center flex-wrap row-gap-1">
+                  <div class="me-3">
+                    Categoria: 
+                    <span class="badge text-bg-danger rounded-pill text-capitalize ">
+                      <i :class="getCategoryIcon(element.category)" style="color:black; font-size: 15px;"></i>
                     </span>
-                  </li>
-                  <li>
-                    Servizi:
-                    <span
-                      v-for="element in element.services"
-                      class="badge btn-green rounded-pill me-1"
-                    >
-                      {{ element.name }}
-                    </span>
-                  </li>
-                  <li>
+                  </div>
+
+                  <div class="me-3 ">
                     Letti:
-                    <span class="badge text-bg-success rounded-pill me-1">
+                    <span class="badge text-bg-success rounded-pill me-1 text-black" style="font-size: 15px;">
                       {{ element.num_beds }}
                     </span>
-                  </li>
-                  <li>
+                  </div>
+                  <div>
                     Stanze:
-                    <span class="badge text-bg-success rounded-pill">
-                      {{ element.num_rooms }}
+                    <span class="badge text-bg-success rounded-pill text-black" style="font-size: 15px;">
+                       {{ element.num_rooms }}
                     </span>
-                  </li>
-                </ul>
+                  </div>
+                </div>
+
+                <!-- Prezzo -->
                 <h6 class="mb-2 col-5 price-tag fw-bolder">
                   {{ element.price }} €/notte
                 </h6>
+
+                <!-- Indirizzo -->
                 <p
                   class="card-text after-name text-truncate text-body-secondary"
                 >
@@ -470,117 +506,83 @@ export default {
         </div>
       </div>
 
-      <!-- Navigation menù -->
+      <!-- Navigation menu -->
       <nav
         aria-label="Page navigation example"
-        class="mt-5 d-flex justify-content-center"
+        class="mb-2 d-flex justify-content-center container"
       >
-        <ul class="pagination">
-          <li class="page-item">
+        <ul class="pagination pagination-sm flex-wrap"> <!-- Aggiunta di pagination-sm per dispositivi piccoli e flex-wrap per permettere alla paginazione di adattarsi su più linee se necessario -->
+
+          <!-- Button Previous -->
+          <li class="page-item d-none d-sm-block">
             <button
-              class="page-link"
+              class="page-link text-secondary-emphasis"
               :class="{ disabled: currentPage === 1 }"
               @click="
+                getApartments(currentPage - 1);
                 moveToGrid();
-                !isFiltered
-                  ? getApartments(currentPage - 1, currentCategory)
-                  : radiusSearch(currentPage - 1);
               "
             >
               Precedente
             </button>
           </li>
 
+          <!-- Fast backward button -->
           <li class="page-item">
             <button
-              class="page-link"
-              :class="{ disabled: currentPage == 1 }"
+              class="page-link text-secondary-emphasis"
+              :class="{ disabled: currentPage < 4 }"
               @click="
+                getApartments(1);
                 moveToGrid();
-                !isFiltered
-                  ? getApartments(1, currentCategory)
-                  : radiusSearch(1);
               "
             >
               &lt;&lt;
             </button>
           </li>
 
-          <li class="page-item">
-            <button
-              class="page-link"
-              :class="{ disabled: currentPage <= 10 }"
-              @click="
-                moveToGrid();
-                !isFiltered
-                  ? getApartments(currentPage - 10, currentCategory)
-                  : radiusSearch(currentPage - 10);
-              "
-            >
-              -10
-            </button>
-          </li>
-
+          <!-- Dynamic page numbers -->
           <li
             class="page-item"
             v-for="element in [...Array(lastPage + 1).keys()].slice(
-              currentPage - 2 < 1 ? 1 : Math.min(currentPage - 2, lastPage - 4), // inizio
-              Math.max(6, Math.min(lastPage + 1, currentPage + 3)) // fine
+              currentPage - 2 < 1 ? 1 : Math.min(currentPage - 2, lastPage - 4),
+              Math.max(6, Math.min(lastPage + 1, currentPage + 3))
             )"
           >
             <button
-              class="page-link"
+              class="page-link text-secondary-emphasis"
               :class="{ disabled: currentPage === element }"
               @click="
+                getApartments(element);
                 moveToGrid();
-                !isFiltered
-                  ? getApartments(element, currentCategory)
-                  : radiusSearch(element);
               "
             >
               {{ element }}
             </button>
           </li>
 
+          <!-- Fast forward button -->
           <li class="page-item">
             <button
-              class="page-link"
-              :class="{ disabled: currentPage >= lastPage - 9 }"
+              class="page-link text-secondary-emphasis"
+              :class="{ disabled: currentPage > lastPage - 3 }"
               @click="
+                getApartments(lastPage);
                 moveToGrid();
-                !isFiltered
-                  ? getApartments(currentPage + 10, currentCategory)
-                  : radiusSearch(currentPage + 10);
-              "
-            >
-              +10
-            </button>
-          </li>
-
-          <li class="page-item">
-            <button
-              class="page-link"
-              :class="{ disabled: currentPage == lastPage }"
-              @click="
-                moveToGrid();
-                !isFiltered
-                  ? getApartments(lastPage, currentCategory)
-                  : radiusSearch(lastPage);
               "
             >
               &gt;&gt;
             </button>
           </li>
 
-          <li class="page-item">
+          <!-- Button Next -->
+          <li class="page-item d-none d-sm-block">
             <button
-              class="page-link"
+              class="page-link text-secondary-emphasis"
               :class="{ disabled: currentPage === lastPage }"
               @click="
+                getApartments(currentPage + 1);
                 moveToGrid();
-                !isFiltered
-                  ? getApartments(currentPage + 1, currentCategory)
-                  : radiusSearch(currentPage + 1);
               "
             >
               Successivo
@@ -631,6 +633,10 @@ export default {
 <style lang="scss">
 .card {
   min-height: 400px;
+}
+.navbar.scrolled {
+  transition: background-color 0s !important;
+  background-color: white; 
 }
 .card-img-top img {
   height: 250px;
