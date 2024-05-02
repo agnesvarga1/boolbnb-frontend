@@ -114,72 +114,74 @@ export default {
           </figure>
         </div>
         <div
-          class="col-lg-6 col-md-12 apartment-details d-flex flex-column gap-1"
+          class="col-lg-6 col-md-12 apartment-details d-flex flex-wrap gap-1"
         >
-          <h2>{{ singleApartment.title }}</h2>
-          <p class="address">
-            <i class="fa-solid fa-location-dot"></i>
-            {{ singleApartment.full_address }}
-          </p>
-          <p>{{ singleApartment.description }}</p>
-          <div class="d-flex align-items-center gap-4 my-2 fs-5">
-            <div class="text-capitalize" style="width: fit-content">
-              <i :class="getCategoryIcon(singleApartment.category)"></i>
-              {{ singleApartment.category }}
+          <div class="col-12 d-flex flex-column gap-1">
+            <h2>{{ singleApartment.title }}</h2>
+            <p class="address">
+              <i class="fa-solid fa-location-dot"></i>
+              {{ singleApartment.full_address }}
+            </p>
+            <p>{{ singleApartment.description }}</p>
+            <div class="d-flex align-items-center gap-4 my-2 fs-5">
+              <div class="text-capitalize" style="width: fit-content">
+                <i :class="getCategoryIcon(singleApartment.category)"></i>
+                {{ singleApartment.category }}
+              </div>
+              <h5 class="fw-bold mb-0">
+                {{ singleApartment.price }} &euro;/notte
+              </h5>
             </div>
-            <h5 class="fw-bold mb-0">
-              {{ singleApartment.price }} &euro;/notte
-            </h5>
-          </div>
-          <h6 class="mt-4">Dettagli:</h6>
-          <div class="features d-flex gap-2">
-            <div class="fs-5 d-flex align-items-center">
-              <i class="fa-solid fa-house me-2"></i>
-              <span class="me-3">
-                {{ singleApartment.num_rooms }}
-              </span>
+            <h6 class="mt-4">Dettagli:</h6>
+            <div class="features d-flex gap-2">
+              <div class="fs-5 d-flex align-items-center">
+                <i class="fa-solid fa-house me-2"></i>
+                <span class="me-3">
+                  {{ singleApartment.num_rooms }}
+                </span>
+              </div>
+              <div class="fs-5 d-flex align-items-center">
+                <i class="fa-solid fa-bath me-2"></i>
+                <span class="me-3">
+                  {{ singleApartment.num_bathrooms }}
+                </span>
+              </div>
+              <div class="fs-5 d-flex align-items-center">
+                <i class="fa-solid fa-square me-2"></i>
+                <span class="me-3">
+                  {{ Math.trunc(singleApartment.square_meters) }}m<sup>2</sup>
+                </span>
+              </div>
+              <div class="fs-5 d-flex align-items-center">
+                <i class="fa-solid fa-bed me-2"></i>
+                <span class="me-3">{{ singleApartment.num_beds }}</span>
+              </div>
             </div>
-            <div class="fs-5 d-flex align-items-center">
-              <i class="fa-solid fa-bath me-2"></i>
-              <span class="me-3">
-                {{ singleApartment.num_bathrooms }}
-              </span>
+            <h6 class="mt-2 mb-0">Servizi:</h6>
+            <div
+              v-if="singleApartment.services && singleApartment.services.length"
+              class="services"
+            >
+              <ul class="list-unstyled">
+                <li
+                  v-for="item in singleApartment.services"
+                  :key="item.id"
+                  class="mt-1 d-flex align-items-center"
+                >
+                  <img
+                    :src="`${store.apiBaseUrl}/storage/${item.icon}`"
+                    :alt="item.name"
+                    class="icon me-2"
+                  />
+                  <span class="text-capitalize">{{ item.name }}</span>
+                </li>
+              </ul>
             </div>
-            <div class="fs-5 d-flex align-items-center">
-              <i class="fa-solid fa-square me-2"></i>
-              <span class="me-3">
-                {{ Math.trunc(singleApartment.square_meters) }}m<sup>2</sup>
-              </span>
-            </div>
-            <div class="fs-5 d-flex align-items-center">
-              <i class="fa-solid fa-bed me-2"></i>
-              <span class="me-3">{{ singleApartment.num_beds }}</span>
-            </div>
-          </div>
-          <h6 class="mt-2 mb-0">Servizi:</h6>
-          <div
-            v-if="singleApartment.services && singleApartment.services.length"
-            class="services"
-          >
-            <ul class="list-unstyled">
-              <li
-                v-for="item in singleApartment.services"
-                :key="item.id"
-                class="mt-1 d-flex align-items-center"
-              >
-                <img
-                  :src="`${store.apiBaseUrl}/storage/${item.icon}`"
-                  :alt="item.name"
-                  class="icon me-2"
-                />
-                <span class="text-capitalize">{{ item.name }}</span>
-              </li>
-            </ul>
           </div>
 
           <button
             type="button"
-            class="btn btn-green w-100 mt-3"
+            class="btn btn-green col-12 mt-3 align-self-end"
             @click="toggleModal()"
           >
             Contatta il proprietario
