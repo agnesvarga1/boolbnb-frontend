@@ -76,10 +76,20 @@ export default {
       upButton.style.display = "none";
       upContainer.classList.remove("mb-4");
     },
+    resetStylesAndClasses() {
+      const upButton = document.getElementById("upButton");
+      const upContainer = document.getElementById("upContainer");
+      upButton.style.display = "block";
+      upContainer.classList.add("mb-4");
+    },
   },
   mounted() {
     this.getSingleApartment();
     this.hideButton();
+  },
+  beforeRouteLeave(to, from, next) {
+    this.resetStylesAndClasses();
+    next();
   },
 };
 </script>
