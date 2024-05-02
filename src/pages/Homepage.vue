@@ -125,8 +125,10 @@ export default {
       });
     },
     getCategoryIcon(categoryName) {
-      const category = this.arrayCategories.find(cat => cat.name === categoryName);
-      return category ? category.icon : 'fa-solid fa-circle-question'; // Icona di default se non trova corrispondenze
+      const category = this.arrayCategories.find(
+        (cat) => cat.name === categoryName
+      );
+      return category ? category.icon : "fa-solid fa-circle-question"; // Icona di default se non trova corrispondenze
     },
   },
   watch: {
@@ -346,7 +348,6 @@ export default {
         </div>
       </div>
     </div>
-
   </div>
 
   <!-- Search Section -->
@@ -424,8 +425,10 @@ export default {
                 class="card-body d-flex flex-column justify-content-between bg-light"
               >
                 <!-- Titolo -->
-                <h4 class="card-title fw-bolder text-nowrap overflow-hidden">{{ element.title }}</h4>
-                
+                <h4 class="card-title fw-bolder text-nowrap overflow-hidden">
+                  {{ element.title }}
+                </h4>
+
                 <!--Icone servizi -->
                 <div class="mb-1">
                   <span
@@ -433,10 +436,9 @@ export default {
                     class="badge btn-green rounded-pill me-2 mb-1 p-1"
                   >
                     <img
-                    :src="`${store.apiBaseUrl}/storage/${element.icon}`"
-                    :alt="element.name"
-                    style="width: 15px; fill: white"
-                    
+                      :src="`${store.apiBaseUrl}/storage/${element.icon}`"
+                      :alt="element.name"
+                      style="width: 15px; filter: brightness(0) invert(1)"
                     />
                   </span>
                 </div>
@@ -444,22 +446,37 @@ export default {
                 <!-- Categoria, letti e stanze -->
                 <div class="mb-2 d-flex align-items-center flex-wrap row-gap-1">
                   <div class="me-3">
-                    Categoria: 
-                    <span class="badge text-bg-danger rounded-pill text-capitalize ">
-                      <i :class="getCategoryIcon(element.category)" style="color:black; font-size: 15px;"></i>
+                    Categoria:
+                    <span
+                      class="badge text-bg-danger rounded-pill text-capitalize"
+                    >
+                      <i
+                        :class="getCategoryIcon(element.category)"
+                        style="
+                          color: black;
+                          font-size: 15px;
+                          filter: brightness(0) invert(1);
+                        "
+                      ></i>
                     </span>
                   </div>
 
-                  <div class="me-3 ">
+                  <div class="me-3">
                     Letti:
-                    <span class="badge text-bg-success rounded-pill me-1 text-black" style="font-size: 15px;">
+                    <span
+                      class="badge text-bg-success rounded-pill me-1 text-white"
+                      style="font-size: 15px"
+                    >
                       {{ element.num_beds }}
                     </span>
                   </div>
                   <div>
                     Stanze:
-                    <span class="badge text-bg-success rounded-pill text-black" style="font-size: 15px;">
-                       {{ element.num_rooms }}
+                    <span
+                      class="badge text-bg-success rounded-pill text-white"
+                      style="font-size: 15px"
+                    >
+                      {{ element.num_rooms }}
                     </span>
                   </div>
                 </div>
@@ -487,7 +504,6 @@ export default {
         class="mb-2 d-flex justify-content-center container"
       >
         <ul class="pagination pagination-sm flex-wrap text-dark">
-
           <!-- Button Previous -->
           <li class="page-item d-none d-sm-block">
             <button
@@ -565,7 +581,6 @@ export default {
           </li>
         </ul>
       </nav>
-
     </div>
 
     <div
@@ -589,7 +604,6 @@ export default {
     </div>
 
     <TomTomMap :propApartments="arrayApartments" />
-
   </section>
 </template>
 

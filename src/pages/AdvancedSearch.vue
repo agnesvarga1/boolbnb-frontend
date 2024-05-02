@@ -206,8 +206,10 @@ export default {
       }
     },
     getCategoryIcon(categoryName) {
-      const category = this.arrayCategories.find(cat => cat.name === categoryName);
-      return category ? category.icon : 'fa-solid fa-circle-question'; // Icona di default se non trova corrispondenze
+      const category = this.arrayCategories.find(
+        (cat) => cat.name === categoryName
+      );
+      return category ? category.icon : "fa-solid fa-circle-question"; // Icona di default se non trova corrispondenze
     },
   },
   watch: {
@@ -274,9 +276,10 @@ export default {
       <datalist id="addressList">
         <option v-for="element in arrayAddresses" :value="element"></option>
       </datalist>
-
     </div>
-    <div class="row my-4 justify-content-center justify-content-lg-evenly gap-3 row-gap-2">
+    <div
+      class="row my-4 justify-content-center justify-content-lg-evenly gap-3 row-gap-2"
+    >
       <button
         v-for="element in arrayCategories"
         @click="manageCategory(element.name)"
@@ -290,7 +293,6 @@ export default {
     </div>
 
     <div>
-
       <label for="rangeZone" class="form-label"
         >Range zona: <strong>{{ radiusInput }} km</strong></label
       >
@@ -309,9 +311,7 @@ export default {
     </div>
     <!-- Letti e Stanze -->
     <div class="row">
-
       <div class="col-lg-7 col-12 row">
-
         <div class="col-6">
           <label for="num_beds" class="form-label">Letti</label>
           <div class="input-group mb-3">
@@ -329,7 +329,6 @@ export default {
             />
           </div>
         </div>
-
 
         <div class="col-6">
           <label for="num_rooms" class="form-label">Stanze</label>
@@ -349,43 +348,41 @@ export default {
 
       <!-- Servizi -->
 
-        <div class="mb-2 col-xl-5 col-md-12">
-          <label class="form-label">Servizi</label>
-          <div class="form-check d-flex flex-wrap row-gap-1 justify-content-between">
-
-            <div
-              v-for="element in arrayServices"
-              :key="element.id"
-              class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-6 d-flex align-items-center">
-
-              <div>
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  name="services[]"
-                  :id="`service_${element.id}`"
-                  :value="element.id"
-                  v-model="servicesInput"
-                />
-                <img
-                  :src="`${store.apiBaseUrl}/storage/${element.icon}`"
-                  :alt="element.name"
-                  style="width: 15px; height: 1rem;"
-                  class="ms-1"
-                />
-                <label
-                  class="form-check-label text-capitalize ms-2"
-                  :for="`service_${element.id}`"
-                >
-                  {{ element.name }}
-                </label>
-              </div>
+      <div class="mb-2 col-xl-5 col-md-12">
+        <label class="form-label">Servizi</label>
+        <div
+          class="form-check d-flex flex-wrap row-gap-1 justify-content-between"
+        >
+          <div
+            v-for="element in arrayServices"
+            :key="element.id"
+            class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-6 d-flex align-items-center"
+          >
+            <div>
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="services[]"
+                :id="`service_${element.id}`"
+                :value="element.id"
+                v-model="servicesInput"
+              />
+              <img
+                :src="`${store.apiBaseUrl}/storage/${element.icon}`"
+                :alt="element.name"
+                style="width: 15px; height: 1rem"
+                class="ms-1"
+              />
+              <label
+                class="form-check-label text-capitalize ms-2"
+                :for="`service_${element.id}`"
+              >
+                {{ element.name }}
+              </label>
             </div>
-
           </div>
-
         </div>
-
+      </div>
     </div>
 
     <div class="d-flex justify-content-center">
@@ -402,7 +399,7 @@ export default {
           currentCategory = '';
           isFiltered = false;
         "
-        style="scale: 0.8;"
+        style="scale: 0.8"
       >
         Cancella filtri
       </button>
@@ -429,28 +426,31 @@ export default {
             :to="{ name: 'apartment', params: { slug: element.slug } }"
             class="nav-link"
           >
-          <!-- INIZIO CARDS -->
-          <div class="card">
-            <figure class="mb-0 card-img-top">
-              <img
-                v-if="element.cover_image.startsWith('https://pixabay.com')"
-                :src="element.cover_image"
-                class="card-img-top"
-                :alt="element.slug"
-              />
-              <img
-                v-else
-                :src="`${store.apiBaseUrl}/storage/${element.cover_image}`"                  class="card-img-top"
-                :alt="element.slug"
-              />
+            <!-- INIZIO CARDS -->
+            <div class="card">
+              <figure class="mb-0 card-img-top">
+                <img
+                  v-if="element.cover_image.startsWith('https://pixabay.com')"
+                  :src="element.cover_image"
+                  class="card-img-top"
+                  :alt="element.slug"
+                />
+                <img
+                  v-else
+                  :src="`${store.apiBaseUrl}/storage/${element.cover_image}`"
+                  class="card-img-top"
+                  :alt="element.slug"
+                />
               </figure>
 
               <div
                 class="card-body d-flex flex-column justify-content-between bg-light"
               >
                 <!-- Titolo -->
-                <h4 class="card-title fw-bolder text-nowrap overflow-hidden">{{ element.title }}</h4>
-                
+                <h4 class="card-title fw-bolder text-nowrap overflow-hidden">
+                  {{ element.title }}
+                </h4>
+
                 <!--Icone servizi -->
                 <div class="mb-1">
                   <span
@@ -458,10 +458,9 @@ export default {
                     class="badge btn-green rounded-pill me-2 mb-1 p-1"
                   >
                     <img
-                    :src="`${store.apiBaseUrl}/storage/${element.icon}`"
-                    :alt="element.name"
-                    style="width: 15px; fill: white"
-                    
+                      :src="`${store.apiBaseUrl}/storage/${element.icon}`"
+                      :alt="element.name"
+                      style="width: 15px; filter: brightness(0) invert(1)"
                     />
                   </span>
                 </div>
@@ -469,22 +468,37 @@ export default {
                 <!-- Categoria, letti e stanze -->
                 <div class="mb-2 d-flex align-items-center flex-wrap row-gap-1">
                   <div class="me-3">
-                    Categoria: 
-                    <span class="badge text-bg-danger rounded-pill text-capitalize ">
-                      <i :class="getCategoryIcon(element.category)" style="color:black; font-size: 15px;"></i>
+                    Categoria:
+                    <span
+                      class="badge text-bg-danger rounded-pill text-capitalize"
+                    >
+                      <i
+                        :class="getCategoryIcon(element.category)"
+                        style="
+                          color: black;
+                          font-size: 15px;
+                          filter: brightness(0) invert(1);
+                        "
+                      ></i>
                     </span>
                   </div>
 
-                  <div class="me-3 ">
+                  <div class="me-3">
                     Letti:
-                    <span class="badge text-bg-success rounded-pill me-1 text-black" style="font-size: 15px;">
+                    <span
+                      class="badge text-bg-success rounded-pill me-1 text-white"
+                      style="font-size: 15px"
+                    >
                       {{ element.num_beds }}
                     </span>
                   </div>
                   <div>
                     Stanze:
-                    <span class="badge text-bg-success rounded-pill text-black" style="font-size: 15px;">
-                       {{ element.num_rooms }}
+                    <span
+                      class="badge text-bg-success rounded-pill text-white"
+                      style="font-size: 15px"
+                    >
+                      {{ element.num_rooms }}
                     </span>
                   </div>
                 </div>
@@ -511,7 +525,8 @@ export default {
         aria-label="Page navigation example"
         class="mb-2 d-flex justify-content-center container"
       >
-        <ul class="pagination pagination-sm flex-wrap"> <!-- Aggiunta di pagination-sm per dispositivi piccoli e flex-wrap per permettere alla paginazione di adattarsi su più linee se necessario -->
+        <ul class="pagination pagination-sm flex-wrap">
+          <!-- Aggiunta di pagination-sm per dispositivi piccoli e flex-wrap per permettere alla paginazione di adattarsi su più linee se necessario -->
 
           <!-- Button Previous -->
           <li class="page-item d-none d-sm-block">
@@ -636,7 +651,7 @@ export default {
 }
 .navbar.scrolled {
   transition: background-color 0s !important;
-  background-color: white; 
+  background-color: white;
 }
 .card-img-top img {
   height: 250px;
