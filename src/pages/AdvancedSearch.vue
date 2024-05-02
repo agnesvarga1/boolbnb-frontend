@@ -478,7 +478,7 @@ export default {
         <ul class="pagination pagination-sm flex-wrap"> <!-- Aggiunta di pagination-sm per dispositivi piccoli e flex-wrap per permettere alla paginazione di adattarsi su più linee se necessario -->
 
           <!-- Button Previous -->
-          <li class="page-item">
+          <li class="page-item d-none d-sm-block">
             <button
               class="page-link"
               :class="{ disabled: currentPage === 1 }"
@@ -540,7 +540,7 @@ export default {
           </li>
 
           <!-- Button Next -->
-          <li class="page-item">
+          <li class="page-item d-none d-sm-block">
             <button
               class="page-link"
               :class="{ disabled: currentPage === lastPage }"
