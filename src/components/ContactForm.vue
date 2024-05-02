@@ -60,8 +60,11 @@ export default {
     aria-labelledby="exampleModalLabel"
     aria-hidden="true"
   >
-    <div class="modal-dialog modal-lg modal-fullscreen-md-down">
-      <div class="modal-content">
+    <div
+      class="modal-dialog modal-lg modal-fullscreen-md-down d-flex align-items-center"
+      style="height: calc(100vh - 198px)"
+    >
+      <div class="modal-content shadow-lg">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="exampleModalLabel">
             Invia un messaggio per chiedere ulteriori informazioni

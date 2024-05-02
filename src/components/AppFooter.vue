@@ -11,8 +11,16 @@ export default {
 </script>
 
 <template>
-  <a href="#" class="d-flex justify-content-center mb-4 text-decoration-none">
-    <i class="fa-solid fa-circle-arrow-up fs-2" style="color: #1ac6b6"></i>
+  <a
+    href="#"
+    class="d-flex justify-content-center mb-4 text-decoration-none"
+    id="upContainer"
+  >
+    <i
+      class="fa-solid fa-circle-arrow-up fs-2"
+      style="color: #1ac6b6"
+      id="upButton"
+    ></i>
   </a>
 
   <footer class="text-center text-lg-start text-light bg-dark">
@@ -112,7 +120,7 @@ export default {
     </section>
 
     <!-- Brand -->
-    <div class="my-2 text-center py-2">
+    <div class="mt-2 text-center py-2">
       <span>&copy; 2024 BoolBnB</span>
     </div>
   </footer>

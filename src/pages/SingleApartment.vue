@@ -70,15 +70,22 @@ export default {
       this.messageSent = true;
       this.isMoadalOpen = false;
     },
+    hideButton() {
+      const upButton = document.getElementById("upButton");
+      const upContainer = document.getElementById("upContainer");
+      upButton.style.display = "none";
+      upContainer.classList.remove("mb-4");
+    },
   },
   mounted() {
     this.getSingleApartment();
+    this.hideButton();
   },
 };
 </script>
 
 <template>
-  <div class="apartment-container">
+  <div class="apartment-container d-flex align-items-center">
     <div class="container">
       <!-- Message success alert -->
       <div class="row">
@@ -203,8 +210,9 @@ export default {
 
 <style lang="scss" scoped>
 .apartment-container {
-  padding: 100px 0 2rem;
-  min-height: calc(100vh - 170px);
+  padding-top: 50px;
+  height: calc(100vh - 198px);
+  //min-height: calc(100vh - 150px);
 
   background-color: #fafafa;
   figure {
