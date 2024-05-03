@@ -157,11 +157,11 @@ export default {
         class="carousel-item active"
         style="
           height: 70vh;
-          background-image: url('/sfondi/immobili-di-prestigio-milano-1024x681.jpg');
+          background-image: url('/sfondi/immobili-di-prestigio-milano-1024x681 (2).jpg');
           background-size: cover;
           background-position: center;
         "
-        data-bs-interval="5000"
+        data-bs-interval="3000"
       >
         <div
           class="carousel-caption d-flex flex-column h-100 align-items-center justify-content-end"
@@ -189,7 +189,7 @@ export default {
           background-size: cover;
           background-position: center;
         "
-        data-bs-interval="5000"
+        data-bs-interval="3000"
       >
         <div
           class="carousel-caption d-flex flex-column h-100 align-items-center justify-content-end"
@@ -217,7 +217,7 @@ export default {
           background-size: cover;
           background-position: center;
         "
-        data-bs-interval="5000"
+        data-bs-interval="3000"
       >
         <div
           class="carousel-caption d-flex flex-column h-100 align-items-center justify-content-end"
@@ -245,7 +245,7 @@ export default {
           background-size: cover;
           background-position: center;
         "
-        data-bs-interval="5000"
+        data-bs-interval="3000"
       >
         <div
           class="carousel-caption d-flex flex-column h-100 align-items-center justify-content-end"
@@ -273,7 +273,7 @@ export default {
           background-size: cover;
           background-position: center;
         "
-        data-bs-interval="5000"
+        data-bs-interval="3000"
       >
         <div
           class="carousel-caption d-flex flex-column h-100 align-items-center justify-content-end"
@@ -301,7 +301,7 @@ export default {
           background-size: cover;
           background-position: center;
         "
-        data-bs-interval="5000"
+        data-bs-interval="3000"
       >
         <div
           class="carousel-caption d-flex flex-column h-100 align-items-center justify-content-end"
@@ -329,7 +329,7 @@ export default {
           background-size: cover;
           background-position: center;
         "
-        data-bs-interval="5000"
+        data-bs-interval="3000"
       >
         <div
           class="carousel-caption d-flex flex-column h-100 align-items-center justify-content-end"
