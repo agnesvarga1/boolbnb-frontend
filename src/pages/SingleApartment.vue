@@ -95,7 +95,7 @@ export default {
 </script>
 
 <template>
-  <div class="apartment-container d-flex align-items-center">
+  <div class="apartment-container">
     <div class="container">
       <!-- Message success alert -->
       <div class="row">
@@ -220,9 +220,8 @@ export default {
 
 <style lang="scss" scoped>
 .apartment-container {
-  padding-top: 50px;
-  height: calc(100vh - 198px);
-  //min-height: calc(100vh - 150px);
+  padding: 100px 0 2rem;
+  min-height: calc(100vh - 170px);
 
   background-color: #fafafa;
   figure {
