@@ -156,7 +156,7 @@ export default {
       <div
         class="carousel-item active"
         style="
-          height: 70vh;
+          height: 75vh;
           background-image: url('/sfondi/immobili-di-prestigio-milano-1024x681 (2).jpg');
           background-size: cover;
           background-position: center;
@@ -184,7 +184,7 @@ export default {
       <div
         class="carousel-item"
         style="
-          height: 70vh;
+          height: 75vh;
           background-image: url('/sfondi/blake-wheeler-zBHU08hdzhY-unsplash.jpg');
           background-size: cover;
           background-position: center;
@@ -212,7 +212,7 @@ export default {
       <div
         class="carousel-item"
         style="
-          height: 70vh;
+          height: 75vh;
           background-image: url('/sfondi/breno-assis-r3WAWU5Fi5Q-unsplash.jpg');
           background-size: cover;
           background-position: center;
@@ -240,7 +240,7 @@ export default {
       <div
         class="carousel-item"
         style="
-          height: 70vh;
+          height: 75vh;
           background-image: url('/sfondi/maximillian-conacher-sPpe2D7VbpM-unsplash.jpg');
           background-size: cover;
           background-position: center;
@@ -268,7 +268,7 @@ export default {
       <div
         class="carousel-item"
         style="
-          height: 70vh;
+          height: 75vh;
           background-image: url('/sfondi/toa-heftiba-nrSzRUWqmoI-unsplash.jpg');
           background-size: cover;
           background-position: center;
@@ -296,7 +296,7 @@ export default {
       <div
         class="carousel-item"
         style="
-          height: 70vh;
+          height: 75vh;
           background-image: url('/sfondi/tom-rumble-7lvzopTxjOU-unsplash.jpg');
           background-size: cover;
           background-position: center;
@@ -324,7 +324,7 @@ export default {
       <div
         class="carousel-item"
         style="
-          height: 70vh;
+          height: 75vh;
           background-image: url('/sfondi/trayan-xIOYJSVEZ8c-unsplash.jpg');
           background-size: cover;
           background-position: center;
