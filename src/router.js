@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Homepage from "./pages/Homepage.vue";
 import AdvancedSearch from "./pages/AdvancedSearch.vue";
 import SingleApartment from "./pages/SingleApartment.vue";
+import NotFound from './pages/NotFound.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -21,6 +22,13 @@ const router = createRouter({
       name: "apartment",
       component: SingleApartment,
     },
+    {
+      path: '/:pathMatch(.*)*',
+      component: NotFound
+    },
   ],
+  scrollBehavior(to, from, savedPosition) {
+    return { top: 0 };
+  }
 });
 export { router };
