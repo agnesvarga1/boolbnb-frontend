@@ -211,6 +211,20 @@ export default {
       );
       return category ? category.icon : "fa-solid fa-circle-question"; // Icona di default se non trova corrispondenze
     },
+
+    checkDates(expDate) {
+      let now = Date.now();
+      let endDate = new Date(expDate);
+      let endDateInMs = endDate.getTime();
+
+      let diff = endDateInMs - now;
+
+      if (diff > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    },
   },
   watch: {
     searchInput(newVal) {
@@ -238,6 +252,7 @@ export default {
       deep: true,
     },
   },
+
   mounted() {
     if (store.homeInput === "") {
       this.getApartments(1);
@@ -429,6 +444,17 @@ export default {
             <!-- INIZIO CARDS -->
             <div class="card">
               <figure class="mb-0 card-img-top">
+                <!-- SPONSOR-BADGE -->
+                <div
+                  v-if="checkDates(element.expiration_date) === true"
+                  class="sponsor-container position-absolute top-0 end-0 m-2 bg-white p-1 rounded shadow-sm d-flex align-items-center justify-content-center"
+                >
+                  <img
+                    class="w-100 h-100"
+                    src="../../logo-boolbnb.png"
+                    alt="logo-sponsored"
+                  />
+                </div>
                 <img
                   v-if="element.cover_image.startsWith('https://pixabay.com')"
                   :src="element.cover_image"
@@ -666,5 +692,10 @@ export default {
 
 .mapboxgl-popup-content {
   color: #1ac6b6;
+}
+
+.sponsor-container {
+  width: 30px;
+  aspect-ratio: 1;
 }
 </style>
