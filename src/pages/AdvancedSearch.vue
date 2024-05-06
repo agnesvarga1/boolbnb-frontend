@@ -447,11 +447,11 @@ export default {
                 <!-- SPONSOR-BADGE -->
                 <div
                   v-if="checkDates(element.expiration_date) === true"
-                  class="sponsor-container position-absolute top-0 end-0 m-2 bg-white p-1 rounded shadow-sm d-flex align-items-center justify-content-center"
+                  class="sponsor-container position-absolute top-0 end-0 m-2 p-1 "
                 >
                   <img
                     class="w-100 h-100"
-                    src="../../logo-boolbnb.png"
+                    src="../../badge-boolbnb-sponsor.png"
                     alt="logo-sponsored"
                   />
                 </div>
@@ -695,7 +695,7 @@ export default {
 }
 
 .sponsor-container {
-  width: 30px;
+  width: 55px;
   aspect-ratio: 1;
 }
 </style>
