@@ -495,7 +495,12 @@ export default {
                 <div class="mb-1">
                   <span
                     v-for="element in element.services"
-                    class="badge btn-green rounded-pill me-2 mb-1 p-1"
+                    class="badge rounded-pill me-2 mb-1 p-1"
+                    :class="
+                      servicesInput.includes(element.id)
+                        ? 'active-service'
+                        : 'btn-green'
+                    "
                   >
                     <img
                       :src="`${store.apiBaseUrl}/storage/${element.icon}`"
