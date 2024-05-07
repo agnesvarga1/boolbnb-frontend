@@ -74,18 +74,6 @@ export default {
       this.messageSent = true;
       this.isMoadalOpen = false;
     },
-    hideButton() {
-      const upButton = document.getElementById("upButton");
-      const upContainer = document.getElementById("upContainer");
-      upButton.style.display = "none";
-      upContainer.classList.remove("mb-4");
-    },
-    resetStylesAndClasses() {
-      const upButton = document.getElementById("upButton");
-      const upContainer = document.getElementById("upContainer");
-      upButton.style.display = "block";
-      upContainer.classList.add("mb-4");
-    },
     groupBy(array, key) {
       return array.reduce((accumulator, currentValue) => {
         (accumulator[currentValue[key]] =
@@ -96,11 +84,6 @@ export default {
   },
   mounted() {
     this.getSingleApartment();
-    this.hideButton();
-  },
-  beforeRouteLeave(to, from, next) {
-    this.resetStylesAndClasses();
-    next();
   },
 };
 </script>
@@ -125,7 +108,8 @@ export default {
       >
         <!-- Apartment Image -->
         <div class="col-lg-6 col-md-12 p-0">
-          <figure class="h-50">
+          <figure>
+
             <img
               :src="
                 singleApartment.cover_image.startsWith('https://')
@@ -133,17 +117,19 @@ export default {
                   : `${store.apiBaseUrl}/storage/${singleApartment.cover_image}`
               "
               :alt="singleApartment.title"
-              class="w-100"
+              class="col-12"
+              style="ima"
             />
             <!-- Map -->
-            <div class="p-0">
-              <TomTomMap :propApartments="[singleApartment]" />
+            <div class="p-0 col-12">
+              <TomTomMap :propApartments="[singleApartment]" class="d-block"/>
             </div>
+
           </figure>
         </div>
         <div
           class="col-lg-6 col-md-12 apartment-details d-flex flex-wrap gap-1"
-        >
+          >
           <div class="col-12 d-flex flex-column gap-1">
             <h2>{{ singleApartment.title }}</h2>
             <p class="address">
@@ -190,11 +176,11 @@ export default {
               v-if="singleApartment.services && singleApartment.services.length"
               class="services"
             >
-              <ul class="list-unstyled">
+              <ul class="list-unstyled d-flex flex-wrap d-xl-block">
                 <li
                   v-for="item in singleApartment.services"
                   :key="item.id"
-                  class="mt-1 d-flex align-items-center"
+                  class="mt-1 col-6 d-flex align-items-center"
                 >
                   <img
                     :src="`${store.apiBaseUrl}/storage/${item.icon}`"
@@ -363,7 +349,7 @@ export default {
 
   #tomtom-map {
     width: 100%;
-    height: 30vh;
+    max-height: 40vh
   }
 
   .no-data {
@@ -381,7 +367,7 @@ export default {
     flex-direction: column;
 
     #map {
-      height: 50vh;
+      max-height: 40vh;
     }
   }
 
