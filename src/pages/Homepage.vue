@@ -388,7 +388,11 @@ export default {
   <section id="gridApartments" class="container my-5">
     <h1 class="my-2 fw-bold">
       Appartamenti in evidenza ({{ infoApartmentsArray.total }})
-      {{ infoApartmentsArray.total === 0 ? "" : `- Pagina ${currentPage}` }}
+      {{
+        infoApartmentsArray.total === 0
+          ? ""
+          : `- Pagina ${currentPage}/${lastPage}`
+      }}
     </h1>
 
     <hr />

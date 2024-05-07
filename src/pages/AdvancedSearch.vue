@@ -211,7 +211,6 @@ export default {
       );
       return category ? category.icon : "fa-solid fa-circle-question"; // Icona di default se non trova corrispondenze
     },
-
     checkDates(expDate) {
       let now = Date.now();
       let endDate = new Date(expDate);
@@ -223,6 +222,17 @@ export default {
         return true;
       } else {
         return false;
+      }
+    },
+    formatDistance(distance) {
+      if (distance < 1000) {
+        // Distanza minore di 1000 metri, mostra in metri
+        // Utilizza Math.round per arrotondare al numero intero più vicino
+        return `${Math.round(distance)} metri`;
+      } else {
+        // Distanza maggiore o uguale a 1000 metri, mostra in chilometri con una cifra decimale
+        // Divide per 1000 e arrotonda a una cifra decimale
+        return `${(distance / 1000).toFixed(1)} km`;
       }
     },
   },
@@ -425,7 +435,11 @@ export default {
   <section id="gridApartments" class="container my-5">
     <h1 class="my-2 fw-bold">
       Risultati ({{ infoApartmentsArray.total }})
-      {{ infoApartmentsArray.total === 0 ? "" : `- Pagina ${currentPage}` }}
+      {{
+        infoApartmentsArray.total === 0
+          ? ""
+          : `- Pagina ${currentPage}/${lastPage}`
+      }}
     </h1>
 
     <hr />
@@ -447,7 +461,7 @@ export default {
                 <!-- SPONSOR-BADGE -->
                 <div
                   v-if="checkDates(element.expiration_date) === true"
-                  class="sponsor-container position-absolute top-0 end-0 m-2 p-1 "
+                  class="sponsor-container position-absolute top-0 end-0 m-2 p-1"
                 >
                   <img
                     class="w-100 h-100"
@@ -536,9 +550,15 @@ export default {
 
                 <!-- Indirizzo -->
                 <p
-                  class="card-text after-name text-truncate text-body-secondary"
+                  class="card-text after-name text-truncate text-body-secondary mb-2"
                 >
                   {{ element.full_address }}
+                </p>
+                <p
+                  v-show="element.distance"
+                  class="card-text after-name text-truncate text-body-secondary mb-2"
+                >
+                  {{ formatDistance(element.distance) }}
                 </p>
               </div>
             </div>
@@ -560,8 +580,10 @@ export default {
               class="page-link text-secondary-emphasis"
               :class="{ disabled: currentPage === 1 }"
               @click="
-                getApartments(currentPage - 1);
                 moveToGrid();
+                !isFiltered
+                  ? getApartments(currentPage - 1, currentCategory)
+                  : radiusSearch(currentPage - 1);
               "
             >
               Precedente
@@ -572,10 +594,12 @@ export default {
           <li class="page-item">
             <button
               class="page-link text-secondary-emphasis"
-              :class="{ disabled: currentPage < 4 }"
+              :class="{ disabled: currentPage == 1 }"
               @click="
-                getApartments(1);
                 moveToGrid();
+                !isFiltered
+                  ? getApartments(1, currentCategory)
+                  : radiusSearch(1);
               "
             >
               &lt;&lt;
@@ -594,8 +618,10 @@ export default {
               class="page-link text-secondary-emphasis"
               :class="{ disabled: currentPage === element }"
               @click="
-                getApartments(element);
                 moveToGrid();
+                !isFiltered
+                  ? getApartments(element, currentCategory)
+                  : radiusSearch(element);
               "
             >
               {{ element }}
@@ -606,10 +632,12 @@ export default {
           <li class="page-item">
             <button
               class="page-link text-secondary-emphasis"
-              :class="{ disabled: currentPage > lastPage - 3 }"
+              :class="{ disabled: currentPage == lastPage }"
               @click="
-                getApartments(lastPage);
                 moveToGrid();
+                !isFiltered
+                  ? getApartments(lastPage, currentCategory)
+                  : radiusSearch(lastPage);
               "
             >
               &gt;&gt;
@@ -622,8 +650,10 @@ export default {
               class="page-link text-secondary-emphasis"
               :class="{ disabled: currentPage === lastPage }"
               @click="
-                getApartments(currentPage + 1);
                 moveToGrid();
+                !isFiltered
+                  ? getApartments(currentPage + 1, currentCategory)
+                  : radiusSearch(currentPage + 1);
               "
             >
               Successivo
@@ -672,7 +702,6 @@ export default {
 </template>
 
 <style lang="scss">
-
 .card {
   min-height: 400px;
 }
