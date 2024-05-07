@@ -30,7 +30,7 @@ export default {
 
 <template>
   <nav
-    class="navbar navbar-expand-lg navbar-light fixed-top p-0 shadow-lg"
+    class="navbar navbar-expand-lg navbar-light fixed-top p-0 shadow-lg "
     :class="{ 'scrolled': isScrolled, 'dropdown-open': dropdownOpen }"
     >
     <div class="container">
@@ -52,19 +52,16 @@ export default {
       </button>
 
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav text-end mt-3 mb-4 gap-4">
-          <!-- <li class="nav-item">
-            <router-link :to="{ name: 'Home' }" class="nav-link">
-              Home
-            </router-link>
-          </li> -->
-          <li class="nav-item">
+
+        <ul class="navbar-nav ms-auto text-end mt-3 mb-4 gap-4">
+
+          <li class="">
             <router-link :to="{ name: 'search' }" class="nav-link">
               Ricerca Avanzata
             </router-link>
           </li>
 
-          <li>
+          <li class="">
             <a
               class="btn btn-green"
               :href="`${store.apiBaseUrl}/login`"
