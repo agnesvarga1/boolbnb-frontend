@@ -82,6 +82,13 @@ export default {
       upButton.style.display = "block";
       upContainer.classList.add("mb-4");
     },
+    groupBy(array, key) {
+      return array.reduce((accumulator, currentValue) => {
+        (accumulator[currentValue[key]] =
+          accumulator[currentValue[key]] || []).push(currentValue);
+        return accumulator;
+      }, {});
+    },
   },
   mounted() {
     this.getSingleApartment();
@@ -204,6 +211,83 @@ export default {
             Contatta il proprietario
           </button>
         </div>
+
+        <div
+          v-if="singleApartment.images && singleApartment.images.length"
+          class="p-5"
+        >
+          <div class="row">
+            <h1 class="mb-4">Galleria</h1>
+            <div
+              v-for="(images, category) in groupBy(
+                singleApartment.images,
+                'category'
+              )"
+              :key="category"
+              class="mb-5 col-4"
+            >
+              <h4 class="text-capitalize">{{ category }}</h4>
+              <div
+                class="carousel slide"
+                :id="'carousel-' + category.replace(/\s+/g, '-')"
+                data-bs-ride="carousel"
+                style="position: relative"
+              >
+                <div class="carousel-inner">
+                  <div
+                    v-for="(image, index) in images"
+                    :key="image.id"
+                    class="carousel-item"
+                    :class="{ active: index === 0 }"
+                  >
+                    <img
+                      :src="
+                        image.path.startsWith('https://')
+                          ? image.path
+                          : `${store.apiBaseUrl}/storage/${image.path}`
+                      "
+                      class="d-block w-100 rounded"
+                      :alt="`Image of ${category}`"
+                      style="height: 300px; object-fit: cover"
+                    />
+                  </div>
+                </div>
+                <!-- Navigation Controls -->
+                <button
+                  v-if="images.length > 1"
+                  class="carousel-control-prev"
+                  type="button"
+                  :data-bs-target="'#carousel-' + category.replace(/\s+/g, '-')"
+                  data-bs-slide="prev"
+                >
+                  <span
+                    class="carousel-control-prev-icon"
+                    aria-hidden="true"
+                  ></span>
+                </button>
+                <button
+                  v-if="images.length > 1"
+                  class="carousel-control-next"
+                  type="button"
+                  :data-bs-target="'#carousel-' + category.replace(/\s+/g, '-')"
+                  data-bs-slide="next"
+                >
+                  <span
+                    class="carousel-control-next-icon"
+                    aria-hidden="true"
+                  ></span>
+                </button>
+                <!-- Image Count -->
+                <div
+                  class="position-absolute top-0 end-0 bg-dark text-white p-2 rounded"
+                  style="background-color: rgba(0, 0, 0, 0.75)"
+                >
+                  {{ images.length }} Immagin{{ images.length > 1 ? "i" : "e" }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div v-else class="no-data">No apartment details available.</div>
     </div>
@@ -219,6 +303,15 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+.position-absolute {
+  top: 0;
+  right: 0;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  border-radius: 0.25rem;
+  z-index: 2; // To make sure it's above the carousel images
+}
+
 .apartment-container {
   padding: 100px 0 2rem;
   min-height: calc(100vh - 170px);
