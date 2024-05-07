@@ -54,6 +54,10 @@ export default {
         .get(`${store.apiBaseUrl}/api/apartments/${this.$route.params.slug}`)
         .then((res) => {
           this.singleApartment = res.data.apartment;
+
+          if (!this.singleApartment) {
+            this.$router.push({ name: "not-found" });
+          }
         });
     },
     getCategoryIcon(categoryName) {
@@ -289,7 +293,7 @@ export default {
           </div>
         </div>
       </div>
-      <div v-else class="no-data">No apartment details available.</div>
+      <div v-else class="no-data"></div>
     </div>
   </div>
   <!-- Apartment Details -->
