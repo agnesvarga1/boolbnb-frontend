@@ -492,14 +492,14 @@ export default {
                 </h4>
 
                 <!--Icone servizi -->
-                <div class="mb-1">
+                <div class="mb-1 d-flex">
                   <span
                     v-for="element in element.services"
                     class="badge rounded-pill me-2 mb-1 p-1"
                     :class="
                       servicesInput.includes(element.id)
-                        ? 'active-service'
-                        : 'btn-green'
+                        ? 'active-service order-0'
+                        : 'btn-green order-1'
                     "
                   >
                     <img
