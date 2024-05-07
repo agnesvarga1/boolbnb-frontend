@@ -8,11 +8,15 @@ export default {
     return {
       store,
       isScrolled: false,
+      dropdownOpen: false,
     };
   },
   methods: {
     handleScroll() {
       this.isScrolled = window.scrollY > 0;
+    },
+    toggleDropdown() {
+      this.dropdownOpen = !this.dropdownOpen;
     }
   },
   mounted() {
@@ -27,7 +31,7 @@ export default {
 <template>
   <nav
     class="navbar navbar-expand-lg navbar-light fixed-top p-0 shadow-lg"
-    :class="{ 'scrolled': isScrolled }"
+    :class="{ 'scrolled': isScrolled, 'dropdown-open': dropdownOpen }"
     >
     <div class="container">
       <router-link class="navbar-brand m-0" :to="{ name: 'home' }">
@@ -37,6 +41,7 @@ export default {
       <button
         class="navbar-toggler"
         type="button"
+        @click="toggleDropdown"
         data-bs-toggle="collapse"
         data-bs-target="#navbarNav"
         aria-controls="navbarNav"
@@ -47,7 +52,7 @@ export default {
       </button>
 
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto p-3 gap-5">
+        <ul class="navbar-nav text-end mt-3 mb-4 gap-4">
           <!-- <li class="nav-item">
             <router-link :to="{ name: 'Home' }" class="nav-link">
               Home
@@ -74,11 +79,12 @@ export default {
   </nav>
 </template>
 
-<style lang="scss">
-.navbar{
+<style lang="scss" scoped>
+.navbar{ 
   background-color: rgb(255, 255, 255, 0.7);
 }
-.navbar.scrolled {
+.navbar.scrolled,
+.navbar.dropdown-open {
   background-color: white; 
 }
 </style>
