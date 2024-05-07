@@ -13,7 +13,7 @@ export default {
 <template>
   <a
     href="#"
-    class="d-flex justify-content-center mb-4 text-decoration-none"
+    class="p-1 rounded-circle d-flex justify-content-center text-decoration-none"
     id="upContainer"
   >
     <i
@@ -129,5 +129,12 @@ export default {
 <style lang="scss">
 footer {
   min-height: 170px;
+}
+#upContainer {
+  position: fixed;   /* Mantiene l'elemento fisso nella posizione */
+  bottom: 5px;      /* Distanza dal fondo della pagina */
+  right: 15px;       /* Distanza dal lato destro della pagina */
+  z-index: 1000;
+  background-color: white;
 }
 </style>

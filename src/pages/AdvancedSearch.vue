@@ -211,7 +211,6 @@ export default {
       );
       return category ? category.icon : "fa-solid fa-circle-question"; // Icona di default se non trova corrispondenze
     },
-
     checkDates(expDate) {
       let now = Date.now();
       let endDate = new Date(expDate);
@@ -223,6 +222,17 @@ export default {
         return true;
       } else {
         return false;
+      }
+    },
+    formatDistance(distance) {
+      if (distance < 1000) {
+        // Distanza minore di 1000 metri, mostra in metri
+        // Utilizza Math.round per arrotondare al numero intero più vicino
+        return `${Math.round(distance)} metri`;
+      } else {
+        // Distanza maggiore o uguale a 1000 metri, mostra in chilometri con una cifra decimale
+        // Divide per 1000 e arrotonda a una cifra decimale
+        return `${(distance / 1000).toFixed(1)} km`;
       }
     },
   },
@@ -269,10 +279,10 @@ export default {
   <!-- Search Section -->
   <section class="container my-4" style="padding-top: 80px">
     <div class="input-group d-flex">
-      <h2 class="me-4 fw-bolder">Inizia a cercare</h2>
+      <h2 class="me-4 fw-bolder col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 text-center text-sm-start">Inizia a cercare</h2>
       <input
         type="text"
-        class="form-control border border-end-0 mx-0 rounded-start-pill"
+        class="col-12 form-control border border-end-0 mx-0 rounded-start-pill"
         placeholder="Cerca località..."
         aria-describedby="button-addon2"
         v-model="searchInput"
@@ -425,7 +435,11 @@ export default {
   <section id="gridApartments" class="container my-5">
     <h1 class="my-2 fw-bold">
       Risultati ({{ infoApartmentsArray.total }})
-      {{ infoApartmentsArray.total === 0 ? "" : `- Pagina ${currentPage}` }}
+      {{
+        infoApartmentsArray.total === 0
+          ? ""
+          : `- Pagina ${currentPage}/${lastPage}`
+      }}
     </h1>
 
     <hr />
@@ -447,7 +461,7 @@ export default {
                 <!-- SPONSOR-BADGE -->
                 <div
                   v-if="checkDates(element.expiration_date) === true"
-                  class="sponsor-container position-absolute top-0 end-0 m-2 p-1 "
+                  class="sponsor-container position-absolute top-0 end-0 m-2 p-1"
                 >
                   <img
                     class="w-100 h-100"
@@ -478,15 +492,20 @@ export default {
                 </h4>
 
                 <!--Icone servizi -->
-                <div class="mb-1">
+                <div class="mb-1 d-flex">
                   <span
                     v-for="element in element.services"
-                    class="badge btn-green rounded-pill me-2 mb-1 p-1"
+                    class="badge rounded-pill me-2 mb-1 p-1"
+                    :class="
+                      servicesInput.includes(element.id)
+                        ? 'active-service order-0'
+                        : 'btn-green order-1'
+                    "
                   >
                     <img
                       :src="`${store.apiBaseUrl}/storage/${element.icon}`"
                       :alt="element.name"
-                      style="width: 15px; filter: brightness(0) invert(1)"
+                      style="width: 15px; height:15px; filter: brightness(0) invert(1)"
                     />
                   </span>
                 </div>
@@ -536,9 +555,15 @@ export default {
 
                 <!-- Indirizzo -->
                 <p
-                  class="card-text after-name text-truncate text-body-secondary"
+                  class="card-text after-name text-truncate text-body-secondary mb-2"
                 >
                   {{ element.full_address }}
+                </p>
+                <p
+                  v-show="element.distance"
+                  class="card-text after-name text-truncate text-body-secondary mb-2"
+                >
+                  {{ formatDistance(element.distance) }}
                 </p>
               </div>
             </div>
@@ -560,8 +585,10 @@ export default {
               class="page-link text-secondary-emphasis"
               :class="{ disabled: currentPage === 1 }"
               @click="
-                getApartments(currentPage - 1);
                 moveToGrid();
+                !isFiltered
+                  ? getApartments(currentPage - 1, currentCategory)
+                  : radiusSearch(currentPage - 1);
               "
             >
               Precedente
@@ -572,10 +599,12 @@ export default {
           <li class="page-item">
             <button
               class="page-link text-secondary-emphasis"
-              :class="{ disabled: currentPage < 4 }"
+              :class="{ disabled: currentPage == 1 }"
               @click="
-                getApartments(1);
                 moveToGrid();
+                !isFiltered
+                  ? getApartments(1, currentCategory)
+                  : radiusSearch(1);
               "
             >
               &lt;&lt;
@@ -585,6 +614,24 @@ export default {
           <!-- Dynamic page numbers -->
           <li
             class="page-item"
+            v-if="lastPage <= 4"
+            v-for="element in lastPage"
+          >
+            <button
+              class="page-link text-secondary-emphasis"
+              :class="{ disabled: currentPage === element }"
+              @click="
+                getApartments(element);
+                moveToGrid();
+              "
+            >
+              {{ element }}
+            </button>
+          </li>
+
+          <li
+            class="page-item"
+            v-else=""
             v-for="element in [...Array(lastPage + 1).keys()].slice(
               currentPage - 2 < 1 ? 1 : Math.min(currentPage - 2, lastPage - 4),
               Math.max(6, Math.min(lastPage + 1, currentPage + 3))
@@ -606,10 +653,12 @@ export default {
           <li class="page-item">
             <button
               class="page-link text-secondary-emphasis"
-              :class="{ disabled: currentPage > lastPage - 3 }"
+              :class="{ disabled: currentPage == lastPage }"
               @click="
-                getApartments(lastPage);
                 moveToGrid();
+                !isFiltered
+                  ? getApartments(lastPage, currentCategory)
+                  : radiusSearch(lastPage);
               "
             >
               &gt;&gt;
@@ -622,8 +671,10 @@ export default {
               class="page-link text-secondary-emphasis"
               :class="{ disabled: currentPage === lastPage }"
               @click="
-                getApartments(currentPage + 1);
                 moveToGrid();
+                !isFiltered
+                  ? getApartments(currentPage + 1, currentCategory)
+                  : radiusSearch(currentPage + 1);
               "
             >
               Successivo
@@ -675,10 +726,7 @@ export default {
 .card {
   min-height: 400px;
 }
-.navbar.scrolled {
-  transition: background-color 0s !important;
-  background-color: white;
-}
+
 .card-img-top img {
   height: 250px;
   width: 100%;

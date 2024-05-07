@@ -353,10 +353,10 @@ export default {
   <!-- Search Section -->
   <section class="container mt-5">
     <div class="input-group d-flex">
-      <h2 class="me-4 fw-bolder">Inizia a cercare</h2>
+      <h2 class="me-4 fw-bolder col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 text-center text-sm-start">Inizia a cercare</h2>
       <input
         type="text"
-        class="form-control border border-end-0 mx-0 rounded-start-pill"
+        class="col-12 form-control border border-end-0 mx-0 rounded-start-pill"
         placeholder="Cerca località..."
         aria-describedby="button-addon2"
         v-model="searchInput"
@@ -377,8 +377,8 @@ export default {
         <option v-for="element in arrayAddresses" :value="element"></option>
       </datalist>
     </div>
-    <div>
-      <label for="rangeZone" class="form-label"
+    <div class="text-center text-sm-end me-3 mt-3">
+      <label for="rangeZone" class="form-label text-center"
         >Range zona: <strong>{{ radiusInput }} km</strong></label
       >
     </div>
@@ -388,7 +388,11 @@ export default {
   <section id="gridApartments" class="container my-5">
     <h1 class="my-2 fw-bold">
       Appartamenti in evidenza ({{ infoApartmentsArray.total }})
-      {{ infoApartmentsArray.total === 0 ? "" : `- Pagina ${currentPage}` }}
+      {{
+        infoApartmentsArray.total === 0
+          ? ""
+          : `- Pagina ${currentPage}/${lastPage}`
+      }}
     </h1>
 
     <hr />
@@ -522,7 +526,7 @@ export default {
           <li class="page-item">
             <button
               class="page-link text-secondary-emphasis"
-              :class="{ disabled: currentPage < 4 }"
+              :class="{ disabled: currentPage === 1 }"
               @click="
                 getApartments(1);
                 moveToGrid();
@@ -535,6 +539,24 @@ export default {
           <!-- Dynamic page numbers -->
           <li
             class="page-item"
+            v-if="lastPage <= 4"
+            v-for="element in lastPage"
+          >
+            <button
+              class="page-link text-secondary-emphasis"
+              :class="{ disabled: currentPage === element }"
+              @click="
+                getApartments(element);
+                moveToGrid();
+              "
+            >
+              {{ element }}
+            </button>
+          </li>
+
+          <li
+            class="page-item"
+            v-else=""
             v-for="element in [...Array(lastPage + 1).keys()].slice(
               currentPage - 2 < 1 ? 1 : Math.min(currentPage - 2, lastPage - 4),
               Math.max(6, Math.min(lastPage + 1, currentPage + 3))
@@ -556,7 +578,7 @@ export default {
           <li class="page-item">
             <button
               class="page-link text-secondary-emphasis"
-              :class="{ disabled: currentPage > lastPage - 3 }"
+              :class="{ disabled: currentPage === lastPage }"
               @click="
                 getApartments(lastPage);
                 moveToGrid();
