@@ -609,6 +609,24 @@ export default {
           <!-- Dynamic page numbers -->
           <li
             class="page-item"
+            v-if="lastPage <= 4"
+            v-for="element in lastPage"
+          >
+            <button
+              class="page-link text-secondary-emphasis"
+              :class="{ disabled: currentPage === element }"
+              @click="
+                getApartments(element);
+                moveToGrid();
+              "
+            >
+              {{ element }}
+            </button>
+          </li>
+
+          <li
+            class="page-item"
+            v-else=""
             v-for="element in [...Array(lastPage + 1).keys()].slice(
               currentPage - 2 < 1 ? 1 : Math.min(currentPage - 2, lastPage - 4),
               Math.max(6, Math.min(lastPage + 1, currentPage + 3))
@@ -618,10 +636,8 @@ export default {
               class="page-link text-secondary-emphasis"
               :class="{ disabled: currentPage === element }"
               @click="
+                getApartments(element);
                 moveToGrid();
-                !isFiltered
-                  ? getApartments(element, currentCategory)
-                  : radiusSearch(element);
               "
             >
               {{ element }}

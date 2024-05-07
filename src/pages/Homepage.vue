@@ -539,7 +539,7 @@ export default {
           <!-- Dynamic page numbers -->
           <li
             class="page-item"
-            v-if="lastPage == 4"
+            v-if="lastPage <= 4"
             v-for="element in lastPage"
           >
             <button
