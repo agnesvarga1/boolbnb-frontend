@@ -353,10 +353,10 @@ export default {
   <!-- Search Section -->
   <section class="container mt-5">
     <div class="input-group d-flex">
-      <h2 class="me-4 fw-bolder">Inizia a cercare</h2>
+      <h2 class="me-4 fw-bolder col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 text-center text-sm-start">Inizia a cercare</h2>
       <input
         type="text"
-        class="form-control border border-end-0 mx-0 rounded-start-pill"
+        class="col-12 form-control border border-end-0 mx-0 rounded-start-pill"
         placeholder="Cerca località..."
         aria-describedby="button-addon2"
         v-model="searchInput"
@@ -377,8 +377,8 @@ export default {
         <option v-for="element in arrayAddresses" :value="element"></option>
       </datalist>
     </div>
-    <div>
-      <label for="rangeZone" class="form-label"
+    <div class="text-center text-sm-end me-3 mt-3">
+      <label for="rangeZone" class="form-label text-center"
         >Range zona: <strong>{{ radiusInput }} km</strong></label
       >
     </div>
