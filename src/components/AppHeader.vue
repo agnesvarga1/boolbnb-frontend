@@ -35,7 +35,7 @@ export default {
     >
     <div class="container">
       <router-link class="navbar-brand m-0" :to="{ name: 'home' }">
-        <img src="/logo-boolbnb-nome.png" alt="Logo" style="max-height: 70px" />
+        <img src="/logo-boolbnb-nome.png" alt="Logo" style="max-height: 70px" class="p-2" />
       </router-link>
 
       <button
