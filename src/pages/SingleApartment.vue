@@ -156,7 +156,7 @@ export default {
                 <i :class="getCategoryIcon(singleApartment.category)"></i>
                 {{ singleApartment.category }}
               </div>
-              <h5 class="fw-bold mb-0">
+              <h5 class="fw-bold mb-0 fs-3 fs-sm-1">
                 {{ singleApartment.price }} &euro;/notte
               </h5>
             </div>
@@ -216,19 +216,20 @@ export default {
           </button>
         </div>
 
+        <!-- More images -->
         <div
           v-if="singleApartment.images && singleApartment.images.length"
-          class="p-5"
+          class="p-2 p-md-5"
         >
           <div class="row">
-            <h1 class="mb-4">Galleria</h1>
+
             <div
               v-for="(images, category) in groupBy(
                 singleApartment.images,
                 'category'
               )"
               :key="category"
-              class="mb-5 col-4"
+              class="mb-5 col-12 col-lg-6"
             >
               <h4 class="text-capitalize">{{ category }}</h4>
               <div
