@@ -7,6 +7,7 @@ export default {
 
   props: {
     apartment_id: Number,
+    title: String,
   },
 
   components: {},
@@ -79,6 +80,10 @@ export default {
         <div class="modal-body">
           <form @submit.prevent="sendMessage()">
             <div class="mb-3">
+              <h4>{{ title }}</h4>
+              <div>
+                <span class="campi">Tutti i campi sono obbligatori</span>
+              </div>
               <label for="name" class="col-form-label">Nome:</label>
               <input
                 v-model="name"
@@ -147,4 +152,7 @@ export default {
 
 <style lang="scss">
 @use "../styles/partials/variables" as *;
+.campi {
+  font-size: 12px;
+}
 </style>

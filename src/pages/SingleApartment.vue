@@ -297,6 +297,7 @@ export default {
   <ContactForm
     :class="isMoadalOpen === true ? 'd-block' : ''"
     :apartment_id="singleApartment.id"
+    :title="singleApartment.title"
     @messageSent="handleMessageSent"
     @closeModal="toggleModal"
   />
