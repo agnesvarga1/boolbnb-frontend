@@ -63,7 +63,6 @@ export default {
   >
     <div
       class="modal-dialog modal-lg modal-fullscreen-md-down d-flex align-items-center"
-      style="height: calc(100vh - 198px)"
     >
       <div class="modal-content shadow-lg">
         <div class="modal-header">
