@@ -17,25 +17,30 @@ export default {
     },
     toggleDropdown() {
       this.dropdownOpen = !this.dropdownOpen;
-    }
+    },
   },
   mounted() {
-    window.addEventListener('scroll', this.handleScroll);
+    window.addEventListener("scroll", this.handleScroll);
   },
   beforeDestroy() {
-    window.removeEventListener('scroll', this.handleScroll);
+    window.removeEventListener("scroll", this.handleScroll);
   },
 };
 </script>
 
 <template>
   <nav
-    class="navbar navbar-expand-lg navbar-light fixed-top p-0 shadow-lg "
-    :class="{ 'scrolled': isScrolled, 'dropdown-open': dropdownOpen }"
-    >
+    class="navbar navbar-expand-lg navbar-light fixed-top p-0 shadow-lg"
+    :class="{ scrolled: isScrolled, 'dropdown-open': dropdownOpen }"
+  >
     <div class="container">
       <router-link class="navbar-brand m-0" :to="{ name: 'home' }">
-        <img src="/logo-boolbnb-nome.png" alt="Logo" style="max-height: 70px" class="p-2" />
+        <img
+          src="/logo-boolbnb-nome.png"
+          alt="Logo"
+          style="max-height: 70px"
+          class="p-2"
+        />
       </router-link>
 
       <button
@@ -52,9 +57,7 @@ export default {
       </button>
 
       <div class="collapse navbar-collapse" id="navbarNav">
-
         <ul class="navbar-nav ms-auto text-end mt-3 mb-4 gap-4">
-
           <li class="">
             <router-link :to="{ name: 'search' }" class="nav-link">
               Ricerca Avanzata
@@ -64,7 +67,7 @@ export default {
           <li class="">
             <a
               class="btn btn-green"
-              :href="`${store.apiBaseUrl}/login`"
+              :href="`${store.apiBaseUrl}`"
               target="_blank"
               role="button"
               >Area Personale</a
@@ -77,11 +80,11 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-.navbar{ 
+.navbar {
   background-color: rgb(255, 255, 255, 0.7);
 }
 .navbar.scrolled,
 .navbar.dropdown-open {
-  background-color: white; 
+  background-color: white;
 }
 </style>
